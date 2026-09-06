@@ -92,19 +92,11 @@ class TestUser(unittest.TestCase):
                         tier_pin = 'untrusted', 
                         tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         tier_pin_reason = '', 
-                        memberships = [
-                            someones_computer_sdk.models.membership.Membership(
-                                organization = 'https://example.com/', 
-                                user = , 
-                                role = 'owner', 
-                                id = '', 
-                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                            ], 
                         oauth_identities = [
                             someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
                                 provider = 'github', 
                                 provider_user_id = '', 
+                                user = , 
                                 id = '', 
                                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
@@ -142,14 +134,6 @@ class TestUser(unittest.TestCase):
                         totp_enabled = True, 
                         deleted = True, ), 
                     tier_pin_reason = '', 
-                    memberships = [
-                        someones_computer_sdk.models.membership.Membership(
-                            organization = 'https://example.com/', 
-                            role = 'owner', 
-                            id = '', 
-                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                        ], 
                     oauth_identities = [
                         someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
                             provider = 'github', 
@@ -230,19 +214,11 @@ class TestUser(unittest.TestCase):
                         tier_pin = 'untrusted', 
                         tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         tier_pin_reason = '', 
-                        memberships = [
-                            someones_computer_sdk.models.membership.Membership(
-                                organization = 'https://example.com/', 
-                                user = , 
-                                role = 'owner', 
-                                id = '', 
-                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                            ], 
                         oauth_identities = [
                             someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
                                 provider = 'github', 
                                 provider_user_id = '', 
+                                user = , 
                                 id = '', 
                                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
@@ -285,14 +261,6 @@ class TestUser(unittest.TestCase):
                     tier_pin = 'untrusted', 
                     tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                     tier_pin_reason = '', 
-                    memberships = [
-                        someones_computer_sdk.models.membership.Membership(
-                            organization = 'https://example.com/', 
-                            role = 'owner', 
-                            id = '', 
-                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                        ], 
                     oauth_identities = [
                         someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
                             provider = 'github', 
@@ -334,137 +302,6 @@ class TestUser(unittest.TestCase):
                     totp_enabled = True, 
                     deleted = True, ),
                 tier_pin_reason = '',
-                memberships = [
-                    someones_computer_sdk.models.membership.Membership(
-                        organization = 'https://example.com/', 
-                        user = someones_computer_sdk.models.user.User(
-                            email = '', 
-                            username = '', 
-                            display_name = '', 
-                            theme = 'house', 
-                            locale = 'en_GB', 
-                            timezone = '', 
-                            password = '', 
-                            ldap_dn = '', 
-                            avatar_photo = someones_computer_sdk.models.user_avatar_photo.UserAvatarPhoto(
-                                photo = '', 
-                                type = '', 
-                                id = '', ), 
-                            roles = [
-                                ''
-                                ], 
-                            disabled_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            spam_marked_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            spam_marked_by = someones_computer_sdk.models.user.User(
-                                email = '', 
-                                username = '', 
-                                display_name = '', 
-                                theme = 'house', 
-                                locale = 'en_GB', 
-                                timezone = '', 
-                                password = '', 
-                                ldap_dn = '', 
-                                disabled_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                spam_marked_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                approved_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                email_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                credit_granted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                tier_pin = 'untrusted', 
-                                tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                tier_pinned_by = , 
-                                tier_pin_reason = '', 
-                                oauth_identities = [
-                                    someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
-                                        provider = 'github', 
-                                        provider_user_id = '', 
-                                        id = '', 
-                                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                                    ], 
-                                totp_secret = '', 
-                                totp_secret_key_id = '', 
-                                totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                recovery_codes = [
-                                    someones_computer_sdk.models.recovery_code.RecoveryCode(
-                                        code_hash = '', 
-                                        used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        id = '', 
-                                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        used = True, )
-                                    ], 
-                                machine_for = 'https://example.com/', 
-                                id = '', 
-                                deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                display_label = '', 
-                                machine = True, 
-                                ldap_managed = True, 
-                                avatar_photo_type = '', 
-                                user_identifier = '', 
-                                granted_roles = [
-                                    ''
-                                    ], 
-                                disabled = True, 
-                                spam = True, 
-                                approved = True, 
-                                email_confirmed = True, 
-                                tier_pinned = True, 
-                                totp_enabled = True, 
-                                deleted = True, ), 
-                            approved_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            email_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            credit_granted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            tier_pin = 'untrusted', 
-                            tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            tier_pinned_by = , 
-                            tier_pin_reason = '', 
-                            oauth_identities = [
-                                someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
-                                    provider = 'github', 
-                                    provider_user_id = '', 
-                                    id = '', 
-                                    created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                                ], 
-                            totp_secret = '', 
-                            totp_secret_key_id = '', 
-                            totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            recovery_codes = [
-                                someones_computer_sdk.models.recovery_code.RecoveryCode(
-                                    code_hash = '', 
-                                    used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    id = '', 
-                                    created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    used = True, )
-                                ], 
-                            machine_for = 'https://example.com/', 
-                            id = '', 
-                            deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            display_label = '', 
-                            machine = True, 
-                            ldap_managed = True, 
-                            avatar_photo_type = '', 
-                            user_identifier = '', 
-                            granted_roles = [
-                                ''
-                                ], 
-                            disabled = True, 
-                            spam = True, 
-                            approved = True, 
-                            email_confirmed = True, 
-                            tier_pinned = True, 
-                            totp_enabled = True, 
-                            deleted = True, ), 
-                        role = 'owner', 
-                        id = '', 
-                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                    ],
                 oauth_identities = [
                     someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
                         provider = 'github', 
@@ -505,14 +342,6 @@ class TestUser(unittest.TestCase):
                                 tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                 tier_pinned_by = , 
                                 tier_pin_reason = '', 
-                                memberships = [
-                                    someones_computer_sdk.models.membership.Membership(
-                                        organization = 'https://example.com/', 
-                                        role = 'owner', 
-                                        id = '', 
-                                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                                    ], 
                                 totp_secret = '', 
                                 totp_secret_key_id = '', 
                                 totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
@@ -552,14 +381,6 @@ class TestUser(unittest.TestCase):
                             tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                             tier_pinned_by = , 
                             tier_pin_reason = '', 
-                            memberships = [
-                                someones_computer_sdk.models.membership.Membership(
-                                    organization = 'https://example.com/', 
-                                    role = 'owner', 
-                                    id = '', 
-                                    created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                                ], 
                             totp_secret = '', 
                             totp_secret_key_id = '', 
                             totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
@@ -637,14 +458,6 @@ class TestUser(unittest.TestCase):
                                 tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                 tier_pinned_by = , 
                                 tier_pin_reason = '', 
-                                memberships = [
-                                    someones_computer_sdk.models.membership.Membership(
-                                        organization = 'https://example.com/', 
-                                        role = 'owner', 
-                                        id = '', 
-                                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                                    ], 
                                 oauth_identities = [
                                     someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
                                         provider = 'github', 
@@ -683,14 +496,6 @@ class TestUser(unittest.TestCase):
                             tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                             tier_pinned_by = , 
                             tier_pin_reason = '', 
-                            memberships = [
-                                someones_computer_sdk.models.membership.Membership(
-                                    organization = 'https://example.com/', 
-                                    role = 'owner', 
-                                    id = '', 
-                                    created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                                ], 
                             oauth_identities = [
                                 someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
                                     provider = 'github', 

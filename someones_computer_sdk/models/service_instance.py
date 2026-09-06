@@ -41,13 +41,15 @@ class ServiceInstance(BaseModel):
     capacity_bytes: Optional[ServiceInstanceCapacityBytes] = Field(default=None, alias="capacityBytes")
     observed_usage_bytes: Optional[ServiceInstanceObservedUsageBytes] = Field(default=None, alias="observedUsageBytes")
     observed_at: Optional[datetime] = Field(default=None, alias="observedAt")
+    in_flight_since: Optional[datetime] = Field(default=None, description="When the current attempt to reach `Serving` began — {@see claim()} sets it on a fresh row and {@see markInFlight()} again on an upgrade's re-entry into `Healthchecking`; null once the row is `Serving`, `Failed`, or anything else that means nothing is still trying.", alias="inFlightSince")
     id: Optional[StrictStr] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     catalogue_entry: Optional[StrictStr] = Field(default=None, description="`postgres 17`, `mysql 8.0` — the catalogue entry this instance serves.", alias="catalogueEntry")
     serving: Optional[StrictBool] = None
+    in_flight_stale: Optional[StrictBool] = Field(default=None, description="Dispatched so long ago that whatever was carrying it is gone.", alias="inFlightStale")
     admin_credential: Optional[SealedSecret] = Field(default=None, alias="adminCredential")
-    __properties: ClassVar[List[str]] = ["name", "kind", "majorVersion", "imageRef", "swarm", "overlayNetwork", "state", "failureReason", "capacityBytes", "observedUsageBytes", "observedAt", "id", "createdAt", "updatedAt", "catalogueEntry", "serving", "adminCredential"]
+    __properties: ClassVar[List[str]] = ["name", "kind", "majorVersion", "imageRef", "swarm", "overlayNetwork", "state", "failureReason", "capacityBytes", "observedUsageBytes", "observedAt", "inFlightSince", "id", "createdAt", "updatedAt", "catalogueEntry", "serving", "inFlightStale", "adminCredential"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -106,15 +108,19 @@ class ServiceInstance(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "failure_reason",
             "observed_at",
+            "in_flight_since",
             "id",
             "created_at",
             "updated_at",
             "catalogue_entry",
             "serving",
+            "in_flight_stale",
         ])
 
         _dict = self.model_dump(
@@ -151,6 +157,11 @@ class ServiceInstance(BaseModel):
         if self.observed_at is None and "observed_at" in self.model_fields_set:
             _dict['observedAt'] = None
 
+        # set to None if in_flight_since (nullable) is None
+        # and model_fields_set contains the field
+        if self.in_flight_since is None and "in_flight_since" in self.model_fields_set:
+            _dict['inFlightSince'] = None
+
         # set to None if updated_at (nullable) is None
         # and model_fields_set contains the field
         if self.updated_at is None and "updated_at" in self.model_fields_set:
@@ -179,11 +190,13 @@ class ServiceInstance(BaseModel):
             "capacityBytes": ServiceInstanceCapacityBytes.from_dict(obj["capacityBytes"]) if obj.get("capacityBytes") is not None else None,
             "observedUsageBytes": ServiceInstanceObservedUsageBytes.from_dict(obj["observedUsageBytes"]) if obj.get("observedUsageBytes") is not None else None,
             "observedAt": obj.get("observedAt"),
+            "inFlightSince": obj.get("inFlightSince"),
             "id": obj.get("id"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
             "catalogueEntry": obj.get("catalogueEntry"),
             "serving": obj.get("serving"),
+            "inFlightStale": obj.get("inFlightStale"),
             "adminCredential": SealedSecret.from_dict(obj["adminCredential"]) if obj.get("adminCredential") is not None else None
         })
         return _obj

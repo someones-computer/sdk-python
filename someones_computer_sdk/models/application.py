@@ -47,6 +47,8 @@ class Application(BaseModel):
     deployments: Optional[List[StrictStr]] = None
     variables: Optional[List[Variable]] = None
     port_allocations: Optional[List[PortAllocation]] = Field(default=None, alias="portAllocations")
+    pool_domain: Optional[StrictStr] = Field(default=None, description="Which of the app-hosting pool domains (`snarl.dev`, `starshp.dev` — {@see \\App\\Service\\Ingress\\DomainPoolAssigner}) this application's deployments answer under, in addition to `someones.computer`. Null until its first successful deploy assigns one, and never moved after — a redeploy must resolve to the same pool hostnames it already handed out, the same reason {@see $firstRunningAt} is a latch rather than a rolling value.", alias="poolDomain")
+    pool_label: Optional[StrictStr] = Field(default=None, description="Overrides the auto-slugified application name in the pool-domain hostname's `{service}.{deployment}.{label}.{poolDomain}` shape ({@see \\App\\Service\\Ingress\\PoolHostname}) — null for every application that has not opted into a custom one, which is what {@see poolLabelOrSlug()} falls back to. Unique platform-wide, the same reasoning as {@see \\App\\Entity\\Domain::$name}: two applications sharing a label would collide on the exact same DNS name the moment they also shared a deployment and service name.", alias="poolLabel")
     id: Optional[StrictStr] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
@@ -57,7 +59,7 @@ class Application(BaseModel):
     operator_chosen_icon: Optional[StrictBool] = Field(default=None, description="Whether the stored icon was chosen by a person, and so must survive the next deploy's favicon extraction.", alias="operatorChosenIcon")
     icon_version: Optional[StrictStr] = Field(default=None, description="A short, stable token for the icon a caller is looking at — the cache-busting half of the icon URL, and null when there is nothing stored to bust.", alias="iconVersion")
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["organization", "slug", "name", "isolationLevel", "serviceAdoption", "accessGate", "currentDeployment", "firstRunningAt", "primaryDeploymentName", "legacyStackBase", "iconKey", "iconSource", "buildBucket", "buildKeyId", "deployments", "variables", "portAllocations", "id", "deletedAt", "createdAt", "updatedAt", "buildCredential", "accessGateCredential", "icon", "operatorChosenIcon", "iconVersion", "deleted"]
+    __properties: ClassVar[List[str]] = ["organization", "slug", "name", "isolationLevel", "serviceAdoption", "accessGate", "currentDeployment", "firstRunningAt", "primaryDeploymentName", "legacyStackBase", "iconKey", "iconSource", "buildBucket", "buildKeyId", "deployments", "variables", "portAllocations", "poolDomain", "poolLabel", "id", "deletedAt", "createdAt", "updatedAt", "buildCredential", "accessGateCredential", "icon", "operatorChosenIcon", "iconVersion", "deleted"]
 
     @field_validator('isolation_level')
     def isolation_level_validate_enum(cls, value):
@@ -139,11 +141,13 @@ class Application(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "first_running_at",
             "icon_key",
             "icon_source",
+            "pool_domain",
             "id",
             "deleted_at",
             "created_at",
@@ -218,6 +222,16 @@ class Application(BaseModel):
         if self.build_key_id is None and "build_key_id" in self.model_fields_set:
             _dict['buildKeyId'] = None
 
+        # set to None if pool_domain (nullable) is None
+        # and model_fields_set contains the field
+        if self.pool_domain is None and "pool_domain" in self.model_fields_set:
+            _dict['poolDomain'] = None
+
+        # set to None if pool_label (nullable) is None
+        # and model_fields_set contains the field
+        if self.pool_label is None and "pool_label" in self.model_fields_set:
+            _dict['poolLabel'] = None
+
         # set to None if deleted_at (nullable) is None
         # and model_fields_set contains the field
         if self.deleted_at is None and "deleted_at" in self.model_fields_set:
@@ -272,6 +286,8 @@ class Application(BaseModel):
             "deployments": obj.get("deployments"),
             "variables": [Variable.from_dict(_item) for _item in obj["variables"]] if obj.get("variables") is not None else None,
             "portAllocations": [PortAllocation.from_dict(_item) for _item in obj["portAllocations"]] if obj.get("portAllocations") is not None else None,
+            "poolDomain": obj.get("poolDomain"),
+            "poolLabel": obj.get("poolLabel"),
             "id": obj.get("id"),
             "deletedAt": obj.get("deletedAt"),
             "createdAt": obj.get("createdAt"),

@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "someones_computer_sdk"
 version = "1.0.0"
-description = "OpenAPI-generated Python client for the someones.computer /api surface"
+description = "someones.computer API"
 authors = ["OpenAPI Generator Community <team@openapitools.org>"]
-license = "MIT"
+license = "NoLicense"
 readme = "README.md"
-repository = "https://github.com/someones-computer/sdk-python"
+repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
 keywords = ["OpenAPI", "OpenAPI-Generator", "someones.computer API"]
 include = ["someones_computer_sdk/py.typed"]
 

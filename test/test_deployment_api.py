@@ -54,8 +54,29 @@ class TestDeploymentApi(unittest.TestCase):
         """
         pass
 
+    def test_api_deployments_idendpoints_get_collection(self) -> None:
+        """Test case for api_deployments_idendpoints_get_collection
+
+        Retrieves the collection of Deployment resources.
+        """
+        pass
+
     def test_api_deployments_post(self) -> None:
         """Test case for api_deployments_post
+
+        Creates a Deployment resource.
+        """
+        pass
+
+    def test_bundle_upload_confirm(self) -> None:
+        """Test case for bundle_upload_confirm
+
+        Creates a Deployment resource.
+        """
+        pass
+
+    def test_bundle_upload_declare(self) -> None:
+        """Test case for bundle_upload_declare
 
         Creates a Deployment resource.
         """
