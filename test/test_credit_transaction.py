@@ -84,19 +84,11 @@ class TestCreditTransaction(unittest.TestCase):
                         tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         tier_pinned_by = , 
                         tier_pin_reason = '', 
-                        memberships = [
-                            someones_computer_sdk.models.membership.Membership(
-                                organization = 'https://example.com/', 
-                                user = , 
-                                role = 'owner', 
-                                id = '', 
-                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                            ], 
                         oauth_identities = [
                             someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
                                 provider = 'github', 
                                 provider_user_id = '', 
+                                user = , 
                                 id = '', 
                                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
@@ -140,14 +132,6 @@ class TestCreditTransaction(unittest.TestCase):
                     tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                     tier_pinned_by = , 
                     tier_pin_reason = '', 
-                    memberships = [
-                        someones_computer_sdk.models.membership.Membership(
-                            organization = 'https://example.com/', 
-                            role = 'owner', 
-                            id = '', 
-                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                        ], 
                     oauth_identities = [
                         someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
                             provider = 'github', 

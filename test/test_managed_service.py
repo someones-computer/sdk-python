@@ -51,11 +51,13 @@ class TestManagedService(unittest.TestCase):
                     capacity_bytes = null, 
                     observed_usage_bytes = null, 
                     observed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
+                    in_flight_since = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                     id = '', 
                     created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                     updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                     catalogue_entry = '', 
                     serving = True, 
+                    in_flight_stale = True, 
                     admin_credential = someones_computer_sdk.models.sealed_secret.SealedSecret(
                         algo = '', 
                         key_id = '', 

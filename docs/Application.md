@@ -23,6 +23,8 @@ Name | Type | Description | Notes
 **deployments** | **List[str]** |  | [optional] 
 **variables** | [**List[Variable]**](Variable.md) |  | [optional] 
 **port_allocations** | [**List[PortAllocation]**](PortAllocation.md) |  | [optional] 
+**pool_domain** | **str** | Which of the app-hosting pool domains (&#x60;snarl.dev&#x60;, &#x60;starshp.dev&#x60; — {@see \\App\\Service\\Ingress\\DomainPoolAssigner}) this application&#39;s deployments answer under, in addition to &#x60;someones.computer&#x60;. Null until its first successful deploy assigns one, and never moved after — a redeploy must resolve to the same pool hostnames it already handed out, the same reason {@see $firstRunningAt} is a latch rather than a rolling value. | [optional] [readonly] 
+**pool_label** | **str** | Overrides the auto-slugified application name in the pool-domain hostname&#39;s &#x60;{service}.{deployment}.{label}.{poolDomain}&#x60; shape ({@see \\App\\Service\\Ingress\\PoolHostname}) — null for every application that has not opted into a custom one, which is what {@see poolLabelOrSlug()} falls back to. Unique platform-wide, the same reasoning as {@see \\App\\Entity\\Domain::$name}: two applications sharing a label would collide on the exact same DNS name the moment they also shared a deployment and service name. | [optional] 
 **id** | **str** |  | [optional] [readonly] 
 **deleted_at** | **datetime** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 

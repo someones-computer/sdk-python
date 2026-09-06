@@ -16,11 +16,13 @@ Name | Type | Description | Notes
 **capacity_bytes** | [**ServiceInstanceCapacityBytes**](ServiceInstanceCapacityBytes.md) |  | [optional] 
 **observed_usage_bytes** | [**ServiceInstanceObservedUsageBytes**](ServiceInstanceObservedUsageBytes.md) |  | [optional] 
 **observed_at** | **datetime** |  | [optional] [readonly] 
+**in_flight_since** | **datetime** | When the current attempt to reach &#x60;Serving&#x60; began — {@see claim()} sets it on a fresh row and {@see markInFlight()} again on an upgrade&#39;s re-entry into &#x60;Healthchecking&#x60;; null once the row is &#x60;Serving&#x60;, &#x60;Failed&#x60;, or anything else that means nothing is still trying. | [optional] [readonly] 
 **id** | **str** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 **catalogue_entry** | **str** | &#x60;postgres 17&#x60;, &#x60;mysql 8.0&#x60; — the catalogue entry this instance serves. | [optional] [readonly] 
 **serving** | **bool** |  | [optional] [readonly] 
+**in_flight_stale** | **bool** | Dispatched so long ago that whatever was carrying it is gone. | [optional] [readonly] 
 **admin_credential** | [**SealedSecret**](SealedSecret.md) |  | [optional] 
 
 ## Example

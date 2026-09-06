@@ -36,7 +36,7 @@ setup(
     description="someones.computer API",
     author="OpenAPI Generator community",
     author_email="team@openapitools.org",
-    url="https://github.com/someones-computer/sdk-python",
+    url="",
     keywords=["OpenAPI", "OpenAPI-Generator", "someones.computer API"],
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),

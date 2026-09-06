@@ -44,6 +44,8 @@ class OrganizationApi:
     def api_organizations_get_collection(
         self,
         page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
+        slug: Optional[StrictStr] = None,
+        slug2: Optional[List[StrictStr]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -63,6 +65,10 @@ class OrganizationApi:
 
         :param page: The collection page number
         :type page: int
+        :param slug: 
+        :type slug: str
+        :param slug2: 
+        :type slug2: List[str]
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -87,6 +93,8 @@ class OrganizationApi:
 
         _param = self._api_organizations_get_collection_serialize(
             page=page,
+            slug=slug,
+            slug2=slug2,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -111,6 +119,8 @@ class OrganizationApi:
     def api_organizations_get_collection_with_http_info(
         self,
         page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
+        slug: Optional[StrictStr] = None,
+        slug2: Optional[List[StrictStr]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -130,6 +140,10 @@ class OrganizationApi:
 
         :param page: The collection page number
         :type page: int
+        :param slug: 
+        :type slug: str
+        :param slug2: 
+        :type slug2: List[str]
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -154,6 +168,8 @@ class OrganizationApi:
 
         _param = self._api_organizations_get_collection_serialize(
             page=page,
+            slug=slug,
+            slug2=slug2,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -178,6 +194,8 @@ class OrganizationApi:
     def api_organizations_get_collection_without_preload_content(
         self,
         page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
+        slug: Optional[StrictStr] = None,
+        slug2: Optional[List[StrictStr]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -197,6 +215,10 @@ class OrganizationApi:
 
         :param page: The collection page number
         :type page: int
+        :param slug: 
+        :type slug: str
+        :param slug2: 
+        :type slug2: List[str]
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -221,6 +243,8 @@ class OrganizationApi:
 
         _param = self._api_organizations_get_collection_serialize(
             page=page,
+            slug=slug,
+            slug2=slug2,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -240,6 +264,8 @@ class OrganizationApi:
     def _api_organizations_get_collection_serialize(
         self,
         page,
+        slug,
+        slug2,
         _request_auth,
         _content_type,
         _headers,
@@ -249,6 +275,7 @@ class OrganizationApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'slug[]': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -265,6 +292,14 @@ class OrganizationApi:
         if page is not None:
             
             _query_params.append(('page', page))
+            
+        if slug is not None:
+            
+            _query_params.append(('slug', slug))
+            
+        if slug2 is not None:
+            
+            _query_params.append(('slug[]', slug2))
             
         # process the header parameters
         # process the form parameters

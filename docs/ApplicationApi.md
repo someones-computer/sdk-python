@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **api_applications_get_collection**
-> List[Application] api_applications_get_collection(page=page)
+> List[Application] api_applications_get_collection(page=page, slug=slug, slug2=slug2, organization=organization, organization2=organization2, organization_slug=organization_slug, organization_slug2=organization_slug2)
 
 Retrieves the collection of Application resources.
 
@@ -49,10 +49,16 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = someones_computer_sdk.ApplicationApi(api_client)
     page = 1 # int | The collection page number (optional) (default to 1)
+    slug = 'slug_example' # str |  (optional)
+    slug2 = ['slug_example'] # List[str] |  (optional)
+    organization = 'organization_example' # str |  (optional)
+    organization2 = ['organization_example'] # List[str] |  (optional)
+    organization_slug = 'organization_slug_example' # str |  (optional)
+    organization_slug2 = ['organization_slug_example'] # List[str] |  (optional)
 
     try:
         # Retrieves the collection of Application resources.
-        api_response = api_instance.api_applications_get_collection(page=page)
+        api_response = api_instance.api_applications_get_collection(page=page, slug=slug, slug2=slug2, organization=organization, organization2=organization2, organization_slug=organization_slug, organization_slug2=organization_slug2)
         print("The response of ApplicationApi->api_applications_get_collection:\n")
         pprint(api_response)
     except Exception as e:
@@ -67,6 +73,12 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **page** | **int**| The collection page number | [optional] [default to 1]
+ **slug** | **str**|  | [optional] 
+ **slug2** | [**List[str]**](str.md)|  | [optional] 
+ **organization** | **str**|  | [optional] 
+ **organization2** | [**List[str]**](str.md)|  | [optional] 
+ **organization_slug** | **str**|  | [optional] 
+ **organization_slug2** | [**List[str]**](str.md)|  | [optional] 
 
 ### Return type
 

@@ -48,7 +48,6 @@ class User(BaseModel):
     tier_pinned_at: Optional[datetime] = Field(default=None, alias="tierPinnedAt")
     tier_pinned_by: Optional[User] = Field(default=None, alias="tierPinnedBy")
     tier_pin_reason: Optional[StrictStr] = Field(default=None, alias="tierPinReason")
-    memberships: Optional[List[Membership]] = None
     oauth_identities: Optional[List[OAuthIdentity]] = Field(default=None, alias="oauthIdentities")
     totp_secret: Optional[StrictStr] = Field(default=None, description="The TOTP shared secret, **encrypted at rest** ({@see \\App\\Service\\TwoFactor\\TotpSecretCipher}), or null for an account that has not enabled a second factor.", alias="totpSecret")
     totp_secret_key_id: Optional[StrictStr] = Field(default=None, description="Which key wrapped {@see self::$totpSecret}, so a key rotation can re-wrap it without users re-enrolling ({@see \\App\\Service\\TwoFactor\\TotpSecretCipher}).", alias="totpSecretKeyId")
@@ -72,7 +71,7 @@ class User(BaseModel):
     tier_pinned: Optional[StrictBool] = Field(default=None, alias="tierPinned")
     totp_enabled: Optional[StrictBool] = Field(default=None, description="True once the person has proved the authenticator — the gate's on/off switch.", alias="totpEnabled")
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["email", "username", "displayName", "theme", "locale", "timezone", "password", "ldapDn", "avatarPhoto", "roles", "disabledAt", "spamMarkedAt", "spamMarkedBy", "approvedAt", "emailConfirmedAt", "creditGrantedAt", "tierPin", "tierPinnedAt", "tierPinnedBy", "tierPinReason", "memberships", "oauthIdentities", "totpSecret", "totpSecretKeyId", "totpConfirmedAt", "recoveryCodes", "machineFor", "id", "deletedAt", "createdAt", "updatedAt", "displayLabel", "machine", "ldapManaged", "avatarPhotoType", "userIdentifier", "grantedRoles", "disabled", "spam", "approved", "emailConfirmed", "tierPinned", "totpEnabled", "deleted"]
+    __properties: ClassVar[List[str]] = ["email", "username", "displayName", "theme", "locale", "timezone", "password", "ldapDn", "avatarPhoto", "roles", "disabledAt", "spamMarkedAt", "spamMarkedBy", "approvedAt", "emailConfirmedAt", "creditGrantedAt", "tierPin", "tierPinnedAt", "tierPinnedBy", "tierPinReason", "oauthIdentities", "totpSecret", "totpSecretKeyId", "totpConfirmedAt", "recoveryCodes", "machineFor", "id", "deletedAt", "createdAt", "updatedAt", "displayLabel", "machine", "ldapManaged", "avatarPhotoType", "userIdentifier", "grantedRoles", "disabled", "spam", "approved", "emailConfirmed", "tierPinned", "totpEnabled", "deleted"]
 
     @field_validator('theme')
     def theme_validate_enum(cls, value):
@@ -204,13 +203,6 @@ class User(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of tier_pinned_by
         if self.tier_pinned_by:
             _dict['tierPinnedBy'] = self.tier_pinned_by.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in memberships (list)
-        _items = []
-        if self.memberships:
-            for _item_memberships in self.memberships:
-                if _item_memberships:
-                    _items.append(_item_memberships.to_dict())
-            _dict['memberships'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in oauth_identities (list)
         _items = []
         if self.oauth_identities:
@@ -377,7 +369,6 @@ class User(BaseModel):
             "tierPinnedAt": obj.get("tierPinnedAt"),
             "tierPinnedBy": User.from_dict(obj["tierPinnedBy"]) if obj.get("tierPinnedBy") is not None else None,
             "tierPinReason": obj.get("tierPinReason"),
-            "memberships": [Membership.from_dict(_item) for _item in obj["memberships"]] if obj.get("memberships") is not None else None,
             "oauthIdentities": [OAuthIdentity.from_dict(_item) for _item in obj["oauthIdentities"]] if obj.get("oauthIdentities") is not None else None,
             "totpSecret": obj.get("totpSecret"),
             "totpSecretKeyId": obj.get("totpSecretKeyId"),
@@ -404,7 +395,6 @@ class User(BaseModel):
         })
         return _obj
 
-from someones_computer_sdk.models.membership import Membership
 from someones_computer_sdk.models.o_auth_identity import OAuthIdentity
 from someones_computer_sdk.models.recovery_code import RecoveryCode
 # TODO: Rewrite to not use raise_errors
