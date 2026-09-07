@@ -55,8 +55,8 @@ class CreditTransaction(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['top_up', 'grant', 'debit']):
-            raise ValueError("must be one of enum values ('top_up', 'grant', 'debit')")
+        if value not in set(['top_up', 'grant', 'debit', 'gift_card']):
+            raise ValueError("must be one of enum values ('top_up', 'grant', 'debit', 'gift_card')")
         return value
 
     @field_validator('status')
