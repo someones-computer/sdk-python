@@ -75,8 +75,8 @@ class CreditTransaction(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['compute', 'storage', 'engine_load']):
-            raise ValueError("must be one of enum values ('compute', 'storage', 'engine_load')")
+        if value not in set(['compute', 'storage', 'engine_load', 'registry_storage']):
+            raise ValueError("must be one of enum values ('compute', 'storage', 'engine_load', 'registry_storage')")
         return value
 
     model_config = ConfigDict(
