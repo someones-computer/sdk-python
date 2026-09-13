@@ -1,6 +1,6 @@
 # Organization
 
-Ownership and (future) billing boundary. Owns applications, may own BYO swarms.
+List organizations the caller is a member of.
 
 ## Properties
 

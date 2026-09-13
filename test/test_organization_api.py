@@ -26,38 +26,38 @@ class TestOrganizationApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_api_organizations_get_collection(self) -> None:
-        """Test case for api_organizations_get_collection
+    def test_organizations_create(self) -> None:
+        """Test case for organizations_create
 
-        Retrieves the collection of Organization resources.
+        Creates a Organization resource.
         """
         pass
 
-    def test_api_organizations_id_delete(self) -> None:
-        """Test case for api_organizations_id_delete
+    def test_organizations_delete(self) -> None:
+        """Test case for organizations_delete
 
         Removes the Organization resource.
         """
         pass
 
-    def test_api_organizations_id_get(self) -> None:
-        """Test case for api_organizations_id_get
+    def test_organizations_get(self) -> None:
+        """Test case for organizations_get
 
         Retrieves a Organization resource.
         """
         pass
 
-    def test_api_organizations_id_patch(self) -> None:
-        """Test case for api_organizations_id_patch
+    def test_organizations_list(self) -> None:
+        """Test case for organizations_list
 
-        Updates the Organization resource.
+        Retrieves the collection of Organization resources.
         """
         pass
 
-    def test_api_organizations_post(self) -> None:
-        """Test case for api_organizations_post
+    def test_organizations_update(self) -> None:
+        """Test case for organizations_update
 
-        Creates a Organization resource.
+        Updates the Organization resource.
         """
         pass
 

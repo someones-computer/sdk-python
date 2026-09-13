@@ -41,9 +41,9 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_get_collection(
+    def service_bindings_create(
         self,
-        page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
+        service_binding_service_binding_input: Annotated[ServiceBindingServiceBindingInput, Field(description="The new ServiceBinding resource")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -56,13 +56,13 @@ class ServiceBindingApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ServiceBinding]:
-        """Retrieves the collection of ServiceBinding resources.
+    ) -> ServiceBinding:
+        """Creates a ServiceBinding resource.
 
-        Retrieves the collection of ServiceBinding resources.
+        Creates a ServiceBinding resource.
 
-        :param page: The collection page number
-        :type page: int
+        :param service_binding_service_binding_input: The new ServiceBinding resource (required)
+        :type service_binding_service_binding_input: ServiceBindingServiceBindingInput
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -85,8 +85,8 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_get_collection_serialize(
-            page=page,
+        _param = self._service_bindings_create_serialize(
+            service_binding_service_binding_input=service_binding_service_binding_input,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -94,7 +94,9 @@ class ServiceBindingApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ServiceBinding]",
+            '201': "ServiceBinding",
+            '400': "Error",
+            '422': "ConstraintViolation",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -108,9 +110,9 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_get_collection_with_http_info(
+    def service_bindings_create_with_http_info(
         self,
-        page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
+        service_binding_service_binding_input: Annotated[ServiceBindingServiceBindingInput, Field(description="The new ServiceBinding resource")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -123,13 +125,13 @@ class ServiceBindingApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ServiceBinding]]:
-        """Retrieves the collection of ServiceBinding resources.
+    ) -> ApiResponse[ServiceBinding]:
+        """Creates a ServiceBinding resource.
 
-        Retrieves the collection of ServiceBinding resources.
+        Creates a ServiceBinding resource.
 
-        :param page: The collection page number
-        :type page: int
+        :param service_binding_service_binding_input: The new ServiceBinding resource (required)
+        :type service_binding_service_binding_input: ServiceBindingServiceBindingInput
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -152,8 +154,8 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_get_collection_serialize(
-            page=page,
+        _param = self._service_bindings_create_serialize(
+            service_binding_service_binding_input=service_binding_service_binding_input,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -161,7 +163,9 @@ class ServiceBindingApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ServiceBinding]",
+            '201': "ServiceBinding",
+            '400': "Error",
+            '422': "ConstraintViolation",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -175,9 +179,9 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_get_collection_without_preload_content(
+    def service_bindings_create_without_preload_content(
         self,
-        page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
+        service_binding_service_binding_input: Annotated[ServiceBindingServiceBindingInput, Field(description="The new ServiceBinding resource")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -191,12 +195,12 @@ class ServiceBindingApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Retrieves the collection of ServiceBinding resources.
+        """Creates a ServiceBinding resource.
 
-        Retrieves the collection of ServiceBinding resources.
+        Creates a ServiceBinding resource.
 
-        :param page: The collection page number
-        :type page: int
+        :param service_binding_service_binding_input: The new ServiceBinding resource (required)
+        :type service_binding_service_binding_input: ServiceBindingServiceBindingInput
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -219,8 +223,8 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_get_collection_serialize(
-            page=page,
+        _param = self._service_bindings_create_serialize(
+            service_binding_service_binding_input=service_binding_service_binding_input,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -228,7 +232,9 @@ class ServiceBindingApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ServiceBinding]",
+            '201': "ServiceBinding",
+            '400': "Error",
+            '422': "ConstraintViolation",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -237,9 +243,9 @@ class ServiceBindingApi:
         return response_data.response
 
 
-    def _api_service_bindings_get_collection_serialize(
+    def _service_bindings_create_serialize(
         self,
-        page,
+        service_binding_service_binding_input,
         _request_auth,
         _content_type,
         _headers,
@@ -262,23 +268,35 @@ class ServiceBindingApi:
 
         # process the path parameters
         # process the query parameters
-        if page is not None:
-            
-            _query_params.append(('page', page))
-            
         # process the header parameters
         # process the form parameters
         # process the body parameter
+        if service_binding_service_binding_input is not None:
+            _body_params = service_binding_service_binding_input
 
 
         # set the HTTP header `Accept`
         if 'Accept' not in _header_params:
             _header_params['Accept'] = self.api_client.select_header_accept(
                 [
-                    'application/json'
+                    'application/json', 
+                    'application/problem+json'
                 ]
             )
 
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = [
@@ -286,7 +304,7 @@ class ServiceBindingApi:
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
+            method='POST',
             resource_path='/api/service_bindings',
             path_params=_path_params,
             query_params=_query_params,
@@ -304,7 +322,7 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_id_delete(
+    def service_bindings_delete(
         self,
         id: Annotated[StrictStr, Field(description="ServiceBinding identifier")],
         _request_timeout: Union[
@@ -348,7 +366,7 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_id_delete_serialize(
+        _param = self._service_bindings_delete_serialize(
             id=id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -372,7 +390,7 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_id_delete_with_http_info(
+    def service_bindings_delete_with_http_info(
         self,
         id: Annotated[StrictStr, Field(description="ServiceBinding identifier")],
         _request_timeout: Union[
@@ -416,7 +434,7 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_id_delete_serialize(
+        _param = self._service_bindings_delete_serialize(
             id=id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -440,7 +458,7 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_id_delete_without_preload_content(
+    def service_bindings_delete_without_preload_content(
         self,
         id: Annotated[StrictStr, Field(description="ServiceBinding identifier")],
         _request_timeout: Union[
@@ -484,7 +502,7 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_id_delete_serialize(
+        _param = self._service_bindings_delete_serialize(
             id=id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -503,7 +521,7 @@ class ServiceBindingApi:
         return response_data.response
 
 
-    def _api_service_bindings_id_delete_serialize(
+    def _service_bindings_delete_serialize(
         self,
         id,
         _request_auth,
@@ -569,7 +587,7 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_id_get(
+    def service_bindings_get(
         self,
         id: Annotated[StrictStr, Field(description="ServiceBinding identifier")],
         _request_timeout: Union[
@@ -613,7 +631,7 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_id_get_serialize(
+        _param = self._service_bindings_get_serialize(
             id=id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -637,7 +655,7 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_id_get_with_http_info(
+    def service_bindings_get_with_http_info(
         self,
         id: Annotated[StrictStr, Field(description="ServiceBinding identifier")],
         _request_timeout: Union[
@@ -681,7 +699,7 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_id_get_serialize(
+        _param = self._service_bindings_get_serialize(
             id=id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -705,7 +723,7 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_id_get_without_preload_content(
+    def service_bindings_get_without_preload_content(
         self,
         id: Annotated[StrictStr, Field(description="ServiceBinding identifier")],
         _request_timeout: Union[
@@ -749,7 +767,7 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_id_get_serialize(
+        _param = self._service_bindings_get_serialize(
             id=id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -768,7 +786,7 @@ class ServiceBindingApi:
         return response_data.response
 
 
-    def _api_service_bindings_id_get_serialize(
+    def _service_bindings_get_serialize(
         self,
         id,
         _request_auth,
@@ -834,9 +852,9 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_post(
+    def service_bindings_list(
         self,
-        service_binding_service_binding_input: Annotated[ServiceBindingServiceBindingInput, Field(description="The new ServiceBinding resource")],
+        page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -849,13 +867,13 @@ class ServiceBindingApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ServiceBinding:
-        """Creates a ServiceBinding resource.
+    ) -> List[ServiceBinding]:
+        """Retrieves the collection of ServiceBinding resources.
 
-        Creates a ServiceBinding resource.
+        Retrieves the collection of ServiceBinding resources.
 
-        :param service_binding_service_binding_input: The new ServiceBinding resource (required)
-        :type service_binding_service_binding_input: ServiceBindingServiceBindingInput
+        :param page: The collection page number
+        :type page: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -878,8 +896,8 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_post_serialize(
-            service_binding_service_binding_input=service_binding_service_binding_input,
+        _param = self._service_bindings_list_serialize(
+            page=page,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -887,9 +905,7 @@ class ServiceBindingApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ServiceBinding",
-            '400': "Error",
-            '422': "ConstraintViolation",
+            '200': "List[ServiceBinding]",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -903,9 +919,9 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_post_with_http_info(
+    def service_bindings_list_with_http_info(
         self,
-        service_binding_service_binding_input: Annotated[ServiceBindingServiceBindingInput, Field(description="The new ServiceBinding resource")],
+        page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -918,13 +934,13 @@ class ServiceBindingApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ServiceBinding]:
-        """Creates a ServiceBinding resource.
+    ) -> ApiResponse[List[ServiceBinding]]:
+        """Retrieves the collection of ServiceBinding resources.
 
-        Creates a ServiceBinding resource.
+        Retrieves the collection of ServiceBinding resources.
 
-        :param service_binding_service_binding_input: The new ServiceBinding resource (required)
-        :type service_binding_service_binding_input: ServiceBindingServiceBindingInput
+        :param page: The collection page number
+        :type page: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -947,8 +963,8 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_post_serialize(
-            service_binding_service_binding_input=service_binding_service_binding_input,
+        _param = self._service_bindings_list_serialize(
+            page=page,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -956,9 +972,7 @@ class ServiceBindingApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ServiceBinding",
-            '400': "Error",
-            '422': "ConstraintViolation",
+            '200': "List[ServiceBinding]",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -972,9 +986,9 @@ class ServiceBindingApi:
 
 
     @validate_call
-    def api_service_bindings_post_without_preload_content(
+    def service_bindings_list_without_preload_content(
         self,
-        service_binding_service_binding_input: Annotated[ServiceBindingServiceBindingInput, Field(description="The new ServiceBinding resource")],
+        page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -988,12 +1002,12 @@ class ServiceBindingApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Creates a ServiceBinding resource.
+        """Retrieves the collection of ServiceBinding resources.
 
-        Creates a ServiceBinding resource.
+        Retrieves the collection of ServiceBinding resources.
 
-        :param service_binding_service_binding_input: The new ServiceBinding resource (required)
-        :type service_binding_service_binding_input: ServiceBindingServiceBindingInput
+        :param page: The collection page number
+        :type page: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1016,8 +1030,8 @@ class ServiceBindingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._api_service_bindings_post_serialize(
-            service_binding_service_binding_input=service_binding_service_binding_input,
+        _param = self._service_bindings_list_serialize(
+            page=page,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1025,9 +1039,7 @@ class ServiceBindingApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ServiceBinding",
-            '400': "Error",
-            '422': "ConstraintViolation",
+            '200': "List[ServiceBinding]",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1036,9 +1048,9 @@ class ServiceBindingApi:
         return response_data.response
 
 
-    def _api_service_bindings_post_serialize(
+    def _service_bindings_list_serialize(
         self,
-        service_binding_service_binding_input,
+        page,
         _request_auth,
         _content_type,
         _headers,
@@ -1061,35 +1073,23 @@ class ServiceBindingApi:
 
         # process the path parameters
         # process the query parameters
+        if page is not None:
+            
+            _query_params.append(('page', page))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if service_binding_service_binding_input is not None:
-            _body_params = service_binding_service_binding_input
 
 
         # set the HTTP header `Accept`
         if 'Accept' not in _header_params:
             _header_params['Accept'] = self.api_client.select_header_accept(
                 [
-                    'application/json', 
-                    'application/problem+json'
+                    'application/json'
                 ]
             )
 
-        # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    [
-                        'application/json'
-                    ]
-                )
-            )
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = [
@@ -1097,7 +1097,7 @@ class ServiceBindingApi:
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
+            method='GET',
             resource_path='/api/service_bindings',
             path_params=_path_params,
             query_params=_query_params,

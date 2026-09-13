@@ -31,7 +31,7 @@ from typing_extensions import Self
 
 class DeploymentJsonMergePatch(BaseModel):
     """
-    An IMMUTABLE compose revision. A deploy is a new row; rollback re-points Application::$currentDeployment at an older one. Placement is resolved onto this row (targetSwarm) at deploy time, so migration is just the next revision.
+    Update a deployment revision's mutable fields.
     """ # noqa: E501
     application: Optional[StrictStr] = None
     sequence: Optional[StrictInt] = Field(default=None, description="Monotonic per-application revision number.")

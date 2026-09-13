@@ -24,7 +24,7 @@ from typing_extensions import Self
 
 class DeploymentBundleUploadConfirmOutput(BaseModel):
     """
-    An IMMUTABLE compose revision. A deploy is a new row; rollback re-points Application::$currentDeployment at an older one. Placement is resolved onto this row (targetSwarm) at deploy time, so migration is just the next revision.
+    Confirm a completed bundle upload, creating the deployment revision.
     """ # noqa: E501
     id: Optional[StrictStr] = None
     sequence: Optional[StrictInt] = None

@@ -26,43 +26,43 @@ class TestManagedServiceApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_api_managed_services_get_collection(self) -> None:
-        """Test case for api_managed_services_get_collection
+    def test_managed_services_create(self) -> None:
+        """Test case for managed_services_create
 
-        Retrieves the collection of ManagedService resources.
+        Creates a ManagedService resource.
         """
         pass
 
-    def test_api_managed_services_id_delete(self) -> None:
-        """Test case for api_managed_services_id_delete
+    def test_managed_services_delete(self) -> None:
+        """Test case for managed_services_delete
 
         Removes the ManagedService resource.
         """
         pass
 
-    def test_api_managed_services_id_get(self) -> None:
-        """Test case for api_managed_services_id_get
+    def test_managed_services_get(self) -> None:
+        """Test case for managed_services_get
 
         Retrieves a ManagedService resource.
         """
         pass
 
-    def test_api_managed_services_post(self) -> None:
-        """Test case for api_managed_services_post
+    def test_managed_services_list(self) -> None:
+        """Test case for managed_services_list
+
+        Retrieves the collection of ManagedService resources.
+        """
+        pass
+
+    def test_managed_services_resume(self) -> None:
+        """Test case for managed_services_resume
 
         Creates a ManagedService resource.
         """
         pass
 
-    def test_resume(self) -> None:
-        """Test case for resume
-
-        Creates a ManagedService resource.
-        """
-        pass
-
-    def test_suspend(self) -> None:
-        """Test case for suspend
+    def test_managed_services_suspend(self) -> None:
+        """Test case for managed_services_suspend
 
         Creates a ManagedService resource.
         """

@@ -30,7 +30,7 @@ from typing_extensions import Self
 
 class OrganizationJsonMergePatch(BaseModel):
     """
-    Ownership and (future) billing boundary. Owns applications, may own BYO swarms.
+    Update an organization's mutable fields.
     """ # noqa: E501
     machine_account: Optional[User] = Field(default=None, alias="machineAccount")
     name: Optional[StrictStr] = None

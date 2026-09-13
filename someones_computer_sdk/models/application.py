@@ -28,7 +28,7 @@ from typing_extensions import Self
 
 class Application(BaseModel):
     """
-    A deployable \"island\": one logical app, defined by a compose file, deployed as a swarm stack. Holds a pointer to the current (immutable) deployment; history lives in the deployment revisions.
+    List applications the caller can see.
     """ # noqa: E501
     organization: Optional[StrictStr] = Field(default=None, description="Re-home this application. Callers own everything the uniqueness constraint and the trust invariant elsewhere in the platform expect of a move — the entity itself only holds the pointer.")
     slug: Optional[StrictStr] = None

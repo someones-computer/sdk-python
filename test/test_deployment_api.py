@@ -26,59 +26,59 @@ class TestDeploymentApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_api_deployments_get_collection(self) -> None:
-        """Test case for api_deployments_get_collection
+    def test_deployments_bundle_upload_confirm(self) -> None:
+        """Test case for deployments_bundle_upload_confirm
 
-        Retrieves the collection of Deployment resources.
+        Creates a Deployment resource.
         """
         pass
 
-    def test_api_deployments_id_delete(self) -> None:
-        """Test case for api_deployments_id_delete
+    def test_deployments_bundle_upload_declare(self) -> None:
+        """Test case for deployments_bundle_upload_declare
+
+        Creates a Deployment resource.
+        """
+        pass
+
+    def test_deployments_create(self) -> None:
+        """Test case for deployments_create
+
+        Creates a Deployment resource.
+        """
+        pass
+
+    def test_deployments_delete(self) -> None:
+        """Test case for deployments_delete
 
         Removes the Deployment resource.
         """
         pass
 
-    def test_api_deployments_id_get(self) -> None:
-        """Test case for api_deployments_id_get
-
-        Retrieves a Deployment resource.
-        """
-        pass
-
-    def test_api_deployments_id_patch(self) -> None:
-        """Test case for api_deployments_id_patch
-
-        Updates the Deployment resource.
-        """
-        pass
-
-    def test_api_deployments_idendpoints_get_collection(self) -> None:
-        """Test case for api_deployments_idendpoints_get_collection
+    def test_deployments_endpoints(self) -> None:
+        """Test case for deployments_endpoints
 
         Retrieves the collection of Deployment resources.
         """
         pass
 
-    def test_api_deployments_post(self) -> None:
-        """Test case for api_deployments_post
+    def test_deployments_get(self) -> None:
+        """Test case for deployments_get
 
-        Creates a Deployment resource.
+        Retrieves a Deployment resource.
         """
         pass
 
-    def test_bundle_upload_confirm(self) -> None:
-        """Test case for bundle_upload_confirm
+    def test_deployments_list(self) -> None:
+        """Test case for deployments_list
 
-        Creates a Deployment resource.
+        Retrieves the collection of Deployment resources.
         """
         pass
 
-    def test_bundle_upload_declare(self) -> None:
-        """Test case for bundle_upload_declare
+    def test_deployments_update(self) -> None:
+        """Test case for deployments_update
 
-        Creates a Deployment resource.
+        Updates the Deployment resource.
         """
         pass
 

@@ -26,38 +26,38 @@ class TestSwarmApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_api_swarms_get_collection(self) -> None:
-        """Test case for api_swarms_get_collection
+    def test_swarms_create(self) -> None:
+        """Test case for swarms_create
 
-        Retrieves the collection of Swarm resources.
+        Creates a Swarm resource.
         """
         pass
 
-    def test_api_swarms_id_delete(self) -> None:
-        """Test case for api_swarms_id_delete
+    def test_swarms_delete(self) -> None:
+        """Test case for swarms_delete
 
         Removes the Swarm resource.
         """
         pass
 
-    def test_api_swarms_id_get(self) -> None:
-        """Test case for api_swarms_id_get
+    def test_swarms_get(self) -> None:
+        """Test case for swarms_get
 
         Retrieves a Swarm resource.
         """
         pass
 
-    def test_api_swarms_id_patch(self) -> None:
-        """Test case for api_swarms_id_patch
+    def test_swarms_list(self) -> None:
+        """Test case for swarms_list
 
-        Updates the Swarm resource.
+        Retrieves the collection of Swarm resources.
         """
         pass
 
-    def test_api_swarms_post(self) -> None:
-        """Test case for api_swarms_post
+    def test_swarms_update(self) -> None:
+        """Test case for swarms_update
 
-        Creates a Swarm resource.
+        Updates the Swarm resource.
         """
         pass
 
