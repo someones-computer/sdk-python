@@ -25,7 +25,7 @@ from typing_extensions import Self
 
 class AdoptionApproval(BaseModel):
     """
-    A human's decision on one compose service the adoption planner detected — approve it, or decline it (§15).  **The switch arms detection; this is what authorizes the act.** {@see \\App\\Service\\ManagedService\\Adoption\\AdoptionReconciler} only ever turns a candidate into a real {@see ManagedService}/{@see ServiceBinding} pair when a row here says `approved`, and only for the compose service name recorded — a rename is a different candidate with no decision of its own yet.  **There is no \"pending\" row.** A service the planner reports and nobody has decided on simply has none here; recording one for every candidate on every deploy would need cleaning up the moment a service is renamed away, for a state (\"undecided\") a missing row already expresses for free.  One row per (application, compose service): deciding again — approving after a rejection, or the reverse — updates it rather than accumulating history, because only the current decision governs what the next deploy does.
+    List adoption approval decisions the caller can see.
     """ # noqa: E501
     application: Optional[StrictStr] = None
     compose_service_name: Optional[StrictStr] = Field(default=None, description="The compose service name this decision is about — joined against a live plan by name.", alias="composeServiceName")

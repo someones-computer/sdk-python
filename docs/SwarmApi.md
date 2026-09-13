@@ -4,19 +4,19 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_swarms_get_collection**](SwarmApi.md#api_swarms_get_collection) | **GET** /api/swarms | Retrieves the collection of Swarm resources.
-[**api_swarms_id_delete**](SwarmApi.md#api_swarms_id_delete) | **DELETE** /api/swarms/{id} | Removes the Swarm resource.
-[**api_swarms_id_get**](SwarmApi.md#api_swarms_id_get) | **GET** /api/swarms/{id} | Retrieves a Swarm resource.
-[**api_swarms_id_patch**](SwarmApi.md#api_swarms_id_patch) | **PATCH** /api/swarms/{id} | Updates the Swarm resource.
-[**api_swarms_post**](SwarmApi.md#api_swarms_post) | **POST** /api/swarms | Creates a Swarm resource.
+[**swarms_create**](SwarmApi.md#swarms_create) | **POST** /api/swarms | Creates a Swarm resource.
+[**swarms_delete**](SwarmApi.md#swarms_delete) | **DELETE** /api/swarms/{id} | Removes the Swarm resource.
+[**swarms_get**](SwarmApi.md#swarms_get) | **GET** /api/swarms/{id} | Retrieves a Swarm resource.
+[**swarms_list**](SwarmApi.md#swarms_list) | **GET** /api/swarms | Retrieves the collection of Swarm resources.
+[**swarms_update**](SwarmApi.md#swarms_update) | **PATCH** /api/swarms/{id} | Updates the Swarm resource.
 
 
-# **api_swarms_get_collection**
-> List[Swarm] api_swarms_get_collection(page=page)
+# **swarms_create**
+> Swarm swarms_create(swarm)
 
-Retrieves the collection of Swarm resources.
+Creates a Swarm resource.
 
-Retrieves the collection of Swarm resources.
+Creates a Swarm resource.
 
 ### Example
 
@@ -48,15 +48,15 @@ configuration = someones_computer_sdk.Configuration(
 with someones_computer_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = someones_computer_sdk.SwarmApi(api_client)
-    page = 1 # int | The collection page number (optional) (default to 1)
+    swarm = someones_computer_sdk.Swarm() # Swarm | The new Swarm resource
 
     try:
-        # Retrieves the collection of Swarm resources.
-        api_response = api_instance.api_swarms_get_collection(page=page)
-        print("The response of SwarmApi->api_swarms_get_collection:\n")
+        # Creates a Swarm resource.
+        api_response = api_instance.swarms_create(swarm)
+        print("The response of SwarmApi->swarms_create:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SwarmApi->api_swarms_get_collection: %s\n" % e)
+        print("Exception when calling SwarmApi->swarms_create: %s\n" % e)
 ```
 
 
@@ -66,11 +66,11 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **page** | **int**| The collection page number | [optional] [default to 1]
+ **swarm** | [**Swarm**](Swarm.md)| The new Swarm resource | 
 
 ### Return type
 
-[**List[Swarm]**](Swarm.md)
+[**Swarm**](Swarm.md)
 
 ### Authorization
 
@@ -78,19 +78,22 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | Swarm collection |  -  |
+**201** | Swarm resource created |  -  |
+**400** | Invalid input |  -  |
+**422** | An error occurred |  -  |
+**403** | Forbidden |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **api_swarms_id_delete**
-> api_swarms_id_delete(id)
+# **swarms_delete**
+> swarms_delete(id)
 
 Removes the Swarm resource.
 
@@ -129,9 +132,9 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 
     try:
         # Removes the Swarm resource.
-        api_instance.api_swarms_id_delete(id)
+        api_instance.swarms_delete(id)
     except Exception as e:
-        print("Exception when calling SwarmApi->api_swarms_id_delete: %s\n" % e)
+        print("Exception when calling SwarmApi->swarms_delete: %s\n" % e)
 ```
 
 
@@ -166,8 +169,8 @@ void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **api_swarms_id_get**
-> Swarm api_swarms_id_get(id)
+# **swarms_get**
+> Swarm swarms_get(id)
 
 Retrieves a Swarm resource.
 
@@ -207,11 +210,11 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 
     try:
         # Retrieves a Swarm resource.
-        api_response = api_instance.api_swarms_id_get(id)
-        print("The response of SwarmApi->api_swarms_id_get:\n")
+        api_response = api_instance.swarms_get(id)
+        print("The response of SwarmApi->swarms_get:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SwarmApi->api_swarms_id_get: %s\n" % e)
+        print("Exception when calling SwarmApi->swarms_get: %s\n" % e)
 ```
 
 
@@ -245,8 +248,86 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **api_swarms_id_patch**
-> Swarm api_swarms_id_patch(id, swarm_json_merge_patch)
+# **swarms_list**
+> List[Swarm] swarms_list(page=page)
+
+Retrieves the collection of Swarm resources.
+
+Retrieves the collection of Swarm resources.
+
+### Example
+
+* Bearer Authentication (bearerAuth):
+
+```python
+import someones_computer_sdk
+from someones_computer_sdk.models.swarm import Swarm
+from someones_computer_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = someones_computer_sdk.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: bearerAuth
+configuration = someones_computer_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with someones_computer_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = someones_computer_sdk.SwarmApi(api_client)
+    page = 1 # int | The collection page number (optional) (default to 1)
+
+    try:
+        # Retrieves the collection of Swarm resources.
+        api_response = api_instance.swarms_list(page=page)
+        print("The response of SwarmApi->swarms_list:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling SwarmApi->swarms_list: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int**| The collection page number | [optional] [default to 1]
+
+### Return type
+
+[**List[Swarm]**](Swarm.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Swarm collection |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **swarms_update**
+> Swarm swarms_update(id, swarm_json_merge_patch)
 
 Updates the Swarm resource.
 
@@ -288,11 +369,11 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 
     try:
         # Updates the Swarm resource.
-        api_response = api_instance.api_swarms_id_patch(id, swarm_json_merge_patch)
-        print("The response of SwarmApi->api_swarms_id_patch:\n")
+        api_response = api_instance.swarms_update(id, swarm_json_merge_patch)
+        print("The response of SwarmApi->swarms_update:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SwarmApi->api_swarms_id_patch: %s\n" % e)
+        print("Exception when calling SwarmApi->swarms_update: %s\n" % e)
 ```
 
 
@@ -327,87 +408,6 @@ Name | Type | Description  | Notes
 **422** | An error occurred |  -  |
 **403** | Forbidden |  -  |
 **404** | Not found |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **api_swarms_post**
-> Swarm api_swarms_post(swarm)
-
-Creates a Swarm resource.
-
-Creates a Swarm resource.
-
-### Example
-
-* Bearer Authentication (bearerAuth):
-
-```python
-import someones_computer_sdk
-from someones_computer_sdk.models.swarm import Swarm
-from someones_computer_sdk.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = someones_computer_sdk.Configuration(
-    host = "http://localhost"
-)
-
-# The client must configure the authentication and authorization parameters
-# in accordance with the API server security policy.
-# Examples for each auth method are provided below, use the example that
-# satisfies your auth use case.
-
-# Configure Bearer authorization: bearerAuth
-configuration = someones_computer_sdk.Configuration(
-    access_token = os.environ["BEARER_TOKEN"]
-)
-
-# Enter a context with an instance of the API client
-with someones_computer_sdk.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = someones_computer_sdk.SwarmApi(api_client)
-    swarm = someones_computer_sdk.Swarm() # Swarm | The new Swarm resource
-
-    try:
-        # Creates a Swarm resource.
-        api_response = api_instance.api_swarms_post(swarm)
-        print("The response of SwarmApi->api_swarms_post:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling SwarmApi->api_swarms_post: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **swarm** | [**Swarm**](Swarm.md)| The new Swarm resource | 
-
-### Return type
-
-[**Swarm**](Swarm.md)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json, application/problem+json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**201** | Swarm resource created |  -  |
-**400** | Invalid input |  -  |
-**422** | An error occurred |  -  |
-**403** | Forbidden |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

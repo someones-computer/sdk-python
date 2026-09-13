@@ -27,7 +27,7 @@ from typing_extensions import Self
 
 class DeploymentBundleUploadConfirmInput(BaseModel):
     """
-    An IMMUTABLE compose revision. A deploy is a new row; rollback re-points Application::$currentDeployment at an older one. Placement is resolved onto this row (targetSwarm) at deploy time, so migration is just the next revision.
+    Confirm a completed bundle upload, creating the deployment revision.
     """ # noqa: E501
     secrets: Optional[Dict[str, Dict[str, StrictStr]]] = Field(default=None, description="Raw `build.secrets` values, keyed by service then by BuildKit secret id (Grey.ooo/someones.computer_agent#46) — matches `App\\Service\\Bundle\\BundleIngestor::commitFromStoredContent()`'s `$secrets` parameter.")
     application: Optional[StrictStr]

@@ -4,22 +4,184 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_deployments_get_collection**](DeploymentApi.md#api_deployments_get_collection) | **GET** /api/deployments | Retrieves the collection of Deployment resources.
-[**api_deployments_id_delete**](DeploymentApi.md#api_deployments_id_delete) | **DELETE** /api/deployments/{id} | Removes the Deployment resource.
-[**api_deployments_id_get**](DeploymentApi.md#api_deployments_id_get) | **GET** /api/deployments/{id} | Retrieves a Deployment resource.
-[**api_deployments_id_patch**](DeploymentApi.md#api_deployments_id_patch) | **PATCH** /api/deployments/{id} | Updates the Deployment resource.
-[**api_deployments_idendpoints_get_collection**](DeploymentApi.md#api_deployments_idendpoints_get_collection) | **GET** /api/deployments/{id}/endpoints | Retrieves the collection of Deployment resources.
-[**api_deployments_post**](DeploymentApi.md#api_deployments_post) | **POST** /api/deployments | Creates a Deployment resource.
-[**bundle_upload_confirm**](DeploymentApi.md#bundle_upload_confirm) | **POST** /api/deployments/bundle_uploads/confirm | Creates a Deployment resource.
-[**bundle_upload_declare**](DeploymentApi.md#bundle_upload_declare) | **POST** /api/deployments/bundle_uploads | Creates a Deployment resource.
+[**deployments_bundle_upload_confirm**](DeploymentApi.md#deployments_bundle_upload_confirm) | **POST** /api/deployments/bundle_uploads/confirm | Creates a Deployment resource.
+[**deployments_bundle_upload_declare**](DeploymentApi.md#deployments_bundle_upload_declare) | **POST** /api/deployments/bundle_uploads | Creates a Deployment resource.
+[**deployments_create**](DeploymentApi.md#deployments_create) | **POST** /api/deployments | Creates a Deployment resource.
+[**deployments_delete**](DeploymentApi.md#deployments_delete) | **DELETE** /api/deployments/{id} | Removes the Deployment resource.
+[**deployments_endpoints**](DeploymentApi.md#deployments_endpoints) | **GET** /api/deployments/{id}/endpoints | Retrieves the collection of Deployment resources.
+[**deployments_get**](DeploymentApi.md#deployments_get) | **GET** /api/deployments/{id} | Retrieves a Deployment resource.
+[**deployments_list**](DeploymentApi.md#deployments_list) | **GET** /api/deployments | Retrieves the collection of Deployment resources.
+[**deployments_update**](DeploymentApi.md#deployments_update) | **PATCH** /api/deployments/{id} | Updates the Deployment resource.
 
 
-# **api_deployments_get_collection**
-> List[Deployment] api_deployments_get_collection(page=page)
+# **deployments_bundle_upload_confirm**
+> DeploymentBundleUploadConfirmOutput deployments_bundle_upload_confirm(deployment_bundle_upload_confirm_input)
 
-Retrieves the collection of Deployment resources.
+Creates a Deployment resource.
 
-Retrieves the collection of Deployment resources.
+Creates a Deployment resource.
+
+### Example
+
+* Bearer Authentication (bearerAuth):
+
+```python
+import someones_computer_sdk
+from someones_computer_sdk.models.deployment_bundle_upload_confirm_input import DeploymentBundleUploadConfirmInput
+from someones_computer_sdk.models.deployment_bundle_upload_confirm_output import DeploymentBundleUploadConfirmOutput
+from someones_computer_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = someones_computer_sdk.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: bearerAuth
+configuration = someones_computer_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with someones_computer_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = someones_computer_sdk.DeploymentApi(api_client)
+    deployment_bundle_upload_confirm_input = someones_computer_sdk.DeploymentBundleUploadConfirmInput() # DeploymentBundleUploadConfirmInput | The new Deployment resource
+
+    try:
+        # Creates a Deployment resource.
+        api_response = api_instance.deployments_bundle_upload_confirm(deployment_bundle_upload_confirm_input)
+        print("The response of DeploymentApi->deployments_bundle_upload_confirm:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DeploymentApi->deployments_bundle_upload_confirm: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **deployment_bundle_upload_confirm_input** | [**DeploymentBundleUploadConfirmInput**](DeploymentBundleUploadConfirmInput.md)| The new Deployment resource | 
+
+### Return type
+
+[**DeploymentBundleUploadConfirmOutput**](DeploymentBundleUploadConfirmOutput.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json, application/problem+json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Deployment resource created |  -  |
+**400** | Invalid input |  -  |
+**422** | An error occurred |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **deployments_bundle_upload_declare**
+> DeploymentBundleUploadDeclareOutput deployments_bundle_upload_declare(deployment_bundle_upload_declare_input)
+
+Creates a Deployment resource.
+
+Creates a Deployment resource.
+
+### Example
+
+* Bearer Authentication (bearerAuth):
+
+```python
+import someones_computer_sdk
+from someones_computer_sdk.models.deployment_bundle_upload_declare_input import DeploymentBundleUploadDeclareInput
+from someones_computer_sdk.models.deployment_bundle_upload_declare_output import DeploymentBundleUploadDeclareOutput
+from someones_computer_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = someones_computer_sdk.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: bearerAuth
+configuration = someones_computer_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with someones_computer_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = someones_computer_sdk.DeploymentApi(api_client)
+    deployment_bundle_upload_declare_input = someones_computer_sdk.DeploymentBundleUploadDeclareInput() # DeploymentBundleUploadDeclareInput | The new Deployment resource
+
+    try:
+        # Creates a Deployment resource.
+        api_response = api_instance.deployments_bundle_upload_declare(deployment_bundle_upload_declare_input)
+        print("The response of DeploymentApi->deployments_bundle_upload_declare:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DeploymentApi->deployments_bundle_upload_declare: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **deployment_bundle_upload_declare_input** | [**DeploymentBundleUploadDeclareInput**](DeploymentBundleUploadDeclareInput.md)| The new Deployment resource | 
+
+### Return type
+
+[**DeploymentBundleUploadDeclareOutput**](DeploymentBundleUploadDeclareOutput.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json, application/problem+json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Deployment resource created |  -  |
+**400** | Invalid input |  -  |
+**422** | An error occurred |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **deployments_create**
+> Deployment deployments_create(deployment)
+
+Creates a Deployment resource.
+
+Creates a Deployment resource.
 
 ### Example
 
@@ -51,15 +213,15 @@ configuration = someones_computer_sdk.Configuration(
 with someones_computer_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = someones_computer_sdk.DeploymentApi(api_client)
-    page = 1 # int | The collection page number (optional) (default to 1)
+    deployment = someones_computer_sdk.Deployment() # Deployment | The new Deployment resource
 
     try:
-        # Retrieves the collection of Deployment resources.
-        api_response = api_instance.api_deployments_get_collection(page=page)
-        print("The response of DeploymentApi->api_deployments_get_collection:\n")
+        # Creates a Deployment resource.
+        api_response = api_instance.deployments_create(deployment)
+        print("The response of DeploymentApi->deployments_create:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling DeploymentApi->api_deployments_get_collection: %s\n" % e)
+        print("Exception when calling DeploymentApi->deployments_create: %s\n" % e)
 ```
 
 
@@ -69,11 +231,11 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **page** | **int**| The collection page number | [optional] [default to 1]
+ **deployment** | [**Deployment**](Deployment.md)| The new Deployment resource | 
 
 ### Return type
 
-[**List[Deployment]**](Deployment.md)
+[**Deployment**](Deployment.md)
 
 ### Authorization
 
@@ -81,19 +243,21 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | Deployment collection |  -  |
+**201** | Deployment resource created |  -  |
+**400** | Invalid input |  -  |
+**422** | An error occurred |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **api_deployments_id_delete**
-> api_deployments_id_delete(id)
+# **deployments_delete**
+> deployments_delete(id)
 
 Removes the Deployment resource.
 
@@ -132,9 +296,9 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 
     try:
         # Removes the Deployment resource.
-        api_instance.api_deployments_id_delete(id)
+        api_instance.deployments_delete(id)
     except Exception as e:
-        print("Exception when calling DeploymentApi->api_deployments_id_delete: %s\n" % e)
+        print("Exception when calling DeploymentApi->deployments_delete: %s\n" % e)
 ```
 
 
@@ -169,8 +333,86 @@ void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **api_deployments_id_get**
-> Deployment api_deployments_id_get(id)
+# **deployments_endpoints**
+> List[DeploymentDeploymentEndpoint] deployments_endpoints(id)
+
+Retrieves the collection of Deployment resources.
+
+Retrieves the collection of Deployment resources.
+
+### Example
+
+* Bearer Authentication (bearerAuth):
+
+```python
+import someones_computer_sdk
+from someones_computer_sdk.models.deployment_deployment_endpoint import DeploymentDeploymentEndpoint
+from someones_computer_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = someones_computer_sdk.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: bearerAuth
+configuration = someones_computer_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with someones_computer_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = someones_computer_sdk.DeploymentApi(api_client)
+    id = 'id_example' # str | Deployment identifier
+
+    try:
+        # Retrieves the collection of Deployment resources.
+        api_response = api_instance.deployments_endpoints(id)
+        print("The response of DeploymentApi->deployments_endpoints:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DeploymentApi->deployments_endpoints: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **str**| Deployment identifier | 
+
+### Return type
+
+[**List[DeploymentDeploymentEndpoint]**](DeploymentDeploymentEndpoint.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Deployment collection |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **deployments_get**
+> Deployment deployments_get(id)
 
 Retrieves a Deployment resource.
 
@@ -210,11 +452,11 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 
     try:
         # Retrieves a Deployment resource.
-        api_response = api_instance.api_deployments_id_get(id)
-        print("The response of DeploymentApi->api_deployments_id_get:\n")
+        api_response = api_instance.deployments_get(id)
+        print("The response of DeploymentApi->deployments_get:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling DeploymentApi->api_deployments_id_get: %s\n" % e)
+        print("Exception when calling DeploymentApi->deployments_get: %s\n" % e)
 ```
 
 
@@ -248,8 +490,86 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **api_deployments_id_patch**
-> Deployment api_deployments_id_patch(id, deployment_json_merge_patch)
+# **deployments_list**
+> List[Deployment] deployments_list(page=page)
+
+Retrieves the collection of Deployment resources.
+
+Retrieves the collection of Deployment resources.
+
+### Example
+
+* Bearer Authentication (bearerAuth):
+
+```python
+import someones_computer_sdk
+from someones_computer_sdk.models.deployment import Deployment
+from someones_computer_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = someones_computer_sdk.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: bearerAuth
+configuration = someones_computer_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with someones_computer_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = someones_computer_sdk.DeploymentApi(api_client)
+    page = 1 # int | The collection page number (optional) (default to 1)
+
+    try:
+        # Retrieves the collection of Deployment resources.
+        api_response = api_instance.deployments_list(page=page)
+        print("The response of DeploymentApi->deployments_list:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DeploymentApi->deployments_list: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int**| The collection page number | [optional] [default to 1]
+
+### Return type
+
+[**List[Deployment]**](Deployment.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Deployment collection |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **deployments_update**
+> Deployment deployments_update(id, deployment_json_merge_patch)
 
 Updates the Deployment resource.
 
@@ -291,11 +611,11 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 
     try:
         # Updates the Deployment resource.
-        api_response = api_instance.api_deployments_id_patch(id, deployment_json_merge_patch)
-        print("The response of DeploymentApi->api_deployments_id_patch:\n")
+        api_response = api_instance.deployments_update(id, deployment_json_merge_patch)
+        print("The response of DeploymentApi->deployments_update:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling DeploymentApi->api_deployments_id_patch: %s\n" % e)
+        print("Exception when calling DeploymentApi->deployments_update: %s\n" % e)
 ```
 
 
@@ -329,326 +649,6 @@ Name | Type | Description  | Notes
 **400** | Invalid input |  -  |
 **422** | An error occurred |  -  |
 **404** | Not found |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **api_deployments_idendpoints_get_collection**
-> List[DeploymentDeploymentEndpoint] api_deployments_idendpoints_get_collection(id)
-
-Retrieves the collection of Deployment resources.
-
-Retrieves the collection of Deployment resources.
-
-### Example
-
-* Bearer Authentication (bearerAuth):
-
-```python
-import someones_computer_sdk
-from someones_computer_sdk.models.deployment_deployment_endpoint import DeploymentDeploymentEndpoint
-from someones_computer_sdk.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = someones_computer_sdk.Configuration(
-    host = "http://localhost"
-)
-
-# The client must configure the authentication and authorization parameters
-# in accordance with the API server security policy.
-# Examples for each auth method are provided below, use the example that
-# satisfies your auth use case.
-
-# Configure Bearer authorization: bearerAuth
-configuration = someones_computer_sdk.Configuration(
-    access_token = os.environ["BEARER_TOKEN"]
-)
-
-# Enter a context with an instance of the API client
-with someones_computer_sdk.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = someones_computer_sdk.DeploymentApi(api_client)
-    id = 'id_example' # str | Deployment identifier
-
-    try:
-        # Retrieves the collection of Deployment resources.
-        api_response = api_instance.api_deployments_idendpoints_get_collection(id)
-        print("The response of DeploymentApi->api_deployments_idendpoints_get_collection:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling DeploymentApi->api_deployments_idendpoints_get_collection: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| Deployment identifier | 
-
-### Return type
-
-[**List[DeploymentDeploymentEndpoint]**](DeploymentDeploymentEndpoint.md)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Deployment collection |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **api_deployments_post**
-> Deployment api_deployments_post(deployment)
-
-Creates a Deployment resource.
-
-Creates a Deployment resource.
-
-### Example
-
-* Bearer Authentication (bearerAuth):
-
-```python
-import someones_computer_sdk
-from someones_computer_sdk.models.deployment import Deployment
-from someones_computer_sdk.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = someones_computer_sdk.Configuration(
-    host = "http://localhost"
-)
-
-# The client must configure the authentication and authorization parameters
-# in accordance with the API server security policy.
-# Examples for each auth method are provided below, use the example that
-# satisfies your auth use case.
-
-# Configure Bearer authorization: bearerAuth
-configuration = someones_computer_sdk.Configuration(
-    access_token = os.environ["BEARER_TOKEN"]
-)
-
-# Enter a context with an instance of the API client
-with someones_computer_sdk.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = someones_computer_sdk.DeploymentApi(api_client)
-    deployment = someones_computer_sdk.Deployment() # Deployment | The new Deployment resource
-
-    try:
-        # Creates a Deployment resource.
-        api_response = api_instance.api_deployments_post(deployment)
-        print("The response of DeploymentApi->api_deployments_post:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling DeploymentApi->api_deployments_post: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **deployment** | [**Deployment**](Deployment.md)| The new Deployment resource | 
-
-### Return type
-
-[**Deployment**](Deployment.md)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json, application/problem+json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**201** | Deployment resource created |  -  |
-**400** | Invalid input |  -  |
-**422** | An error occurred |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **bundle_upload_confirm**
-> DeploymentBundleUploadConfirmOutput bundle_upload_confirm(deployment_bundle_upload_confirm_input)
-
-Creates a Deployment resource.
-
-Creates a Deployment resource.
-
-### Example
-
-* Bearer Authentication (bearerAuth):
-
-```python
-import someones_computer_sdk
-from someones_computer_sdk.models.deployment_bundle_upload_confirm_input import DeploymentBundleUploadConfirmInput
-from someones_computer_sdk.models.deployment_bundle_upload_confirm_output import DeploymentBundleUploadConfirmOutput
-from someones_computer_sdk.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = someones_computer_sdk.Configuration(
-    host = "http://localhost"
-)
-
-# The client must configure the authentication and authorization parameters
-# in accordance with the API server security policy.
-# Examples for each auth method are provided below, use the example that
-# satisfies your auth use case.
-
-# Configure Bearer authorization: bearerAuth
-configuration = someones_computer_sdk.Configuration(
-    access_token = os.environ["BEARER_TOKEN"]
-)
-
-# Enter a context with an instance of the API client
-with someones_computer_sdk.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = someones_computer_sdk.DeploymentApi(api_client)
-    deployment_bundle_upload_confirm_input = someones_computer_sdk.DeploymentBundleUploadConfirmInput() # DeploymentBundleUploadConfirmInput | The new Deployment resource
-
-    try:
-        # Creates a Deployment resource.
-        api_response = api_instance.bundle_upload_confirm(deployment_bundle_upload_confirm_input)
-        print("The response of DeploymentApi->bundle_upload_confirm:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling DeploymentApi->bundle_upload_confirm: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **deployment_bundle_upload_confirm_input** | [**DeploymentBundleUploadConfirmInput**](DeploymentBundleUploadConfirmInput.md)| The new Deployment resource | 
-
-### Return type
-
-[**DeploymentBundleUploadConfirmOutput**](DeploymentBundleUploadConfirmOutput.md)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json, application/problem+json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Deployment resource created |  -  |
-**400** | Invalid input |  -  |
-**422** | An error occurred |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **bundle_upload_declare**
-> DeploymentBundleUploadDeclareOutput bundle_upload_declare(deployment_bundle_upload_declare_input)
-
-Creates a Deployment resource.
-
-Creates a Deployment resource.
-
-### Example
-
-* Bearer Authentication (bearerAuth):
-
-```python
-import someones_computer_sdk
-from someones_computer_sdk.models.deployment_bundle_upload_declare_input import DeploymentBundleUploadDeclareInput
-from someones_computer_sdk.models.deployment_bundle_upload_declare_output import DeploymentBundleUploadDeclareOutput
-from someones_computer_sdk.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = someones_computer_sdk.Configuration(
-    host = "http://localhost"
-)
-
-# The client must configure the authentication and authorization parameters
-# in accordance with the API server security policy.
-# Examples for each auth method are provided below, use the example that
-# satisfies your auth use case.
-
-# Configure Bearer authorization: bearerAuth
-configuration = someones_computer_sdk.Configuration(
-    access_token = os.environ["BEARER_TOKEN"]
-)
-
-# Enter a context with an instance of the API client
-with someones_computer_sdk.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = someones_computer_sdk.DeploymentApi(api_client)
-    deployment_bundle_upload_declare_input = someones_computer_sdk.DeploymentBundleUploadDeclareInput() # DeploymentBundleUploadDeclareInput | The new Deployment resource
-
-    try:
-        # Creates a Deployment resource.
-        api_response = api_instance.bundle_upload_declare(deployment_bundle_upload_declare_input)
-        print("The response of DeploymentApi->bundle_upload_declare:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling DeploymentApi->bundle_upload_declare: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **deployment_bundle_upload_declare_input** | [**DeploymentBundleUploadDeclareInput**](DeploymentBundleUploadDeclareInput.md)| The new Deployment resource | 
-
-### Return type
-
-[**DeploymentBundleUploadDeclareOutput**](DeploymentBundleUploadDeclareOutput.md)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json, application/problem+json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Deployment resource created |  -  |
-**400** | Invalid input |  -  |
-**422** | An error occurred |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

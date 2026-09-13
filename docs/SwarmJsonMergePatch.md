@@ -1,6 +1,6 @@
 # SwarmJsonMergePatch
 
-A Docker Swarm we can deploy onto. The trust boundary of the platform.  owner === null  => PLATFORM pool (shared infra we run). owner !== null  => CUSTOMER BYO cluster (untrusted, outbound-only).
+Update a swarm's mutable fields (platform administration).
 
 ## Properties
 

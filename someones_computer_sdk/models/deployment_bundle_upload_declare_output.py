@@ -26,7 +26,7 @@ from typing_extensions import Self
 
 class DeploymentBundleUploadDeclareOutput(BaseModel):
     """
-    An IMMUTABLE compose revision. A deploy is a new row; rollback re-points Application::$currentDeployment at an older one. Placement is resolved onto this row (targetSwarm) at deploy time, so migration is just the next revision.
+    Declare a bundle upload and get a presigned URL to upload it to.
     """ # noqa: E501
     contexts: Optional[List[BundleUploadTarget]] = None
     additional_contexts: Optional[List[BundleUploadTarget]] = Field(default=None, alias="additionalContexts")

@@ -26,31 +26,31 @@ class TestAdoptionApprovalApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_api_adoption_approvals_get_collection(self) -> None:
-        """Test case for api_adoption_approvals_get_collection
+    def test_adoption_approvals_decide(self) -> None:
+        """Test case for adoption_approvals_decide
 
-        Retrieves the collection of AdoptionApproval resources.
+        Creates a AdoptionApproval resource.
         """
         pass
 
-    def test_api_adoption_approvals_id_delete(self) -> None:
-        """Test case for api_adoption_approvals_id_delete
-
-        Removes the AdoptionApproval resource.
-        """
-        pass
-
-    def test_api_adoption_approvals_id_get(self) -> None:
-        """Test case for api_adoption_approvals_id_get
+    def test_adoption_approvals_get(self) -> None:
+        """Test case for adoption_approvals_get
 
         Retrieves a AdoptionApproval resource.
         """
         pass
 
-    def test_api_adoption_approvals_post(self) -> None:
-        """Test case for api_adoption_approvals_post
+    def test_adoption_approvals_list(self) -> None:
+        """Test case for adoption_approvals_list
 
-        Creates a AdoptionApproval resource.
+        Retrieves the collection of AdoptionApproval resources.
+        """
+        pass
+
+    def test_adoption_approvals_withdraw(self) -> None:
+        """Test case for adoption_approvals_withdraw
+
+        Removes the AdoptionApproval resource.
         """
         pass
 

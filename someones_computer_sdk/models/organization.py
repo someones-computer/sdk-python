@@ -30,7 +30,7 @@ from typing_extensions import Self
 
 class Organization(BaseModel):
     """
-    Ownership and (future) billing boundary. Owns applications, may own BYO swarms.
+    List organizations the caller is a member of.
     """ # noqa: E501
     machine_account: Optional[User] = Field(default=None, alias="machineAccount")
     name: Optional[StrictStr] = None

@@ -27,7 +27,7 @@ from typing_extensions import Self
 
 class SwarmJsonMergePatch(BaseModel):
     """
-    A Docker Swarm we can deploy onto. The trust boundary of the platform.  owner === null  => PLATFORM pool (shared infra we run). owner !== null  => CUSTOMER BYO cluster (untrusted, outbound-only).
+    Update a swarm's mutable fields (platform administration).
     """ # noqa: E501
     owner: Optional[StrictStr] = Field(default=None, description="Null for the platform pool; set for a customer BYO cluster.")
     kind: Optional[StrictStr] = None

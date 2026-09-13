@@ -26,17 +26,17 @@ class TestCreditTransactionApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_api_credit_transactions_get_collection(self) -> None:
-        """Test case for api_credit_transactions_get_collection
+    def test_credit_transactions_get(self) -> None:
+        """Test case for credit_transactions_get
 
-        Retrieves the collection of CreditTransaction resources.
+        Retrieves a CreditTransaction resource.
         """
         pass
 
-    def test_api_credit_transactions_id_get(self) -> None:
-        """Test case for api_credit_transactions_id_get
+    def test_credit_transactions_list(self) -> None:
+        """Test case for credit_transactions_list
 
-        Retrieves a CreditTransaction resource.
+        Retrieves the collection of CreditTransaction resources.
         """
         pass
 

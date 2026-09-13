@@ -26,38 +26,38 @@ class TestApplicationApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_api_applications_get_collection(self) -> None:
-        """Test case for api_applications_get_collection
+    def test_applications_create(self) -> None:
+        """Test case for applications_create
 
-        Retrieves the collection of Application resources.
+        Creates a Application resource.
         """
         pass
 
-    def test_api_applications_id_delete(self) -> None:
-        """Test case for api_applications_id_delete
+    def test_applications_delete(self) -> None:
+        """Test case for applications_delete
 
         Removes the Application resource.
         """
         pass
 
-    def test_api_applications_id_get(self) -> None:
-        """Test case for api_applications_id_get
+    def test_applications_get(self) -> None:
+        """Test case for applications_get
 
         Retrieves a Application resource.
         """
         pass
 
-    def test_api_applications_id_patch(self) -> None:
-        """Test case for api_applications_id_patch
+    def test_applications_list(self) -> None:
+        """Test case for applications_list
 
-        Updates the Application resource.
+        Retrieves the collection of Application resources.
         """
         pass
 
-    def test_api_applications_post(self) -> None:
-        """Test case for api_applications_post
+    def test_applications_update(self) -> None:
+        """Test case for applications_update
 
-        Creates a Application resource.
+        Updates the Application resource.
         """
         pass
 

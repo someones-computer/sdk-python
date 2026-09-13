@@ -24,7 +24,7 @@ from typing_extensions import Self
 
 class DeploymentDeploymentEndpoint(BaseModel):
     """
-    An IMMUTABLE compose revision. A deploy is a new row; rollback re-points Application::$currentDeployment at an older one. Placement is resolved onto this row (targetSwarm) at deploy time, so migration is just the next revision.
+    List the reachable endpoint(s) for one deployment.
     """ # noqa: E501
     service: Optional[StrictStr] = None
     protocol: Optional[StrictStr] = None

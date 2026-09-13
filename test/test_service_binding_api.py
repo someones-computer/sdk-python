@@ -26,31 +26,31 @@ class TestServiceBindingApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_api_service_bindings_get_collection(self) -> None:
-        """Test case for api_service_bindings_get_collection
+    def test_service_bindings_create(self) -> None:
+        """Test case for service_bindings_create
 
-        Retrieves the collection of ServiceBinding resources.
+        Creates a ServiceBinding resource.
         """
         pass
 
-    def test_api_service_bindings_id_delete(self) -> None:
-        """Test case for api_service_bindings_id_delete
+    def test_service_bindings_delete(self) -> None:
+        """Test case for service_bindings_delete
 
         Removes the ServiceBinding resource.
         """
         pass
 
-    def test_api_service_bindings_id_get(self) -> None:
-        """Test case for api_service_bindings_id_get
+    def test_service_bindings_get(self) -> None:
+        """Test case for service_bindings_get
 
         Retrieves a ServiceBinding resource.
         """
         pass
 
-    def test_api_service_bindings_post(self) -> None:
-        """Test case for api_service_bindings_post
+    def test_service_bindings_list(self) -> None:
+        """Test case for service_bindings_list
 
-        Creates a ServiceBinding resource.
+        Retrieves the collection of ServiceBinding resources.
         """
         pass
 
