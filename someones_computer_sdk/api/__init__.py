@@ -5,7 +5,6 @@ from someones_computer_sdk.api.adoption_approval_api import AdoptionApprovalApi
 from someones_computer_sdk.api.application_api import ApplicationApi
 from someones_computer_sdk.api.credit_transaction_api import CreditTransactionApi
 from someones_computer_sdk.api.deployment_api import DeploymentApi
-from someones_computer_sdk.api.deployment_access_gate_api import DeploymentAccessGateApi
 from someones_computer_sdk.api.managed_service_api import ManagedServiceApi
 from someones_computer_sdk.api.organization_api import OrganizationApi
 from someones_computer_sdk.api.service_binding_api import ServiceBindingApi
