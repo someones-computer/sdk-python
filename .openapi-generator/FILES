@@ -21,6 +21,9 @@ docs/CreditTransactionApi.md
 docs/CreditTransactionEngineMillis.md
 docs/CreditTransactionUsageBytes.md
 docs/Deployment.md
+docs/DeploymentAccessGate.md
+docs/DeploymentAccessGateApi.md
+docs/DeploymentAccessGateJsonMergePatch.md
 docs/DeploymentApi.md
 docs/DeploymentBundleUploadConfirmInput.md
 docs/DeploymentBundleUploadConfirmOutput.md
@@ -82,6 +85,7 @@ someones_computer_sdk/api/__init__.py
 someones_computer_sdk/api/adoption_approval_api.py
 someones_computer_sdk/api/application_api.py
 someones_computer_sdk/api/credit_transaction_api.py
+someones_computer_sdk/api/deployment_access_gate_api.py
 someones_computer_sdk/api/deployment_api.py
 someones_computer_sdk/api/managed_service_api.py
 someones_computer_sdk/api/organization_api.py
@@ -106,6 +110,8 @@ someones_computer_sdk/models/credit_transaction.py
 someones_computer_sdk/models/credit_transaction_engine_millis.py
 someones_computer_sdk/models/credit_transaction_usage_bytes.py
 someones_computer_sdk/models/deployment.py
+someones_computer_sdk/models/deployment_access_gate.py
+someones_computer_sdk/models/deployment_access_gate_json_merge_patch.py
 someones_computer_sdk/models/deployment_bundle_upload_confirm_input.py
 someones_computer_sdk/models/deployment_bundle_upload_confirm_output.py
 someones_computer_sdk/models/deployment_bundle_upload_declare_input.py
@@ -173,6 +179,9 @@ test/test_credit_transaction_api.py
 test/test_credit_transaction_engine_millis.py
 test/test_credit_transaction_usage_bytes.py
 test/test_deployment.py
+test/test_deployment_access_gate.py
+test/test_deployment_access_gate_api.py
+test/test_deployment_access_gate_json_merge_patch.py
 test/test_deployment_api.py
 test/test_deployment_bundle_upload_confirm_input.py
 test/test_deployment_bundle_upload_confirm_output.py
