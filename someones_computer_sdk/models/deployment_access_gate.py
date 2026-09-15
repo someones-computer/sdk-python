@@ -30,7 +30,7 @@ class DeploymentAccessGate(BaseModel):
     """ # noqa: E501
     application: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
-    access_gate: Optional[StrictStr] = Field(default=None, alias="accessGate")
+    access_gate: Optional[StrictStr] = Field(default='none', alias="accessGate")
     id: Optional[StrictStr] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
@@ -119,7 +119,7 @@ class DeploymentAccessGate(BaseModel):
         _obj = cls.model_validate({
             "application": obj.get("application"),
             "name": obj.get("name"),
-            "accessGate": obj.get("accessGate"),
+            "accessGate": obj.get("accessGate") if obj.get("accessGate") is not None else 'none',
             "id": obj.get("id"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
