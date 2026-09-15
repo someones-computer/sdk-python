@@ -113,11 +113,6 @@ Class | Method | HTTP request | Description
 *DeploymentApi* | [**deployments_get**](docs/DeploymentApi.md#deployments_get) | **GET** /api/deployments/{id} | Retrieves a Deployment resource.
 *DeploymentApi* | [**deployments_list**](docs/DeploymentApi.md#deployments_list) | **GET** /api/deployments | Retrieves the collection of Deployment resources.
 *DeploymentApi* | [**deployments_update**](docs/DeploymentApi.md#deployments_update) | **PATCH** /api/deployments/{id} | Updates the Deployment resource.
-*DeploymentAccessGateApi* | [**deployment_access_gates_create**](docs/DeploymentAccessGateApi.md#deployment_access_gates_create) | **POST** /api/deployment_access_gates | Creates a DeploymentAccessGate resource.
-*DeploymentAccessGateApi* | [**deployment_access_gates_delete**](docs/DeploymentAccessGateApi.md#deployment_access_gates_delete) | **DELETE** /api/deployment_access_gates/{id} | Removes the DeploymentAccessGate resource.
-*DeploymentAccessGateApi* | [**deployment_access_gates_get**](docs/DeploymentAccessGateApi.md#deployment_access_gates_get) | **GET** /api/deployment_access_gates/{id} | Retrieves a DeploymentAccessGate resource.
-*DeploymentAccessGateApi* | [**deployment_access_gates_list**](docs/DeploymentAccessGateApi.md#deployment_access_gates_list) | **GET** /api/deployment_access_gates | Retrieves the collection of DeploymentAccessGate resources.
-*DeploymentAccessGateApi* | [**deployment_access_gates_update**](docs/DeploymentAccessGateApi.md#deployment_access_gates_update) | **PATCH** /api/deployment_access_gates/{id} | Updates the DeploymentAccessGate resource.
 *ManagedServiceApi* | [**managed_services_create**](docs/ManagedServiceApi.md#managed_services_create) | **POST** /api/managed_services | Creates a ManagedService resource.
 *ManagedServiceApi* | [**managed_services_delete**](docs/ManagedServiceApi.md#managed_services_delete) | **DELETE** /api/managed_services/{id} | Removes the ManagedService resource.
 *ManagedServiceApi* | [**managed_services_get**](docs/ManagedServiceApi.md#managed_services_get) | **GET** /api/managed_services/{id} | Retrieves a ManagedService resource.
@@ -156,8 +151,6 @@ Class | Method | HTTP request | Description
  - [CreditTransactionEngineMillis](docs/CreditTransactionEngineMillis.md)
  - [CreditTransactionUsageBytes](docs/CreditTransactionUsageBytes.md)
  - [Deployment](docs/Deployment.md)
- - [DeploymentAccessGate](docs/DeploymentAccessGate.md)
- - [DeploymentAccessGateJsonMergePatch](docs/DeploymentAccessGateJsonMergePatch.md)
  - [DeploymentBundleUploadConfirmInput](docs/DeploymentBundleUploadConfirmInput.md)
  - [DeploymentBundleUploadConfirmOutput](docs/DeploymentBundleUploadConfirmOutput.md)
  - [DeploymentBundleUploadDeclareInput](docs/DeploymentBundleUploadDeclareInput.md)
