@@ -47,6 +47,7 @@ class TestCreditTransaction(unittest.TestCase):
                 unresolved_containers = 56,
                 usage_bytes = None,
                 engine_millis = None,
+                usage_rows = 56,
                 stripe_event_id = '',
                 created_by = someones_computer_sdk.models.user.User(
                     email = '', 

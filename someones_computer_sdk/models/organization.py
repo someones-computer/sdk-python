@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from someones_computer_sdk.models.machine import Machine
 from someones_computer_sdk.models.membership import Membership
@@ -42,6 +42,7 @@ class Organization(BaseModel):
     tier_pin_reason: Optional[StrictStr] = Field(default=None, alias="tierPinReason")
     low_balance_warned_at: Optional[datetime] = Field(default=None, description="When {@see \\App\\MessageHandler\\CheckRunwayHandler} last warned this organization that its projected runway had dropped below the threshold; null once no warning is outstanding. Set once per crossing and cleared the moment the projection recovers — by a top-up or by the burn easing off — which is what makes \"warn once, re-arm on recovery\" a fact this column can answer rather than something re-derived from the notification table on every tick.", alias="lowBalanceWarnedAt")
     two_factor_required_at: Optional[datetime] = Field(default=None, description="When an Owner/Admin turned on the requirement that every member of this organization protects their account with a second factor; null means it is optional. A reversible policy toggle, stamped like {@see User::$disabledAt} rather than a verdict, so no \"who set it\" attribution.", alias="twoFactorRequiredAt")
+    api_access_log_retention_days: Optional[StrictInt] = Field(default=None, description="How long this organization's {@see \\App\\Entity\\ApiAccessLogEntry} rows are kept before {@see \\App\\MessageHandler\\PurgeApiAccessLogHandler} prunes them. Null means \"the platform default\" ({@see \\App\\Service\\ApiAccessLogRetention::DEFAULT_DAYS}) rather than a fixed number baked into every organization row the day this shipped.", alias="apiAccessLogRetentionDays")
     memberships: Optional[List[Membership]] = None
     applications: Optional[List[StrictStr]] = None
     swarms: Optional[List[StrictStr]] = Field(default=None, description="BYO swarms owned by this organization.")
@@ -55,7 +56,7 @@ class Organization(BaseModel):
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     tier_pinned: Optional[StrictBool] = Field(default=None, alias="tierPinned")
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["machineAccount", "name", "slug", "theme", "tierPin", "tierPinnedAt", "tierPinnedBy", "tierPinReason", "lowBalanceWarnedAt", "twoFactorRequiredAt", "memberships", "applications", "swarms", "machines", "creditTransactions", "variables", "signals", "id", "deletedAt", "createdAt", "updatedAt", "tierPinned", "deleted"]
+    __properties: ClassVar[List[str]] = ["machineAccount", "name", "slug", "theme", "tierPin", "tierPinnedAt", "tierPinnedBy", "tierPinReason", "lowBalanceWarnedAt", "twoFactorRequiredAt", "apiAccessLogRetentionDays", "memberships", "applications", "swarms", "machines", "creditTransactions", "variables", "signals", "id", "deletedAt", "createdAt", "updatedAt", "tierPinned", "deleted"]
 
     @field_validator('theme')
     def theme_validate_enum(cls, value):
@@ -118,6 +119,7 @@ class Organization(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "tier_pin",
@@ -125,6 +127,7 @@ class Organization(BaseModel):
             "tier_pin_reason",
             "low_balance_warned_at",
             "two_factor_required_at",
+            "api_access_log_retention_days",
             "id",
             "deleted_at",
             "created_at",
@@ -212,6 +215,11 @@ class Organization(BaseModel):
         if self.two_factor_required_at is None and "two_factor_required_at" in self.model_fields_set:
             _dict['twoFactorRequiredAt'] = None
 
+        # set to None if api_access_log_retention_days (nullable) is None
+        # and model_fields_set contains the field
+        if self.api_access_log_retention_days is None and "api_access_log_retention_days" in self.model_fields_set:
+            _dict['apiAccessLogRetentionDays'] = None
+
         # set to None if deleted_at (nullable) is None
         # and model_fields_set contains the field
         if self.deleted_at is None and "deleted_at" in self.model_fields_set:
@@ -244,6 +252,7 @@ class Organization(BaseModel):
             "tierPinReason": obj.get("tierPinReason"),
             "lowBalanceWarnedAt": obj.get("lowBalanceWarnedAt"),
             "twoFactorRequiredAt": obj.get("twoFactorRequiredAt"),
+            "apiAccessLogRetentionDays": obj.get("apiAccessLogRetentionDays"),
             "memberships": [Membership.from_dict(_item) for _item in obj["memberships"]] if obj.get("memberships") is not None else None,
             "applications": obj.get("applications"),
             "swarms": obj.get("swarms"),

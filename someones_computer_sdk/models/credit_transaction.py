@@ -42,12 +42,13 @@ class CreditTransaction(BaseModel):
     unresolved_containers: Optional[StrictInt] = Field(default=None, description="Containers the meter saw start and never saw stop over the billed hour.", alias="unresolvedContainers")
     usage_bytes: Optional[CreditTransactionUsageBytes] = Field(default=None, alias="usageBytes")
     engine_millis: Optional[CreditTransactionEngineMillis] = Field(default=None, alias="engineMillis")
+    usage_rows: Optional[StrictInt] = Field(default=None, description="The row count an API-access-log-volume debit was computed from — the evidence a per-row charge can be checked against, the same role {@see $usageBytes} plays for a storage debit. Null on anything but that kind of debit.", alias="usageRows")
     stripe_event_id: Optional[StrictStr] = Field(default=None, description="Stripe Event id that last transitioned this row; secondary idempotency guard for webhook delivery.", alias="stripeEventId")
     created_by: Optional[User] = Field(default=None, alias="createdBy")
     id: Optional[StrictStr] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
-    __properties: ClassVar[List[str]] = ["organization", "type", "status", "amountCents", "currency", "stripeCheckoutSessionId", "usageHour", "resourceKind", "usageSeconds", "unresolvedContainers", "usageBytes", "engineMillis", "stripeEventId", "createdBy", "id", "createdAt", "updatedAt"]
+    __properties: ClassVar[List[str]] = ["organization", "type", "status", "amountCents", "currency", "stripeCheckoutSessionId", "usageHour", "resourceKind", "usageSeconds", "unresolvedContainers", "usageBytes", "engineMillis", "usageRows", "stripeEventId", "createdBy", "id", "createdAt", "updatedAt"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -75,8 +76,8 @@ class CreditTransaction(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['compute', 'storage', 'engine_load', 'registry_storage', 'ingress_egress']):
-            raise ValueError("must be one of enum values ('compute', 'storage', 'engine_load', 'registry_storage', 'ingress_egress')")
+        if value not in set(['compute', 'storage', 'engine_load', 'registry_storage', 'ingress_egress', 'api_access_log_volume']):
+            raise ValueError("must be one of enum values ('compute', 'storage', 'engine_load', 'registry_storage', 'ingress_egress', 'api_access_log_volume')")
         return value
 
     model_config = ConfigDict(
@@ -116,12 +117,14 @@ class CreditTransaction(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "usage_hour",
             "resource_kind",
             "usage_seconds",
             "unresolved_containers",
+            "usage_rows",
             "id",
             "created_at",
             "updated_at",
@@ -176,6 +179,11 @@ class CreditTransaction(BaseModel):
         if self.engine_millis is None and "engine_millis" in self.model_fields_set:
             _dict['engineMillis'] = None
 
+        # set to None if usage_rows (nullable) is None
+        # and model_fields_set contains the field
+        if self.usage_rows is None and "usage_rows" in self.model_fields_set:
+            _dict['usageRows'] = None
+
         # set to None if stripe_event_id (nullable) is None
         # and model_fields_set contains the field
         if self.stripe_event_id is None and "stripe_event_id" in self.model_fields_set:
@@ -215,6 +223,7 @@ class CreditTransaction(BaseModel):
             "unresolvedContainers": obj.get("unresolvedContainers"),
             "usageBytes": CreditTransactionUsageBytes.from_dict(obj["usageBytes"]) if obj.get("usageBytes") is not None else None,
             "engineMillis": CreditTransactionEngineMillis.from_dict(obj["engineMillis"]) if obj.get("engineMillis") is not None else None,
+            "usageRows": obj.get("usageRows"),
             "stripeEventId": obj.get("stripeEventId"),
             "createdBy": User.from_dict(obj["createdBy"]) if obj.get("createdBy") is not None else None,
             "id": obj.get("id"),

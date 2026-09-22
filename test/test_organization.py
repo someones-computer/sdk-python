@@ -291,6 +291,7 @@ class TestOrganization(unittest.TestCase):
                 tier_pin_reason = '',
                 low_balance_warned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 two_factor_required_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
+                api_access_log_retention_days = 56,
                 memberships = [
                     someones_computer_sdk.models.membership.Membership(
                         organization = 'https://example.com/', 
