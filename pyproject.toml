@@ -3,9 +3,9 @@ name = "someones_computer_sdk"
 version = "1.0.0"
 description = "someones.computer API"
 authors = ["OpenAPI Generator Community <team@openapitools.org>"]
-license = "NoLicense"
+license = "MIT"
 readme = "README.md"
-repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
+repository = "https://github.com/someones-computer/sdk-python"
 keywords = ["OpenAPI", "OpenAPI-Generator", "someones.computer API"]
 include = ["someones_computer_sdk/py.typed"]
 
