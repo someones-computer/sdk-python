@@ -34,7 +34,6 @@ class User(BaseModel):
     theme: Optional[StrictStr] = Field(default=None, description="Which skin this person prefers, or null to take whatever their organization or the instance says.")
     locale: Optional[StrictStr] = Field(default=None, description="Which locale this person prefers, or null for no explicit choice — the same shape as {@see self::$theme}: null is not `en_GB`, it is \"let the cascade decide\" (cookie, then `Accept-Language`, then the instance default). See {@see \\App\\Service\\LocaleResolver} and docs/internationalization.md.")
     timezone: Optional[StrictStr] = Field(default=None, description="The IANA timezone identifier (e.g. `Europe/London`) this person prefers, or null for no explicit choice — the same shape as {@see self::$locale}: null is not UTC, it is \"let the cascade decide\" (cookie written by the browser's own auto-detection, then the instance default). A plain validated string rather than a backed enum like {@see self::$theme}/{@see self::$locale}: the IANA database has ~400 identifiers, too many for an enum to curate the way {@see \\App\\Enum\\Locale} deliberately does for its two cases. See {@see \\App\\Service\\TimezoneResolver}.")
-    password: Optional[StrictStr] = Field(default=None, description="Hashed password; null for accounts that authenticate only via OAuth or LDAP.")
     ldap_dn: Optional[StrictStr] = Field(default=None, description="The bound entry's distinguished name in LLDAP. Presence means the account is LDAP-authoritative: {@see App\\Service\\LdapAccountLinker} clears any local password when it sets this, and it is never set alongside one.", alias="ldapDn")
     avatar_photo: Optional[UserAvatarPhoto] = Field(default=None, alias="avatarPhoto")
     roles: Optional[List[StrictStr]] = None
@@ -49,10 +48,7 @@ class User(BaseModel):
     tier_pinned_by: Optional[User] = Field(default=None, alias="tierPinnedBy")
     tier_pin_reason: Optional[StrictStr] = Field(default=None, alias="tierPinReason")
     oauth_identities: Optional[List[OAuthIdentity]] = Field(default=None, alias="oauthIdentities")
-    totp_secret: Optional[StrictStr] = Field(default=None, description="The TOTP shared secret, **encrypted at rest** ({@see \\App\\Service\\TwoFactor\\TotpSecretCipher}), or null for an account that has not enabled a second factor.", alias="totpSecret")
-    totp_secret_key_id: Optional[StrictStr] = Field(default=None, description="Which key wrapped {@see self::$totpSecret}, so a key rotation can re-wrap it without users re-enrolling ({@see \\App\\Service\\TwoFactor\\TotpSecretCipher}).", alias="totpSecretKeyId")
     totp_confirmed_at: Optional[datetime] = Field(default=None, description="When the person proved the authenticator by entering a live code; null means 2FA is not in force for this account. This is the flag the step-up gate reads ({@see \\App\\EventSubscriber\\TwoFactorStepUpSubscriber}).", alias="totpConfirmedAt")
-    recovery_codes: Optional[List[RecoveryCode]] = Field(default=None, alias="recoveryCodes")
     machine_for: Optional[StrictStr] = Field(default=None, description="The organization this account exists to act for, or null for a person.", alias="machineFor")
     id: Optional[StrictStr] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
@@ -71,7 +67,7 @@ class User(BaseModel):
     tier_pinned: Optional[StrictBool] = Field(default=None, alias="tierPinned")
     totp_enabled: Optional[StrictBool] = Field(default=None, description="True once the person has proved the authenticator — the gate's on/off switch.", alias="totpEnabled")
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["email", "username", "displayName", "theme", "locale", "timezone", "password", "ldapDn", "avatarPhoto", "roles", "disabledAt", "spamMarkedAt", "spamMarkedBy", "approvedAt", "emailConfirmedAt", "creditGrantedAt", "tierPin", "tierPinnedAt", "tierPinnedBy", "tierPinReason", "oauthIdentities", "totpSecret", "totpSecretKeyId", "totpConfirmedAt", "recoveryCodes", "machineFor", "id", "deletedAt", "createdAt", "updatedAt", "displayLabel", "machine", "ldapManaged", "avatarPhotoType", "userIdentifier", "grantedRoles", "disabled", "spam", "approved", "emailConfirmed", "tierPinned", "totpEnabled", "deleted"]
+    __properties: ClassVar[List[str]] = ["email", "username", "displayName", "theme", "locale", "timezone", "ldapDn", "avatarPhoto", "roles", "disabledAt", "spamMarkedAt", "spamMarkedBy", "approvedAt", "emailConfirmedAt", "creditGrantedAt", "tierPin", "tierPinnedAt", "tierPinnedBy", "tierPinReason", "oauthIdentities", "totpConfirmedAt", "machineFor", "id", "deletedAt", "createdAt", "updatedAt", "displayLabel", "machine", "ldapManaged", "avatarPhotoType", "userIdentifier", "grantedRoles", "disabled", "spam", "approved", "emailConfirmed", "tierPinned", "totpEnabled", "deleted"]
 
     @field_validator('theme')
     def theme_validate_enum(cls, value):
@@ -158,7 +154,6 @@ class User(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "disabled_at",
@@ -169,7 +164,6 @@ class User(BaseModel):
             "tier_pin",
             "tier_pinned_at",
             "tier_pin_reason",
-            "totp_secret_key_id",
             "totp_confirmed_at",
             "id",
             "deleted_at",
@@ -210,13 +204,6 @@ class User(BaseModel):
                 if _item_oauth_identities:
                     _items.append(_item_oauth_identities.to_dict())
             _dict['oauthIdentities'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in recovery_codes (list)
-        _items = []
-        if self.recovery_codes:
-            for _item_recovery_codes in self.recovery_codes:
-                if _item_recovery_codes:
-                    _items.append(_item_recovery_codes.to_dict())
-            _dict['recoveryCodes'] = _items
         # set to None if display_name (nullable) is None
         # and model_fields_set contains the field
         if self.display_name is None and "display_name" in self.model_fields_set:
@@ -236,11 +223,6 @@ class User(BaseModel):
         # and model_fields_set contains the field
         if self.timezone is None and "timezone" in self.model_fields_set:
             _dict['timezone'] = None
-
-        # set to None if password (nullable) is None
-        # and model_fields_set contains the field
-        if self.password is None and "password" in self.model_fields_set:
-            _dict['password'] = None
 
         # set to None if ldap_dn (nullable) is None
         # and model_fields_set contains the field
@@ -302,16 +284,6 @@ class User(BaseModel):
         if self.tier_pin_reason is None and "tier_pin_reason" in self.model_fields_set:
             _dict['tierPinReason'] = None
 
-        # set to None if totp_secret (nullable) is None
-        # and model_fields_set contains the field
-        if self.totp_secret is None and "totp_secret" in self.model_fields_set:
-            _dict['totpSecret'] = None
-
-        # set to None if totp_secret_key_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.totp_secret_key_id is None and "totp_secret_key_id" in self.model_fields_set:
-            _dict['totpSecretKeyId'] = None
-
         # set to None if totp_confirmed_at (nullable) is None
         # and model_fields_set contains the field
         if self.totp_confirmed_at is None and "totp_confirmed_at" in self.model_fields_set:
@@ -355,7 +327,6 @@ class User(BaseModel):
             "theme": obj.get("theme"),
             "locale": obj.get("locale"),
             "timezone": obj.get("timezone"),
-            "password": obj.get("password"),
             "ldapDn": obj.get("ldapDn"),
             "avatarPhoto": UserAvatarPhoto.from_dict(obj["avatarPhoto"]) if obj.get("avatarPhoto") is not None else None,
             "roles": obj.get("roles"),
@@ -370,10 +341,7 @@ class User(BaseModel):
             "tierPinnedBy": User.from_dict(obj["tierPinnedBy"]) if obj.get("tierPinnedBy") is not None else None,
             "tierPinReason": obj.get("tierPinReason"),
             "oauthIdentities": [OAuthIdentity.from_dict(_item) for _item in obj["oauthIdentities"]] if obj.get("oauthIdentities") is not None else None,
-            "totpSecret": obj.get("totpSecret"),
-            "totpSecretKeyId": obj.get("totpSecretKeyId"),
             "totpConfirmedAt": obj.get("totpConfirmedAt"),
-            "recoveryCodes": [RecoveryCode.from_dict(_item) for _item in obj["recoveryCodes"]] if obj.get("recoveryCodes") is not None else None,
             "machineFor": obj.get("machineFor"),
             "id": obj.get("id"),
             "deletedAt": obj.get("deletedAt"),
@@ -396,7 +364,6 @@ class User(BaseModel):
         return _obj
 
 from someones_computer_sdk.models.o_auth_identity import OAuthIdentity
-from someones_computer_sdk.models.recovery_code import RecoveryCode
 # TODO: Rewrite to not use raise_errors
 User.model_rebuild(raise_errors=False)
 

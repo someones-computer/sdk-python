@@ -63,7 +63,6 @@ from someones_computer_sdk.models.deployment_deployment_endpoint import Deployme
 from someones_computer_sdk.models.deployment_json_merge_patch import DeploymentJsonMergePatch
 from someones_computer_sdk.models.deployment_json_merge_patch_build_contexts_value_value import DeploymentJsonMergePatchBuildContextsValueValue
 from someones_computer_sdk.models.deployment_json_merge_patch_canonical_spec_value import DeploymentJsonMergePatchCanonicalSpecValue
-from someones_computer_sdk.models.deployment_variable import DeploymentVariable
 from someones_computer_sdk.models.error import Error
 from someones_computer_sdk.models.failure import Failure
 from someones_computer_sdk.models.machine import Machine
@@ -80,8 +79,6 @@ from someones_computer_sdk.models.organization_json_merge_patch import Organizat
 from someones_computer_sdk.models.organization_signal import OrganizationSignal
 from someones_computer_sdk.models.port_allocation import PortAllocation
 from someones_computer_sdk.models.proxmox_instance import ProxmoxInstance
-from someones_computer_sdk.models.recovery_code import RecoveryCode
-from someones_computer_sdk.models.sealed_secret import SealedSecret
 from someones_computer_sdk.models.service import Service
 from someones_computer_sdk.models.service_binding import ServiceBinding
 from someones_computer_sdk.models.service_binding_service_binding_input import ServiceBindingServiceBindingInput
@@ -99,5 +96,3 @@ from someones_computer_sdk.models.swarm_json_merge_patch import SwarmJsonMergePa
 from someones_computer_sdk.models.swarm_node import SwarmNode
 from someones_computer_sdk.models.user import User
 from someones_computer_sdk.models.user_avatar_photo import UserAvatarPhoto
-from someones_computer_sdk.models.variable import Variable
-from someones_computer_sdk.models.variable_version import VariableVersion

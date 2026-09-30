@@ -43,7 +43,6 @@ class TestMembership(unittest.TestCase):
                     theme = 'house', 
                     locale = 'en_GB', 
                     timezone = '', 
-                    password = '', 
                     ldap_dn = '', 
                     avatar_photo = someones_computer_sdk.models.user_avatar_photo.UserAvatarPhoto(
                         photo = '', 
@@ -61,7 +60,6 @@ class TestMembership(unittest.TestCase):
                         theme = 'house', 
                         locale = 'en_GB', 
                         timezone = '', 
-                        password = '', 
                         ldap_dn = '', 
                         disabled_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         spam_marked_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
@@ -80,18 +78,7 @@ class TestMembership(unittest.TestCase):
                                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
                             ], 
-                        totp_secret = '', 
-                        totp_secret_key_id = '', 
                         totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                        recovery_codes = [
-                            someones_computer_sdk.models.recovery_code.RecoveryCode(
-                                code_hash = '', 
-                                used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                id = '', 
-                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                used = True, )
-                            ], 
                         machine_for = 'https://example.com/', 
                         id = '', 
                         deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
@@ -127,18 +114,7 @@ class TestMembership(unittest.TestCase):
                             created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                             updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
                         ], 
-                    totp_secret = '', 
-                    totp_secret_key_id = '', 
                     totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                    recovery_codes = [
-                        someones_computer_sdk.models.recovery_code.RecoveryCode(
-                            code_hash = '', 
-                            used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            id = '', 
-                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            used = True, )
-                        ], 
                     machine_for = 'https://example.com/', 
                     id = '', 
                     deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
