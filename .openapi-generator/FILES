@@ -44,7 +44,6 @@ docs/ManagedServicePendingLoadMillis.md
 docs/ManagedServiceQuotaBytes.md
 docs/ManagedServiceUsageBytes.md
 docs/Membership.md
-docs/OAuthIdentity.md
 docs/Organization.md
 docs/OrganizationApi.md
 docs/OrganizationJsonMergePatch.md
@@ -69,7 +68,6 @@ docs/SwarmApi.md
 docs/SwarmJsonMergePatch.md
 docs/SwarmNode.md
 docs/User.md
-docs/UserAvatarPhoto.md
 git_push.sh
 pyproject.toml
 requirements.txt
@@ -125,7 +123,6 @@ someones_computer_sdk/models/managed_service_pending_load_millis.py
 someones_computer_sdk/models/managed_service_quota_bytes.py
 someones_computer_sdk/models/managed_service_usage_bytes.py
 someones_computer_sdk/models/membership.py
-someones_computer_sdk/models/o_auth_identity.py
 someones_computer_sdk/models/organization.py
 someones_computer_sdk/models/organization_json_merge_patch.py
 someones_computer_sdk/models/organization_signal.py
@@ -147,7 +144,6 @@ someones_computer_sdk/models/swarm.py
 someones_computer_sdk/models/swarm_json_merge_patch.py
 someones_computer_sdk/models/swarm_node.py
 someones_computer_sdk/models/user.py
-someones_computer_sdk/models/user_avatar_photo.py
 someones_computer_sdk/py.typed
 someones_computer_sdk/rest.py
 test-requirements.txt
@@ -192,7 +188,6 @@ test/test_managed_service_pending_load_millis.py
 test/test_managed_service_quota_bytes.py
 test/test_managed_service_usage_bytes.py
 test/test_membership.py
-test/test_o_auth_identity.py
 test/test_organization.py
 test/test_organization_api.py
 test/test_organization_json_merge_patch.py
@@ -217,5 +212,4 @@ test/test_swarm_api.py
 test/test_swarm_json_merge_patch.py
 test/test_swarm_node.py
 test/test_user.py
-test/test_user_avatar_photo.py
 tox.ini
