@@ -73,7 +73,6 @@ from someones_computer_sdk.models.managed_service_pending_load_millis import Man
 from someones_computer_sdk.models.managed_service_quota_bytes import ManagedServiceQuotaBytes
 from someones_computer_sdk.models.managed_service_usage_bytes import ManagedServiceUsageBytes
 from someones_computer_sdk.models.membership import Membership
-from someones_computer_sdk.models.o_auth_identity import OAuthIdentity
 from someones_computer_sdk.models.organization import Organization
 from someones_computer_sdk.models.organization_json_merge_patch import OrganizationJsonMergePatch
 from someones_computer_sdk.models.organization_signal import OrganizationSignal
@@ -95,4 +94,3 @@ from someones_computer_sdk.models.swarm import Swarm
 from someones_computer_sdk.models.swarm_json_merge_patch import SwarmJsonMergePatch
 from someones_computer_sdk.models.swarm_node import SwarmNode
 from someones_computer_sdk.models.user import User
-from someones_computer_sdk.models.user_avatar_photo import UserAvatarPhoto
