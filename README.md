@@ -23,9 +23,9 @@ Python 3.8+
 If the python package is hosted on a repository, you can install directly using:
 
 ```sh
-pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
+pip install git+https://github.com/someones-computer/sdk-python.git
 ```
-(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git`)
+(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/someones-computer/sdk-python.git`)
 
 Then import the package:
 ```python
@@ -127,6 +127,8 @@ Class | Method | HTTP request | Description
 *ManagedServiceApi* | [**managed_services_delete**](docs/ManagedServiceApi.md#managed_services_delete) | **DELETE** /api/managed_services/{id} | Removes the ManagedService resource.
 *ManagedServiceApi* | [**managed_services_get**](docs/ManagedServiceApi.md#managed_services_get) | **GET** /api/managed_services/{id} | Retrieves a ManagedService resource.
 *ManagedServiceApi* | [**managed_services_list**](docs/ManagedServiceApi.md#managed_services_list) | **GET** /api/managed_services | Retrieves the collection of ManagedService resources.
+*ManagedServiceApi* | [**managed_services_list_retired**](docs/ManagedServiceApi.md#managed_services_list_retired) | **GET** /api/managed_services/retired | Retrieves the collection of ManagedService resources.
+*ManagedServiceApi* | [**managed_services_restore**](docs/ManagedServiceApi.md#managed_services_restore) | **POST** /api/managed_services/{id}/restore | Creates a ManagedService resource.
 *ManagedServiceApi* | [**managed_services_resume**](docs/ManagedServiceApi.md#managed_services_resume) | **POST** /api/managed_services/{id}/resume | Creates a ManagedService resource.
 *ManagedServiceApi* | [**managed_services_suspend**](docs/ManagedServiceApi.md#managed_services_suspend) | **POST** /api/managed_services/{id}/suspend | Creates a ManagedService resource.
 *OrganizationApi* | [**organizations_create**](docs/OrganizationApi.md#organizations_create) | **POST** /api/organizations | Creates a Organization resource.

@@ -31,7 +31,7 @@ from typing_extensions import Self
 
 class ManagedService(BaseModel):
     """
-    List managed services (databases/buckets) the caller can see.
+    List retired managed services that a restore can still bring back. A service stays restorable for 7 days after deletedAt.
     """ # noqa: E501
     organization: Optional[StrictStr] = None
     slug: Optional[StrictStr] = None
@@ -88,8 +88,8 @@ class ManagedService(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['credit_exhausted', 'over_quota']):
-            raise ValueError("must be one of enum values ('credit_exhausted', 'over_quota')")
+        if value not in set(['credit_exhausted', 'over_quota', 'retired']):
+            raise ValueError("must be one of enum values ('credit_exhausted', 'over_quota', 'retired')")
         return value
 
     model_config = ConfigDict(
