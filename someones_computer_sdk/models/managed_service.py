@@ -24,7 +24,6 @@ from someones_computer_sdk.models.managed_service_last_load_millis import Manage
 from someones_computer_sdk.models.managed_service_pending_load_millis import ManagedServicePendingLoadMillis
 from someones_computer_sdk.models.managed_service_quota_bytes import ManagedServiceQuotaBytes
 from someones_computer_sdk.models.managed_service_usage_bytes import ManagedServiceUsageBytes
-from someones_computer_sdk.models.sealed_secret import SealedSecret
 from someones_computer_sdk.models.service_instance import ServiceInstance
 from typing import Optional, Set
 from typing_extensions import Self
@@ -57,10 +56,9 @@ class ManagedService(BaseModel):
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     catalogue_entry: Optional[StrictStr] = Field(default=None, description="`postgres 17`, `mysql 8.0` — the catalogue entry, as one string.", alias="catalogueEntry")
-    credential: Optional[SealedSecret] = None
     available: Optional[StrictBool] = None
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["organization", "slug", "kind", "majorVersion", "instance", "backingName", "externalKeyId", "quotaBytes", "poolSizeOverride", "clientConnectionsOverride", "state", "failureReason", "suspensionReason", "usageBytes", "usageSampledAt", "lastLoadMillis", "lastLoadSampledAt", "pendingLoadMillis", "bindings", "id", "deletedAt", "createdAt", "updatedAt", "catalogueEntry", "credential", "available", "deleted"]
+    __properties: ClassVar[List[str]] = ["organization", "slug", "kind", "majorVersion", "instance", "backingName", "externalKeyId", "quotaBytes", "poolSizeOverride", "clientConnectionsOverride", "state", "failureReason", "suspensionReason", "usageBytes", "usageSampledAt", "lastLoadMillis", "lastLoadSampledAt", "pendingLoadMillis", "bindings", "id", "deletedAt", "createdAt", "updatedAt", "catalogueEntry", "available", "deleted"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -166,9 +164,6 @@ class ManagedService(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of pending_load_millis
         if self.pending_load_millis:
             _dict['pendingLoadMillis'] = self.pending_load_millis.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of credential
-        if self.credential:
-            _dict['credential'] = self.credential.to_dict()
         # set to None if instance (nullable) is None
         # and model_fields_set contains the field
         if self.instance is None and "instance" in self.model_fields_set:
@@ -270,7 +265,6 @@ class ManagedService(BaseModel):
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
             "catalogueEntry": obj.get("catalogueEntry"),
-            "credential": SealedSecret.from_dict(obj["credential"]) if obj.get("credential") is not None else None,
             "available": obj.get("available"),
             "deleted": obj.get("deleted")
         })

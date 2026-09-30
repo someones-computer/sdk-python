@@ -41,6 +41,7 @@ setup(
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),
     include_package_data=True,
+    license="MIT",
     long_description_content_type='text/markdown',
     long_description="""\
     JSON-LD resources backing the control panel. Bearer-token reachable since #1418 — see docs/sdk-generation.md.

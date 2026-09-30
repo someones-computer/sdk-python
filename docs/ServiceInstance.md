@@ -23,7 +23,6 @@ Name | Type | Description | Notes
 **catalogue_entry** | **str** | &#x60;postgres 17&#x60;, &#x60;mysql 8.0&#x60; — the catalogue entry this instance serves. | [optional] [readonly] 
 **serving** | **bool** |  | [optional] [readonly] 
 **in_flight_stale** | **bool** | Dispatched so long ago that whatever was carrying it is gone. | [optional] [readonly] 
-**admin_credential** | [**SealedSecret**](SealedSecret.md) |  | [optional] 
 
 ## Example
 

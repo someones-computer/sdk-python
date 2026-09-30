@@ -52,13 +52,6 @@ class TestDeployment(unittest.TestCase):
                         'key' : ''
                         }
                     },
-                build_secrets = {
-                    'key' : {
-                        'key' : {
-                            'key' : ''
-                            }
-                        }
-                    },
                 target_swarm = 'https://example.com/',
                 status = 'pending',
                 status_reason = '',
@@ -73,7 +66,6 @@ class TestDeployment(unittest.TestCase):
                     theme = 'house', 
                     locale = 'en_GB', 
                     timezone = '', 
-                    password = '', 
                     ldap_dn = '', 
                     avatar_photo = someones_computer_sdk.models.user_avatar_photo.UserAvatarPhoto(
                         photo = '', 
@@ -91,7 +83,6 @@ class TestDeployment(unittest.TestCase):
                         theme = 'house', 
                         locale = 'en_GB', 
                         timezone = '', 
-                        password = '', 
                         ldap_dn = '', 
                         disabled_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         spam_marked_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
@@ -111,18 +102,7 @@ class TestDeployment(unittest.TestCase):
                                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
                             ], 
-                        totp_secret = '', 
-                        totp_secret_key_id = '', 
                         totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                        recovery_codes = [
-                            someones_computer_sdk.models.recovery_code.RecoveryCode(
-                                code_hash = '', 
-                                used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                id = '', 
-                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                used = True, )
-                            ], 
                         machine_for = 'https://example.com/', 
                         id = '', 
                         deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
@@ -158,18 +138,7 @@ class TestDeployment(unittest.TestCase):
                             created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                             updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
                         ], 
-                    totp_secret = '', 
-                    totp_secret_key_id = '', 
                     totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                    recovery_codes = [
-                        someones_computer_sdk.models.recovery_code.RecoveryCode(
-                            code_hash = '', 
-                            used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            id = '', 
-                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            used = True, )
-                        ], 
                     machine_for = 'https://example.com/', 
                     id = '', 
                     deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
@@ -221,171 +190,6 @@ class TestDeployment(unittest.TestCase):
                         created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
                     ],
-                variables = [
-                    someones_computer_sdk.models.deployment_variable.DeploymentVariable(
-                        deployment = 'https://example.com/', 
-                        variable_version = someones_computer_sdk.models.variable_version.VariableVersion(
-                            variable = someones_computer_sdk.models.variable.Variable(
-                                organization = 'https://example.com/', 
-                                application = 'https://example.com/', 
-                                key = '', 
-                                sensitive = True, 
-                                secret_file_delivery = True, 
-                                versions = [
-                                    someones_computer_sdk.models.variable_version.VariableVersion(
-                                        version = 56, 
-                                        algo = '', 
-                                        key_id = '', 
-                                        nonce = '', 
-                                        ciphertext = '', 
-                                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        created_by = someones_computer_sdk.models.user.User(
-                                            email = '', 
-                                            username = '', 
-                                            display_name = '', 
-                                            theme = 'house', 
-                                            locale = 'en_GB', 
-                                            timezone = '', 
-                                            password = '', 
-                                            ldap_dn = '', 
-                                            avatar_photo = someones_computer_sdk.models.user_avatar_photo.UserAvatarPhoto(
-                                                photo = '', 
-                                                type = '', 
-                                                id = '', ), 
-                                            roles = [
-                                                ''
-                                                ], 
-                                            disabled_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            spam_marked_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            spam_marked_by = someones_computer_sdk.models.user.User(
-                                                email = '', 
-                                                username = '', 
-                                                display_name = '', 
-                                                theme = 'house', 
-                                                locale = 'en_GB', 
-                                                timezone = '', 
-                                                password = '', 
-                                                ldap_dn = '', 
-                                                disabled_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                spam_marked_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                approved_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                email_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                credit_granted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                tier_pin = 'untrusted', 
-                                                tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                tier_pinned_by = , 
-                                                tier_pin_reason = '', 
-                                                oauth_identities = [
-                                                    someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
-                                                        provider = 'github', 
-                                                        provider_user_id = '', 
-                                                        user = , 
-                                                        id = '', 
-                                                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                                                    ], 
-                                                totp_secret = '', 
-                                                totp_secret_key_id = '', 
-                                                totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                recovery_codes = [
-                                                    someones_computer_sdk.models.recovery_code.RecoveryCode(
-                                                        code_hash = '', 
-                                                        used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                        id = '', 
-                                                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                        used = True, )
-                                                    ], 
-                                                machine_for = 'https://example.com/', 
-                                                id = '', 
-                                                deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                display_label = '', 
-                                                machine = True, 
-                                                ldap_managed = True, 
-                                                avatar_photo_type = '', 
-                                                user_identifier = '', 
-                                                granted_roles = [
-                                                    ''
-                                                    ], 
-                                                disabled = True, 
-                                                spam = True, 
-                                                approved = True, 
-                                                email_confirmed = True, 
-                                                tier_pinned = True, 
-                                                totp_enabled = True, 
-                                                deleted = True, ), 
-                                            approved_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            email_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            credit_granted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            tier_pin = 'untrusted', 
-                                            tier_pinned_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            tier_pinned_by = , 
-                                            tier_pin_reason = '', 
-                                            oauth_identities = [
-                                                someones_computer_sdk.models.o_auth_identity.OAuthIdentity(
-                                                    provider = 'github', 
-                                                    provider_user_id = '', 
-                                                    id = '', 
-                                                    created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                    updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
-                                                ], 
-                                            totp_secret = '', 
-                                            totp_secret_key_id = '', 
-                                            totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            recovery_codes = [
-                                                someones_computer_sdk.models.recovery_code.RecoveryCode(
-                                                    code_hash = '', 
-                                                    used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                    id = '', 
-                                                    created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                    updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                                    used = True, )
-                                                ], 
-                                            machine_for = 'https://example.com/', 
-                                            id = '', 
-                                            deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                            display_label = '', 
-                                            machine = True, 
-                                            ldap_managed = True, 
-                                            avatar_photo_type = '', 
-                                            user_identifier = '', 
-                                            granted_roles = [
-                                                ''
-                                                ], 
-                                            disabled = True, 
-                                            spam = True, 
-                                            approved = True, 
-                                            email_confirmed = True, 
-                                            tier_pinned = True, 
-                                            totp_enabled = True, 
-                                            deleted = True, ), 
-                                        id = '', 
-                                        encrypted = '', 
-                                        plaintext = '', )
-                                    ], 
-                                id = '', 
-                                deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                org_shared = True, 
-                                deleted = True, ), 
-                            version = 56, 
-                            algo = '', 
-                            key_id = '', 
-                            nonce = '', 
-                            ciphertext = '', 
-                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            created_by = , 
-                            id = '', 
-                            encrypted = '', 
-                            plaintext = '', ), 
-                        id = '', 
-                        key = '', )
-                    ],
                 failures = [
                     someones_computer_sdk.models.failure.Failure(
                         deployment = 'https://example.com/', 
@@ -393,7 +197,6 @@ class TestDeployment(unittest.TestCase):
                             name = '', 
                             endpoint = '', 
                             token_id = '', 
-                            token_secret = '', 
                             verify_tls = True, 
                             public_key_pin = '', 
                             status = 'unreachable', 
@@ -417,7 +220,6 @@ class TestDeployment(unittest.TestCase):
                         service = '', 
                         build_log_key = '', 
                         image_digest = '', 
-                        share_token = '', 
                         shared_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         share_expires_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         shared_by = someones_computer_sdk.models.user.User(
@@ -427,7 +229,6 @@ class TestDeployment(unittest.TestCase):
                             theme = 'house', 
                             locale = 'en_GB', 
                             timezone = '', 
-                            password = '', 
                             ldap_dn = '', 
                             avatar_photo = someones_computer_sdk.models.user_avatar_photo.UserAvatarPhoto(
                                 photo = '', 
@@ -445,7 +246,6 @@ class TestDeployment(unittest.TestCase):
                                 theme = 'house', 
                                 locale = 'en_GB', 
                                 timezone = '', 
-                                password = '', 
                                 ldap_dn = '', 
                                 disabled_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                 spam_marked_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
@@ -465,18 +265,7 @@ class TestDeployment(unittest.TestCase):
                                         created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                         updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
                                     ], 
-                                totp_secret = '', 
-                                totp_secret_key_id = '', 
                                 totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                recovery_codes = [
-                                    someones_computer_sdk.models.recovery_code.RecoveryCode(
-                                        code_hash = '', 
-                                        used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        id = '', 
-                                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        used = True, )
-                                    ], 
                                 machine_for = 'https://example.com/', 
                                 id = '', 
                                 deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
@@ -512,18 +301,7 @@ class TestDeployment(unittest.TestCase):
                                     created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                                     updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
                                 ], 
-                            totp_secret = '', 
-                            totp_secret_key_id = '', 
                             totp_confirmed_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            recovery_codes = [
-                                someones_computer_sdk.models.recovery_code.RecoveryCode(
-                                    code_hash = '', 
-                                    used_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    id = '', 
-                                    created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    used = True, )
-                                ], 
                             machine_for = 'https://example.com/', 
                             id = '', 
                             deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
