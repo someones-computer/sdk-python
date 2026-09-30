@@ -1,6 +1,6 @@
 # ManagedService
 
-List managed services (databases/buckets) the caller can see.
+List retired managed services that a restore can still bring back. A service stays restorable for 7 days after deletedAt.
 
 ## Properties
 

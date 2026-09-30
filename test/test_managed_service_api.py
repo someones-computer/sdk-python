@@ -54,6 +54,20 @@ class TestManagedServiceApi(unittest.TestCase):
         """
         pass
 
+    def test_managed_services_list_retired(self) -> None:
+        """Test case for managed_services_list_retired
+
+        Retrieves the collection of ManagedService resources.
+        """
+        pass
+
+    def test_managed_services_restore(self) -> None:
+        """Test case for managed_services_restore
+
+        Creates a ManagedService resource.
+        """
+        pass
+
     def test_managed_services_resume(self) -> None:
         """Test case for managed_services_resume
 
