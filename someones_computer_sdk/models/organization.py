@@ -24,6 +24,7 @@ from someones_computer_sdk.models.machine import Machine
 from someones_computer_sdk.models.membership import Membership
 from someones_computer_sdk.models.organization_signal import OrganizationSignal
 from someones_computer_sdk.models.user import User
+from someones_computer_sdk.models.variable import Variable
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -47,6 +48,7 @@ class Organization(BaseModel):
     swarms: Optional[List[StrictStr]] = Field(default=None, description="BYO swarms owned by this organization.")
     machines: Optional[List[Machine]] = None
     credit_transactions: Optional[List[StrictStr]] = Field(default=None, description="The append-only credit ledger.", alias="creditTransactions")
+    variables: Optional[List[Variable]] = None
     signals: Optional[List[OrganizationSignal]] = None
     id: Optional[StrictStr] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
@@ -54,7 +56,7 @@ class Organization(BaseModel):
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     tier_pinned: Optional[StrictBool] = Field(default=None, alias="tierPinned")
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["machineAccount", "name", "slug", "theme", "tierPin", "tierPinnedAt", "tierPinnedBy", "tierPinReason", "lowBalanceWarnedAt", "twoFactorRequiredAt", "apiAccessLogRetentionDays", "memberships", "applications", "swarms", "machines", "creditTransactions", "signals", "id", "deletedAt", "createdAt", "updatedAt", "tierPinned", "deleted"]
+    __properties: ClassVar[List[str]] = ["machineAccount", "name", "slug", "theme", "tierPin", "tierPinnedAt", "tierPinnedBy", "tierPinReason", "lowBalanceWarnedAt", "twoFactorRequiredAt", "apiAccessLogRetentionDays", "memberships", "applications", "swarms", "machines", "creditTransactions", "variables", "signals", "id", "deletedAt", "createdAt", "updatedAt", "tierPinned", "deleted"]
 
     @field_validator('theme')
     def theme_validate_enum(cls, value):
@@ -159,6 +161,13 @@ class Organization(BaseModel):
                 if _item_machines:
                     _items.append(_item_machines.to_dict())
             _dict['machines'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in variables (list)
+        _items = []
+        if self.variables:
+            for _item_variables in self.variables:
+                if _item_variables:
+                    _items.append(_item_variables.to_dict())
+            _dict['variables'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in signals (list)
         _items = []
         if self.signals:
@@ -249,6 +258,7 @@ class Organization(BaseModel):
             "swarms": obj.get("swarms"),
             "machines": [Machine.from_dict(_item) for _item in obj["machines"]] if obj.get("machines") is not None else None,
             "creditTransactions": obj.get("creditTransactions"),
+            "variables": [Variable.from_dict(_item) for _item in obj["variables"]] if obj.get("variables") is not None else None,
             "signals": [OrganizationSignal.from_dict(_item) for _item in obj["signals"]] if obj.get("signals") is not None else None,
             "id": obj.get("id"),
             "deletedAt": obj.get("deletedAt"),

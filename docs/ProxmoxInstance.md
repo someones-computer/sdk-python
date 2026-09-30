@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **name** | **str** |  | [optional] 
 **endpoint** | **str** | Base URL of the API, scheme and authority only — &#x60;https://10.0.0.68:8006&#x60;. | [optional] 
 **token_id** | **str** | Full token identifier, &#x60;user@realm!tokenid&#x60; — e.g. &#x60;root@pam!someones-computer&#x60;. | [optional] 
+**token_secret** | **str** | The token&#39;s secret (a UUID as Proxmox issues it), encrypted at rest and never serialized. Proxmox shows it exactly once, at creation. | [optional] 
 **verify_tls** | **bool** | Whether the certificate must validate against a CA chain. | [optional] [default to True]
 **public_key_pin** | **str** | base64 SHA-256 of the endpoint&#39;s SubjectPublicKeyInfo — curl&#39;s &#x60;pin-sha256&#x60;. The right answer for a self-signed Proxmox: it authenticates *this specific host* without any CA, so the connection is still protected against interception, which &#x60;verifyTls &#x3D; false&#x60; alone is not. | [optional] 
 **status** | **str** |  | [optional] [default to 'unreachable']

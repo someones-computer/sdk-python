@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 **adopted** | **bool** |  | [optional] [readonly] 
+**sidecar_credential** | [**SealedSecret**](SealedSecret.md) |  | [optional] 
 
 ## Example
 

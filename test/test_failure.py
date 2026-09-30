@@ -40,6 +40,7 @@ class TestFailure(unittest.TestCase):
                     name = '', 
                     endpoint = '', 
                     token_id = '', 
+                    token_secret = '', 
                     verify_tls = True, 
                     public_key_pin = '', 
                     status = 'unreachable', 
@@ -63,6 +64,7 @@ class TestFailure(unittest.TestCase):
                 service = '',
                 build_log_key = '',
                 image_digest = '',
+                share_token = '',
                 shared_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 share_expires_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 shared_by = someones_computer_sdk.models.user.User(
