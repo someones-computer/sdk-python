@@ -22,6 +22,7 @@ Name | Type | Description | Notes
 **swarms** | **List[str]** | BYO swarms owned by this organization. | [optional] 
 **machines** | [**List[Machine]**](Machine.md) |  | [optional] 
 **credit_transactions** | **List[str]** | The append-only credit ledger. | [optional] 
+**variables** | [**List[Variable]**](Variable.md) |  | [optional] 
 **signals** | [**List[OrganizationSignal]**](OrganizationSignal.md) |  | [optional] 
 **id** | **str** |  | [optional] [readonly] 
 **deleted_at** | **datetime** |  | [optional] [readonly] 

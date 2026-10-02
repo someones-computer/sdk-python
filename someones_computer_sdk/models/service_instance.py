@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from someones_computer_sdk.models.sealed_secret import SealedSecret
 from someones_computer_sdk.models.service_instance_capacity_bytes import ServiceInstanceCapacityBytes
 from someones_computer_sdk.models.service_instance_observed_usage_bytes import ServiceInstanceObservedUsageBytes
 from typing import Optional, Set
@@ -47,7 +48,8 @@ class ServiceInstance(BaseModel):
     catalogue_entry: Optional[StrictStr] = Field(default=None, description="`postgres 17`, `mysql 8.0` — the catalogue entry this instance serves.", alias="catalogueEntry")
     serving: Optional[StrictBool] = None
     in_flight_stale: Optional[StrictBool] = Field(default=None, description="Dispatched so long ago that whatever was carrying it is gone.", alias="inFlightStale")
-    __properties: ClassVar[List[str]] = ["name", "kind", "majorVersion", "imageRef", "swarm", "overlayNetwork", "state", "failureReason", "capacityBytes", "observedUsageBytes", "observedAt", "inFlightSince", "id", "createdAt", "updatedAt", "catalogueEntry", "serving", "inFlightStale"]
+    admin_credential: Optional[SealedSecret] = Field(default=None, alias="adminCredential")
+    __properties: ClassVar[List[str]] = ["name", "kind", "majorVersion", "imageRef", "swarm", "overlayNetwork", "state", "failureReason", "capacityBytes", "observedUsageBytes", "observedAt", "inFlightSince", "id", "createdAt", "updatedAt", "catalogueEntry", "serving", "inFlightStale", "adminCredential"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -132,6 +134,9 @@ class ServiceInstance(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of observed_usage_bytes
         if self.observed_usage_bytes:
             _dict['observedUsageBytes'] = self.observed_usage_bytes.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of admin_credential
+        if self.admin_credential:
+            _dict['adminCredential'] = self.admin_credential.to_dict()
         # set to None if failure_reason (nullable) is None
         # and model_fields_set contains the field
         if self.failure_reason is None and "failure_reason" in self.model_fields_set:
@@ -191,7 +196,8 @@ class ServiceInstance(BaseModel):
             "updatedAt": obj.get("updatedAt"),
             "catalogueEntry": obj.get("catalogueEntry"),
             "serving": obj.get("serving"),
-            "inFlightStale": obj.get("inFlightStale")
+            "inFlightStale": obj.get("inFlightStale"),
+            "adminCredential": SealedSecret.from_dict(obj["adminCredential"]) if obj.get("adminCredential") is not None else None
         })
         return _obj
 

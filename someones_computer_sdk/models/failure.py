@@ -37,6 +37,7 @@ class Failure(BaseModel):
     service: Optional[StrictStr] = Field(default=None, description="Which compose service, where the phase happens per-service. Null for the phases that fail the revision as a whole (placement, stranded) and for a deploy that never got as far as naming one.")
     build_log_key: Optional[StrictStr] = Field(default=None, description="Object key of the build log as it stood, or null when there was none.", alias="buildLogKey")
     image_digest: Optional[StrictStr] = Field(default=None, description="The digest a {@see FailurePhase::Scan} failure was quarantined over — null for every other phase. What lets the scan quarantine queue (docs/image-scanning.md, #816) resolve straight from a quarantined revision to the exact {@see \\App\\Entity\\ImageScan} an operator's Clear or Uphold acts on, without re-deriving it from a pinned image reference or a reason string meant for a person to read.", alias="imageDigest")
+    share_token: Optional[StrictStr] = Field(default=None, description="The capability that makes {@see \\App\\Controller\\FailureController::shared()} serve this to someone with no session, or null while it is private.", alias="shareToken")
     shared_at: Optional[datetime] = Field(default=None, alias="sharedAt")
     share_expires_at: Optional[datetime] = Field(default=None, description="When the capability above stops working, 24 hours after it was minted.", alias="shareExpiresAt")
     shared_by: Optional[User] = Field(default=None, alias="sharedBy")
@@ -45,7 +46,7 @@ class Failure(BaseModel):
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     display_label: Optional[StrictStr] = Field(default=None, description="The reference as it is written for a reader: `F-24GT1BQ7`.", alias="displayLabel")
     shared: Optional[StrictBool] = Field(default=None, description="Whether an unauthenticated request may read this: a token was minted and it has not yet passed its expiry.")
-    __properties: ClassVar[List[str]] = ["deployment", "proxmoxInstance", "phase", "reason", "reference", "service", "buildLogKey", "imageDigest", "sharedAt", "shareExpiresAt", "sharedBy", "id", "createdAt", "updatedAt", "displayLabel", "shared"]
+    __properties: ClassVar[List[str]] = ["deployment", "proxmoxInstance", "phase", "reason", "reference", "service", "buildLogKey", "imageDigest", "shareToken", "sharedAt", "shareExpiresAt", "sharedBy", "id", "createdAt", "updatedAt", "displayLabel", "shared"]
 
     @field_validator('phase')
     def phase_validate_enum(cls, value):
@@ -95,9 +96,11 @@ class Failure(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "reference",
+            "share_token",
             "shared_at",
             "share_expires_at",
             "id",
@@ -143,6 +146,11 @@ class Failure(BaseModel):
         if self.image_digest is None and "image_digest" in self.model_fields_set:
             _dict['imageDigest'] = None
 
+        # set to None if share_token (nullable) is None
+        # and model_fields_set contains the field
+        if self.share_token is None and "share_token" in self.model_fields_set:
+            _dict['shareToken'] = None
+
         # set to None if shared_at (nullable) is None
         # and model_fields_set contains the field
         if self.shared_at is None and "shared_at" in self.model_fields_set:
@@ -183,6 +191,7 @@ class Failure(BaseModel):
             "service": obj.get("service"),
             "buildLogKey": obj.get("buildLogKey"),
             "imageDigest": obj.get("imageDigest"),
+            "shareToken": obj.get("shareToken"),
             "sharedAt": obj.get("sharedAt"),
             "shareExpiresAt": obj.get("shareExpiresAt"),
             "sharedBy": User.from_dict(obj["sharedBy"]) if obj.get("sharedBy") is not None else None,

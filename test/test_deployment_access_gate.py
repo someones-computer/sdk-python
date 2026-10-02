@@ -40,7 +40,12 @@ class TestDeploymentAccessGate(unittest.TestCase):
                 access_gate = 'none',
                 id = '',
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
-                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f')
+                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
+                access_gate_credential = someones_computer_sdk.models.sealed_secret.SealedSecret(
+                    algo = '', 
+                    key_id = '', 
+                    nonce = '', 
+                    ciphertext = '', )
             )
         else:
             return DeploymentAccessGate(

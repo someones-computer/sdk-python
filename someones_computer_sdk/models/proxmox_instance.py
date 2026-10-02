@@ -30,6 +30,7 @@ class ProxmoxInstance(BaseModel):
     name: Optional[StrictStr] = None
     endpoint: Optional[StrictStr] = Field(default=None, description="Base URL of the API, scheme and authority only — `https://10.0.0.68:8006`.")
     token_id: Optional[StrictStr] = Field(default=None, description="Full token identifier, `user@realm!tokenid` — e.g. `root@pam!someones-computer`.", alias="tokenId")
+    token_secret: Optional[StrictStr] = Field(default=None, description="The token's secret (a UUID as Proxmox issues it), encrypted at rest and never serialized. Proxmox shows it exactly once, at creation.", alias="tokenSecret")
     verify_tls: Optional[StrictBool] = Field(default=True, description="Whether the certificate must validate against a CA chain.", alias="verifyTls")
     public_key_pin: Optional[StrictStr] = Field(default=None, description="base64 SHA-256 of the endpoint's SubjectPublicKeyInfo — curl's `pin-sha256`. The right answer for a self-signed Proxmox: it authenticates *this specific host* without any CA, so the connection is still protected against interception, which `verifyTls = false` alone is not.", alias="publicKeyPin")
     status: Optional[StrictStr] = 'unreachable'
@@ -45,7 +46,7 @@ class ProxmoxInstance(BaseModel):
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     template: Optional[StrictBool] = Field(default=None, description="Whether `app:proxmox:template` has ever recorded a build against this endpoint.")
-    __properties: ClassVar[List[str]] = ["name", "endpoint", "tokenId", "verifyTls", "publicKeyPin", "status", "lastSeenAt", "lastError", "version", "templateVmid", "templateAlpineVersion", "templateBuiltAt", "templateBuildStartedAt", "templateBuildFailures", "id", "createdAt", "updatedAt", "template"]
+    __properties: ClassVar[List[str]] = ["name", "endpoint", "tokenId", "tokenSecret", "verifyTls", "publicKeyPin", "status", "lastSeenAt", "lastError", "version", "templateVmid", "templateAlpineVersion", "templateBuiltAt", "templateBuildStartedAt", "templateBuildFailures", "id", "createdAt", "updatedAt", "template"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -169,6 +170,7 @@ class ProxmoxInstance(BaseModel):
             "name": obj.get("name"),
             "endpoint": obj.get("endpoint"),
             "tokenId": obj.get("tokenId"),
+            "tokenSecret": obj.get("tokenSecret"),
             "verifyTls": obj.get("verifyTls") if obj.get("verifyTls") is not None else True,
             "publicKeyPin": obj.get("publicKeyPin"),
             "status": obj.get("status") if obj.get("status") is not None else 'unreachable',

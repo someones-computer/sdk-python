@@ -1,6 +1,6 @@
 # ManagedService
 
-List managed services (databases/buckets) the caller can see.
+List retired managed services that a restore can still bring back. A service stays restorable for 7 days after deletedAt.
 
 ## Properties
 
@@ -30,6 +30,7 @@ Name | Type | Description | Notes
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 **catalogue_entry** | **str** | &#x60;postgres 17&#x60;, &#x60;mysql 8.0&#x60; — the catalogue entry, as one string. | [optional] [readonly] 
+**credential** | [**SealedSecret**](SealedSecret.md) |  | [optional] 
 **available** | **bool** |  | [optional] [readonly] 
 **deleted** | **bool** |  | [optional] [readonly] 
 
