@@ -20,7 +20,6 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from someones_computer_sdk.models.sealed_secret import SealedSecret
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -37,8 +36,7 @@ class ServiceBinding(BaseModel):
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     adopted: Optional[StrictBool] = None
-    sidecar_credential: Optional[SealedSecret] = Field(default=None, alias="sidecarCredential")
-    __properties: ClassVar[List[str]] = ["application", "service", "injectedKeys", "sidecarServiceName", "adoptedComposeService", "id", "createdAt", "updatedAt", "adopted", "sidecarCredential"]
+    __properties: ClassVar[List[str]] = ["application", "service", "injectedKeys", "sidecarServiceName", "adoptedComposeService", "id", "createdAt", "updatedAt", "adopted"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,9 +85,6 @@ class ServiceBinding(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of sidecar_credential
-        if self.sidecar_credential:
-            _dict['sidecarCredential'] = self.sidecar_credential.to_dict()
         # set to None if adopted_compose_service (nullable) is None
         # and model_fields_set contains the field
         if self.adopted_compose_service is None and "adopted_compose_service" in self.model_fields_set:
@@ -120,8 +115,7 @@ class ServiceBinding(BaseModel):
             "id": obj.get("id"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
-            "adopted": obj.get("adopted"),
-            "sidecarCredential": SealedSecret.from_dict(obj["sidecarCredential"]) if obj.get("sidecarCredential") is not None else None
+            "adopted": obj.get("adopted")
         })
         return _obj
 

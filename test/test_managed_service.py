@@ -57,12 +57,7 @@ class TestManagedService(unittest.TestCase):
                     updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                     catalogue_entry = '', 
                     serving = True, 
-                    in_flight_stale = True, 
-                    admin_credential = someones_computer_sdk.models.sealed_secret.SealedSecret(
-                        algo = '', 
-                        key_id = '', 
-                        nonce = '', 
-                        ciphertext = '', ), ),
+                    in_flight_stale = True, ),
                 backing_name = '',
                 external_key_id = '',
                 quota_bytes = None,
@@ -84,11 +79,6 @@ class TestManagedService(unittest.TestCase):
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 catalogue_entry = '',
-                credential = someones_computer_sdk.models.sealed_secret.SealedSecret(
-                    algo = '', 
-                    key_id = '', 
-                    nonce = '', 
-                    ciphertext = '', ),
                 available = True,
                 deleted = True
             )

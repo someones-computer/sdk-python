@@ -12,7 +12,6 @@ Name | Type | Description | Notes
 **id** | **str** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
-**access_gate_credential** | [**SealedSecret**](SealedSecret.md) |  | [optional] 
 
 ## Example
 

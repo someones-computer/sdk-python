@@ -52,13 +52,6 @@ class TestDeploymentJsonMergePatch(unittest.TestCase):
                         'key' : ''
                         }
                     },
-                build_secrets = {
-                    'key' : {
-                        'key' : {
-                            'key' : ''
-                            }
-                        }
-                    },
                 target_swarm = 'https://example.com/',
                 status = 'pending',
                 status_reason = '',
@@ -101,54 +94,6 @@ class TestDeploymentJsonMergePatch(unittest.TestCase):
                         created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), )
                     ],
-                variables = [
-                    someones_computer_sdk.models.deployment_variable.DeploymentVariable(
-                        deployment = 'https://example.com/', 
-                        variable_version = someones_computer_sdk.models.variable_version.VariableVersion(
-                            variable = someones_computer_sdk.models.variable.Variable(
-                                organization = 'https://example.com/', 
-                                application = 'https://example.com/', 
-                                key = '', 
-                                sensitive = True, 
-                                secret_file_delivery = True, 
-                                versions = [
-                                    someones_computer_sdk.models.variable_version.VariableVersion(
-                                        version = 56, 
-                                        algo = '', 
-                                        key_id = '', 
-                                        nonce = '', 
-                                        ciphertext = '', 
-                                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                        created_by = someones_computer_sdk.models.user.User(
-                                            id = '', 
-                                            username = '', 
-                                            display_name = '', ), 
-                                        id = '', 
-                                        encrypted = '', 
-                                        plaintext = '', )
-                                    ], 
-                                id = '', 
-                                deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                org_shared = True, 
-                                deleted = True, ), 
-                            version = 56, 
-                            algo = '', 
-                            key_id = '', 
-                            nonce = '', 
-                            ciphertext = '', 
-                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            created_by = someones_computer_sdk.models.user.User(
-                                id = '', 
-                                username = '', 
-                                display_name = '', ), 
-                            id = '', 
-                            encrypted = '', 
-                            plaintext = '', ), 
-                        id = '', 
-                        key = '', )
-                    ],
                 failures = [
                     someones_computer_sdk.models.failure.Failure(
                         deployment = 'https://example.com/', 
@@ -156,7 +101,6 @@ class TestDeploymentJsonMergePatch(unittest.TestCase):
                             name = '', 
                             endpoint = '', 
                             token_id = '', 
-                            token_secret = '', 
                             verify_tls = True, 
                             public_key_pin = '', 
                             status = 'unreachable', 
@@ -180,7 +124,6 @@ class TestDeploymentJsonMergePatch(unittest.TestCase):
                         service = '', 
                         build_log_key = '', 
                         image_digest = '', 
-                        share_token = '', 
                         shared_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         share_expires_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         shared_by = someones_computer_sdk.models.user.User(

@@ -76,7 +76,6 @@ class TestOrganizationJsonMergePatch(unittest.TestCase):
                             name = '', 
                             endpoint = '', 
                             token_id = '', 
-                            token_secret = '', 
                             verify_tls = True, 
                             public_key_pin = '', 
                             status = 'unreachable', 
@@ -115,48 +114,6 @@ class TestOrganizationJsonMergePatch(unittest.TestCase):
                     ],
                 credit_transactions = [
                     'https://example.com/'
-                    ],
-                variables = [
-                    someones_computer_sdk.models.variable.Variable(
-                        organization = 'https://example.com/', 
-                        application = 'https://example.com/', 
-                        key = '', 
-                        sensitive = True, 
-                        secret_file_delivery = True, 
-                        versions = [
-                            someones_computer_sdk.models.variable_version.VariableVersion(
-                                variable = someones_computer_sdk.models.variable.Variable(
-                                    organization = 'https://example.com/', 
-                                    application = 'https://example.com/', 
-                                    key = '', 
-                                    sensitive = True, 
-                                    secret_file_delivery = True, 
-                                    id = '', 
-                                    deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                    org_shared = True, 
-                                    deleted = True, ), 
-                                version = 56, 
-                                algo = '', 
-                                key_id = '', 
-                                nonce = '', 
-                                ciphertext = '', 
-                                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                                created_by = someones_computer_sdk.models.user.User(
-                                    id = '', 
-                                    username = '', 
-                                    display_name = '', ), 
-                                id = '', 
-                                encrypted = '', 
-                                plaintext = '', )
-                            ], 
-                        id = '', 
-                        deleted_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                        org_shared = True, 
-                        deleted = True, )
                     ],
                 signals = [
                     someones_computer_sdk.models.organization_signal.OrganizationSignal(

@@ -22,7 +22,6 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, Strict
 from typing import Any, ClassVar, Dict, List, Optional
 from someones_computer_sdk.models.deployment_json_merge_patch_build_contexts_value_value import DeploymentJsonMergePatchBuildContextsValueValue
 from someones_computer_sdk.models.deployment_json_merge_patch_canonical_spec_value import DeploymentJsonMergePatchCanonicalSpecValue
-from someones_computer_sdk.models.deployment_variable import DeploymentVariable
 from someones_computer_sdk.models.failure import Failure
 from someones_computer_sdk.models.service import Service
 from someones_computer_sdk.models.user import User
@@ -40,7 +39,6 @@ class DeploymentJsonMergePatch(BaseModel):
     canonical_spec: Optional[Dict[str, DeploymentJsonMergePatchCanonicalSpecValue]] = Field(default=None, description="Parsed, supported-subset-only canonical representation — what {@see \\App\\Service\\Compose\\ComposeParser::parse()} produced. Both keys are optional here and not there: a row is whatever was written when it was written, so a revision that predates a key still has to load.", alias="canonicalSpec")
     build_contexts: Optional[Dict[str, Dict[str, Optional[DeploymentJsonMergePatchBuildContextsValueValue]]]] = Field(default=None, description="Build contexts uploaded with this revision, keyed by compose service name: `{ contextSha256, dockerfile, dockerfileContent?, additionalContexts?, image?, log? }`. The tarballs themselves live in the content-addressed bundle cache ({@see \\App\\Service\\Bundle\\BundleStorage}); this is the pointer the build worker will walk. `dockerfileContent` is a best-effort text preview extracted at ingest ({@see \\App\\Service\\Bundle\\ContextDockerfileReader}) — null when the context was too large to preview or predates this field.", alias="buildContexts")
     forwarded_images: Optional[Dict[str, Dict[str, Optional[StrictStr]]]] = Field(default=None, description="Client-forwarded images uploaded with this revision, keyed by compose service name: `{ contextSha256, originalImage, image?, log? }`. See docs/registry.md's \"Client-side forwarding\" callout: `sc` detects a private, unbuildable `image:` reference it can already reach locally and offers to upload it, for a platform that has no other way to pull it. A sibling to {@see self::$buildContexts} rather than folded into it — that array means \"run this through BuildKit\", and this one never does. The tarballs live in the object store ({@see \\App\\Service\\Bundle\\ImageStorage}), not the database; `image` is filled in once the loader has pushed it to the internal registry, the same way `buildContexts[]['image']` is. `{}` for every revision that forwarded nothing, which is most of them.", alias="forwardedImages")
-    build_secrets: Optional[Dict[str, Dict[str, Dict[str, StrictStr]]]] = Field(default=None, description="`build.secrets` values declared for this revision's build services (Grey.ooo/someones.computer_agent#46), sealed the moment they arrive ({@see \\App\\Service\\Secret\\SecretBox}) and never written to the object store the way a build context is: unlike a context tarball, a build secret is live tenant credential material, not something worth caching by content — closer to how {@see \\App\\Service\\Registry\\RegistryTokenSigner} mints a push token than to how {@see \\App\\Entity\\Variable} keeps one.", alias="buildSecrets")
     target_swarm: Optional[StrictStr] = Field(default=None, description="Resolved by the placement engine; null until placed.", alias="targetSwarm")
     status: Optional[StrictStr] = 'pending'
     status_reason: Optional[StrictStr] = Field(default=None, description="Why the revision is in its current status — the build worker's failure message, typically. Null whenever there is nothing to explain.", alias="statusReason")
@@ -50,7 +48,6 @@ class DeploymentJsonMergePatch(BaseModel):
     digest: Optional[StrictStr] = Field(default=None, description="Content digest of the canonical spec, for dedupe/audit.")
     created_by: Optional[User] = Field(default=None, alias="createdBy")
     services: Optional[List[Service]] = None
-    variables: Optional[List[DeploymentVariable]] = None
     failures: Optional[List[Failure]] = None
     id: Optional[StrictStr] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
@@ -58,7 +55,7 @@ class DeploymentJsonMergePatch(BaseModel):
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     on_a_swarm: Optional[StrictBool] = Field(default=None, description="Whether this revision has a stack of its own on a swarm right now.", alias="onASwarm")
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["application", "sequence", "name", "rawCompose", "canonicalSpec", "buildContexts", "forwardedImages", "buildSecrets", "targetSwarm", "status", "statusReason", "failedOnSwarm", "zeroTaskObservedAt", "degraded", "digest", "createdBy", "services", "variables", "failures", "id", "deletedAt", "createdAt", "updatedAt", "onASwarm", "deleted"]
+    __properties: ClassVar[List[str]] = ["application", "sequence", "name", "rawCompose", "canonicalSpec", "buildContexts", "forwardedImages", "targetSwarm", "status", "statusReason", "failedOnSwarm", "zeroTaskObservedAt", "degraded", "digest", "createdBy", "services", "failures", "id", "deletedAt", "createdAt", "updatedAt", "onASwarm", "deleted"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -145,13 +142,6 @@ class DeploymentJsonMergePatch(BaseModel):
                 if _item_services:
                     _items.append(_item_services.to_dict())
             _dict['services'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in variables (list)
-        _items = []
-        if self.variables:
-            for _item_variables in self.variables:
-                if _item_variables:
-                    _items.append(_item_variables.to_dict())
-            _dict['variables'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in failures (list)
         _items = []
         if self.failures:
@@ -234,7 +224,6 @@ class DeploymentJsonMergePatch(BaseModel):
             if obj.get("buildContexts") is not None
             else None,
             "forwardedImages": obj.get("forwardedImages"),
-            "buildSecrets": obj.get("buildSecrets"),
             "targetSwarm": obj.get("targetSwarm"),
             "status": obj.get("status") if obj.get("status") is not None else 'pending',
             "statusReason": obj.get("statusReason"),
@@ -244,7 +233,6 @@ class DeploymentJsonMergePatch(BaseModel):
             "digest": obj.get("digest"),
             "createdBy": User.from_dict(obj["createdBy"]) if obj.get("createdBy") is not None else None,
             "services": [Service.from_dict(_item) for _item in obj["services"]] if obj.get("services") is not None else None,
-            "variables": [DeploymentVariable.from_dict(_item) for _item in obj["variables"]] if obj.get("variables") is not None else None,
             "failures": [Failure.from_dict(_item) for _item in obj["failures"]] if obj.get("failures") is not None else None,
             "id": obj.get("id"),
             "deletedAt": obj.get("deletedAt"),

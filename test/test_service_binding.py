@@ -45,12 +45,7 @@ class TestServiceBinding(unittest.TestCase):
                 id = '',
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
-                adopted = True,
-                sidecar_credential = someones_computer_sdk.models.sealed_secret.SealedSecret(
-                    algo = '', 
-                    key_id = '', 
-                    nonce = '', 
-                    ciphertext = '', )
+                adopted = True
             )
         else:
             return ServiceBinding(
