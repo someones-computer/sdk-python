@@ -20,11 +20,11 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from someones_computer_sdk.models.managed_service_engine import ManagedServiceEngine
 from someones_computer_sdk.models.managed_service_last_load_millis import ManagedServiceLastLoadMillis
 from someones_computer_sdk.models.managed_service_pending_load_millis import ManagedServicePendingLoadMillis
 from someones_computer_sdk.models.managed_service_quota_bytes import ManagedServiceQuotaBytes
 from someones_computer_sdk.models.managed_service_usage_bytes import ManagedServiceUsageBytes
-from someones_computer_sdk.models.service_instance import ServiceInstance
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -36,7 +36,6 @@ class ManagedService(BaseModel):
     slug: Optional[StrictStr] = None
     kind: Optional[StrictStr] = Field(default=None, description="The catalogue entry the tenant picked, as `(kind, majorVersion)`.")
     major_version: Optional[StrictStr] = Field(default=None, alias="majorVersion")
-    instance: Optional[ServiceInstance] = None
     backing_name: Optional[StrictStr] = Field(default=None, description="What the object is actually called inside the engine — `acme_hearth_db` for a database, `acme-hearth-media` for a bucket.", alias="backingName")
     external_key_id: Optional[StrictStr] = Field(default=None, description="A bucket's access key id — the non-secret half of a Garage key, paired with {@see $credentialCiphertext}'s sealed secret access key. Null for every database kind, which has no such pair: its one credential is a password, sealed whole into the four columns above.", alias="externalKeyId")
     quota_bytes: Optional[ManagedServiceQuotaBytes] = Field(default=None, alias="quotaBytes")
@@ -56,9 +55,10 @@ class ManagedService(BaseModel):
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     catalogue_entry: Optional[StrictStr] = Field(default=None, description="`postgres 17`, `mysql 8.0` — the catalogue entry, as one string.", alias="catalogueEntry")
+    instance: Optional[ManagedServiceEngine] = None
     available: Optional[StrictBool] = None
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["organization", "slug", "kind", "majorVersion", "instance", "backingName", "externalKeyId", "quotaBytes", "poolSizeOverride", "clientConnectionsOverride", "state", "failureReason", "suspensionReason", "usageBytes", "usageSampledAt", "lastLoadMillis", "lastLoadSampledAt", "pendingLoadMillis", "bindings", "id", "deletedAt", "createdAt", "updatedAt", "catalogueEntry", "available", "deleted"]
+    __properties: ClassVar[List[str]] = ["organization", "slug", "kind", "majorVersion", "backingName", "externalKeyId", "quotaBytes", "poolSizeOverride", "clientConnectionsOverride", "state", "failureReason", "suspensionReason", "usageBytes", "usageSampledAt", "lastLoadMillis", "lastLoadSampledAt", "pendingLoadMillis", "bindings", "id", "deletedAt", "createdAt", "updatedAt", "catalogueEntry", "instance", "available", "deleted"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -149,9 +149,6 @@ class ManagedService(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of instance
-        if self.instance:
-            _dict['instance'] = self.instance.to_dict()
         # override the default output from pydantic by calling `to_dict()` of quota_bytes
         if self.quota_bytes:
             _dict['quotaBytes'] = self.quota_bytes.to_dict()
@@ -164,11 +161,9 @@ class ManagedService(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of pending_load_millis
         if self.pending_load_millis:
             _dict['pendingLoadMillis'] = self.pending_load_millis.to_dict()
-        # set to None if instance (nullable) is None
-        # and model_fields_set contains the field
-        if self.instance is None and "instance" in self.model_fields_set:
-            _dict['instance'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of instance
+        if self.instance:
+            _dict['instance'] = self.instance.to_dict()
         # set to None if external_key_id (nullable) is None
         # and model_fields_set contains the field
         if self.external_key_id is None and "external_key_id" in self.model_fields_set:
@@ -229,6 +224,11 @@ class ManagedService(BaseModel):
         if self.updated_at is None and "updated_at" in self.model_fields_set:
             _dict['updatedAt'] = None
 
+        # set to None if instance (nullable) is None
+        # and model_fields_set contains the field
+        if self.instance is None and "instance" in self.model_fields_set:
+            _dict['instance'] = None
+
         return _dict
 
     @classmethod
@@ -245,7 +245,6 @@ class ManagedService(BaseModel):
             "slug": obj.get("slug"),
             "kind": obj.get("kind"),
             "majorVersion": obj.get("majorVersion"),
-            "instance": ServiceInstance.from_dict(obj["instance"]) if obj.get("instance") is not None else None,
             "backingName": obj.get("backingName"),
             "externalKeyId": obj.get("externalKeyId"),
             "quotaBytes": ManagedServiceQuotaBytes.from_dict(obj["quotaBytes"]) if obj.get("quotaBytes") is not None else None,
@@ -265,6 +264,7 @@ class ManagedService(BaseModel):
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
             "catalogueEntry": obj.get("catalogueEntry"),
+            "instance": ManagedServiceEngine.from_dict(obj["instance"]) if obj.get("instance") is not None else None,
             "available": obj.get("available"),
             "deleted": obj.get("deleted")
         })

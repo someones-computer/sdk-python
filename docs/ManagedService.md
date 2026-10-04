@@ -10,7 +10,6 @@ Name | Type | Description | Notes
 **slug** | **str** |  | [optional] 
 **kind** | **str** | The catalogue entry the tenant picked, as &#x60;(kind, majorVersion)&#x60;. | [optional] 
 **major_version** | **str** |  | [optional] 
-**instance** | [**ServiceInstance**](ServiceInstance.md) |  | [optional] 
 **backing_name** | **str** | What the object is actually called inside the engine — &#x60;acme_hearth_db&#x60; for a database, &#x60;acme-hearth-media&#x60; for a bucket. | [optional] 
 **external_key_id** | **str** | A bucket&#39;s access key id — the non-secret half of a Garage key, paired with {@see $credentialCiphertext}&#39;s sealed secret access key. Null for every database kind, which has no such pair: its one credential is a password, sealed whole into the four columns above. | [optional] 
 **quota_bytes** | [**ManagedServiceQuotaBytes**](ManagedServiceQuotaBytes.md) |  | [optional] 
@@ -30,6 +29,7 @@ Name | Type | Description | Notes
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 **catalogue_entry** | **str** | &#x60;postgres 17&#x60;, &#x60;mysql 8.0&#x60; — the catalogue entry, as one string. | [optional] [readonly] 
+**instance** | [**ManagedServiceEngine**](ManagedServiceEngine.md) |  | [optional] 
 **available** | **bool** |  | [optional] [readonly] 
 **deleted** | **bool** |  | [optional] [readonly] 
 

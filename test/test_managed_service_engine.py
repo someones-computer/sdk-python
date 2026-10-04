@@ -14,10 +14,10 @@
 
 import unittest
 
-from someones_computer_sdk.models.service_instance_capacity_bytes import ServiceInstanceCapacityBytes
+from someones_computer_sdk.models.managed_service_engine import ManagedServiceEngine
 
-class TestServiceInstanceCapacityBytes(unittest.TestCase):
-    """ServiceInstanceCapacityBytes unit test stubs"""
+class TestManagedServiceEngine(unittest.TestCase):
+    """ManagedServiceEngine unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,24 +25,26 @@ class TestServiceInstanceCapacityBytes(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> ServiceInstanceCapacityBytes:
-        """Test ServiceInstanceCapacityBytes
+    def make_instance(self, include_optional) -> ManagedServiceEngine:
+        """Test ManagedServiceEngine
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `ServiceInstanceCapacityBytes`
+        # uncomment below to create an instance of `ManagedServiceEngine`
         """
-        model = ServiceInstanceCapacityBytes()
+        model = ManagedServiceEngine()
         if include_optional:
-            return ServiceInstanceCapacityBytes(
+            return ManagedServiceEngine(
+                name = '',
+                state = 'requested'
             )
         else:
-            return ServiceInstanceCapacityBytes(
+            return ManagedServiceEngine(
         )
         """
 
-    def testServiceInstanceCapacityBytes(self):
-        """Test ServiceInstanceCapacityBytes"""
+    def testManagedServiceEngine(self):
+        """Test ManagedServiceEngine"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 
