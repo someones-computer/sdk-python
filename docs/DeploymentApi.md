@@ -491,7 +491,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **deployments_list**
-> List[Deployment] deployments_list(page=page)
+> List[Deployment] deployments_list(page=page, application=application, application2=application2, sequence=sequence, sequence2=sequence2, name=name, name2=name2, items_per_page=items_per_page)
 
 Retrieves the collection of Deployment resources.
 
@@ -528,10 +528,17 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = someones_computer_sdk.DeploymentApi(api_client)
     page = 1 # int | The collection page number (optional) (default to 1)
+    application = 'application_example' # str | Only revisions of this application, by IRI (`/api/applications/{id}`). (optional)
+    application2 = ['application_example'] # List[str] | Only revisions of this application, by IRI (`/api/applications/{id}`). (optional)
+    sequence = 'sequence_example' # str | Only the revision with this sequence number. (optional)
+    sequence2 = ['sequence_example'] # List[str] | Only the revision with this sequence number. (optional)
+    name = 'name_example' # str | Only revisions with this exact name. (optional)
+    name2 = ['name_example'] # List[str] | Only revisions with this exact name. (optional)
+    items_per_page = 'items_per_page_example' # str | Rows per page. (optional)
 
     try:
         # Retrieves the collection of Deployment resources.
-        api_response = api_instance.deployments_list(page=page)
+        api_response = api_instance.deployments_list(page=page, application=application, application2=application2, sequence=sequence, sequence2=sequence2, name=name, name2=name2, items_per_page=items_per_page)
         print("The response of DeploymentApi->deployments_list:\n")
         pprint(api_response)
     except Exception as e:
@@ -546,6 +553,13 @@ with someones_computer_sdk.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **page** | **int**| The collection page number | [optional] [default to 1]
+ **application** | **str**| Only revisions of this application, by IRI (&#x60;/api/applications/{id}&#x60;). | [optional] 
+ **application2** | [**List[str]**](str.md)| Only revisions of this application, by IRI (&#x60;/api/applications/{id}&#x60;). | [optional] 
+ **sequence** | **str**| Only the revision with this sequence number. | [optional] 
+ **sequence2** | [**List[str]**](str.md)| Only the revision with this sequence number. | [optional] 
+ **name** | **str**| Only revisions with this exact name. | [optional] 
+ **name2** | [**List[str]**](str.md)| Only revisions with this exact name. | [optional] 
+ **items_per_page** | **str**| Rows per page. | [optional] 
 
 ### Return type
 

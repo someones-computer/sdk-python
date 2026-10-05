@@ -1,6 +1,6 @@
 # Deployment
 
-List an application's deployment revisions.
+List deployment revisions. Filter by application (IRI), sequence or name. Any other query parameter answers 400.
 
 ## Properties
 
