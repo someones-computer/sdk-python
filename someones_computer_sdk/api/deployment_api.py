@@ -1686,6 +1686,13 @@ class DeploymentApi:
     def deployments_list(
         self,
         page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
+        application: Annotated[Optional[StrictStr], Field(description="Only revisions of this application, by IRI (`/api/applications/{id}`).")] = None,
+        application2: Annotated[Optional[List[List[StrictStr]]], Field(description="Only revisions of this application, by IRI (`/api/applications/{id}`).")] = None,
+        sequence: Annotated[Optional[StrictStr], Field(description="Only the revision with this sequence number.")] = None,
+        sequence2: Annotated[Optional[List[List[StrictStr]]], Field(description="Only the revision with this sequence number.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Only revisions with this exact name.")] = None,
+        name2: Annotated[Optional[List[List[StrictStr]]], Field(description="Only revisions with this exact name.")] = None,
+        items_per_page: Annotated[Optional[StrictStr], Field(description="Rows per page.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1705,6 +1712,20 @@ class DeploymentApi:
 
         :param page: The collection page number
         :type page: int
+        :param application: Only revisions of this application, by IRI (`/api/applications/{id}`).
+        :type application: str
+        :param application2: Only revisions of this application, by IRI (`/api/applications/{id}`).
+        :type application2: List[str]
+        :param sequence: Only the revision with this sequence number.
+        :type sequence: str
+        :param sequence2: Only the revision with this sequence number.
+        :type sequence2: List[str]
+        :param name: Only revisions with this exact name.
+        :type name: str
+        :param name2: Only revisions with this exact name.
+        :type name2: List[str]
+        :param items_per_page: Rows per page.
+        :type items_per_page: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1729,6 +1750,13 @@ class DeploymentApi:
 
         _param = self._deployments_list_serialize(
             page=page,
+            application=application,
+            application2=application2,
+            sequence=sequence,
+            sequence2=sequence2,
+            name=name,
+            name2=name2,
+            items_per_page=items_per_page,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1753,6 +1781,13 @@ class DeploymentApi:
     def deployments_list_with_http_info(
         self,
         page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
+        application: Annotated[Optional[StrictStr], Field(description="Only revisions of this application, by IRI (`/api/applications/{id}`).")] = None,
+        application2: Annotated[Optional[List[List[StrictStr]]], Field(description="Only revisions of this application, by IRI (`/api/applications/{id}`).")] = None,
+        sequence: Annotated[Optional[StrictStr], Field(description="Only the revision with this sequence number.")] = None,
+        sequence2: Annotated[Optional[List[List[StrictStr]]], Field(description="Only the revision with this sequence number.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Only revisions with this exact name.")] = None,
+        name2: Annotated[Optional[List[List[StrictStr]]], Field(description="Only revisions with this exact name.")] = None,
+        items_per_page: Annotated[Optional[StrictStr], Field(description="Rows per page.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1772,6 +1807,20 @@ class DeploymentApi:
 
         :param page: The collection page number
         :type page: int
+        :param application: Only revisions of this application, by IRI (`/api/applications/{id}`).
+        :type application: str
+        :param application2: Only revisions of this application, by IRI (`/api/applications/{id}`).
+        :type application2: List[str]
+        :param sequence: Only the revision with this sequence number.
+        :type sequence: str
+        :param sequence2: Only the revision with this sequence number.
+        :type sequence2: List[str]
+        :param name: Only revisions with this exact name.
+        :type name: str
+        :param name2: Only revisions with this exact name.
+        :type name2: List[str]
+        :param items_per_page: Rows per page.
+        :type items_per_page: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1796,6 +1845,13 @@ class DeploymentApi:
 
         _param = self._deployments_list_serialize(
             page=page,
+            application=application,
+            application2=application2,
+            sequence=sequence,
+            sequence2=sequence2,
+            name=name,
+            name2=name2,
+            items_per_page=items_per_page,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1820,6 +1876,13 @@ class DeploymentApi:
     def deployments_list_without_preload_content(
         self,
         page: Annotated[Optional[StrictInt], Field(description="The collection page number")] = None,
+        application: Annotated[Optional[StrictStr], Field(description="Only revisions of this application, by IRI (`/api/applications/{id}`).")] = None,
+        application2: Annotated[Optional[List[List[StrictStr]]], Field(description="Only revisions of this application, by IRI (`/api/applications/{id}`).")] = None,
+        sequence: Annotated[Optional[StrictStr], Field(description="Only the revision with this sequence number.")] = None,
+        sequence2: Annotated[Optional[List[List[StrictStr]]], Field(description="Only the revision with this sequence number.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Only revisions with this exact name.")] = None,
+        name2: Annotated[Optional[List[List[StrictStr]]], Field(description="Only revisions with this exact name.")] = None,
+        items_per_page: Annotated[Optional[StrictStr], Field(description="Rows per page.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1839,6 +1902,20 @@ class DeploymentApi:
 
         :param page: The collection page number
         :type page: int
+        :param application: Only revisions of this application, by IRI (`/api/applications/{id}`).
+        :type application: str
+        :param application2: Only revisions of this application, by IRI (`/api/applications/{id}`).
+        :type application2: List[str]
+        :param sequence: Only the revision with this sequence number.
+        :type sequence: str
+        :param sequence2: Only the revision with this sequence number.
+        :type sequence2: List[str]
+        :param name: Only revisions with this exact name.
+        :type name: str
+        :param name2: Only revisions with this exact name.
+        :type name2: List[str]
+        :param items_per_page: Rows per page.
+        :type items_per_page: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1863,6 +1940,13 @@ class DeploymentApi:
 
         _param = self._deployments_list_serialize(
             page=page,
+            application=application,
+            application2=application2,
+            sequence=sequence,
+            sequence2=sequence2,
+            name=name,
+            name2=name2,
+            items_per_page=items_per_page,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1882,6 +1966,13 @@ class DeploymentApi:
     def _deployments_list_serialize(
         self,
         page,
+        application,
+        application2,
+        sequence,
+        sequence2,
+        name,
+        name2,
+        items_per_page,
         _request_auth,
         _content_type,
         _headers,
@@ -1891,6 +1982,9 @@ class DeploymentApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'application[]': 'csv',
+            'sequence[]': 'csv',
+            'name[]': 'csv',
         }
 
         _path_params: Dict[str, str] = {}
@@ -1907,6 +2001,34 @@ class DeploymentApi:
         if page is not None:
             
             _query_params.append(('page', page))
+            
+        if application is not None:
+            
+            _query_params.append(('application', application))
+            
+        if application2 is not None:
+            
+            _query_params.append(('application[]', application2))
+            
+        if sequence is not None:
+            
+            _query_params.append(('sequence', sequence))
+            
+        if sequence2 is not None:
+            
+            _query_params.append(('sequence[]', sequence2))
+            
+        if name is not None:
+            
+            _query_params.append(('name', name))
+            
+        if name2 is not None:
+            
+            _query_params.append(('name[]', name2))
+            
+        if items_per_page is not None:
+            
+            _query_params.append(('itemsPerPage', items_per_page))
             
         # process the header parameters
         # process the form parameters
