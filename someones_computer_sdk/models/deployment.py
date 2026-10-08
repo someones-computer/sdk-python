@@ -30,7 +30,7 @@ from typing_extensions import Self
 
 class Deployment(BaseModel):
     """
-    List an application's deployment revisions.
+    List deployment revisions. Filter by application (IRI), sequence or name. Any other query parameter answers 400.
     """ # noqa: E501
     application: Optional[StrictStr] = None
     sequence: Optional[StrictInt] = Field(default=None, description="Monotonic per-application revision number.")
