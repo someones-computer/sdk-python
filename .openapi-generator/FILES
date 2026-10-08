@@ -32,7 +32,6 @@ docs/DeploymentBundleUploadDeclareOutput.md
 docs/DeploymentDeploymentEndpoint.md
 docs/DeploymentJsonMergePatch.md
 docs/DeploymentJsonMergePatchBuildContextsValueValue.md
-docs/DeploymentJsonMergePatchCanonicalSpecValue.md
 docs/Error.md
 docs/Failure.md
 docs/Machine.md
@@ -110,7 +109,6 @@ someones_computer_sdk/models/deployment_bundle_upload_declare_output.py
 someones_computer_sdk/models/deployment_deployment_endpoint.py
 someones_computer_sdk/models/deployment_json_merge_patch.py
 someones_computer_sdk/models/deployment_json_merge_patch_build_contexts_value_value.py
-someones_computer_sdk/models/deployment_json_merge_patch_canonical_spec_value.py
 someones_computer_sdk/models/error.py
 someones_computer_sdk/models/failure.py
 someones_computer_sdk/models/machine.py
@@ -172,7 +170,6 @@ test/test_deployment_bundle_upload_declare_output.py
 test/test_deployment_deployment_endpoint.py
 test/test_deployment_json_merge_patch.py
 test/test_deployment_json_merge_patch_build_contexts_value_value.py
-test/test_deployment_json_merge_patch_canonical_spec_value.py
 test/test_error.py
 test/test_failure.py
 test/test_machine.py

@@ -21,7 +21,6 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from someones_computer_sdk.models.deployment_json_merge_patch_build_contexts_value_value import DeploymentJsonMergePatchBuildContextsValueValue
-from someones_computer_sdk.models.deployment_json_merge_patch_canonical_spec_value import DeploymentJsonMergePatchCanonicalSpecValue
 from someones_computer_sdk.models.failure import Failure
 from someones_computer_sdk.models.service import Service
 from someones_computer_sdk.models.user import User
@@ -36,7 +35,7 @@ class DeploymentJsonMergePatch(BaseModel):
     sequence: Optional[StrictInt] = Field(default=None, description="Monotonic per-application revision number.")
     name: Optional[StrictStr] = Field(default=None, description="What this revision is called — `sc` defaults it to the slugified branch, so the normal shape is a deployment per branch. Null for revisions created before the field existed, or by a client that doesn't send one.")
     raw_compose: Optional[StrictStr] = Field(default=None, description="Exactly what the user submitted.", alias="rawCompose")
-    canonical_spec: Optional[Dict[str, DeploymentJsonMergePatchCanonicalSpecValue]] = Field(default=None, description="Parsed, supported-subset-only canonical representation — what {@see \\App\\Service\\Compose\\ComposeParser::parse()} produced. Both keys are optional here and not there: a row is whatever was written when it was written, so a revision that predates a key still has to load.", alias="canonicalSpec")
+    canonical_spec: Optional[Dict[str, Any]] = Field(default=None, description="Parsed, supported-subset-only canonical representation of the compose file, as the parser produced it. Keys are `services` and `warnings`. A revision that predates a key omits it.", alias="canonicalSpec")
     build_contexts: Optional[Dict[str, Dict[str, Optional[DeploymentJsonMergePatchBuildContextsValueValue]]]] = Field(default=None, description="Build contexts uploaded with this revision, keyed by compose service name: `{ contextSha256, dockerfile, dockerfileContent?, additionalContexts?, image?, log? }`. The tarballs themselves live in the content-addressed bundle cache ({@see \\App\\Service\\Bundle\\BundleStorage}); this is the pointer the build worker will walk. `dockerfileContent` is a best-effort text preview extracted at ingest ({@see \\App\\Service\\Bundle\\ContextDockerfileReader}) — null when the context was too large to preview or predates this field.", alias="buildContexts")
     forwarded_images: Optional[Dict[str, Dict[str, Optional[StrictStr]]]] = Field(default=None, description="Client-forwarded images uploaded with this revision, keyed by compose service name: `{ contextSha256, originalImage, image?, log? }`. See docs/registry.md's \"Client-side forwarding\" callout: `sc` detects a private, unbuildable `image:` reference it can already reach locally and offers to upload it, for a platform that has no other way to pull it. A sibling to {@see self::$buildContexts} rather than folded into it — that array means \"run this through BuildKit\", and this one never does. The tarballs live in the object store ({@see \\App\\Service\\Bundle\\ImageStorage}), not the database; `image` is filled in once the loader has pushed it to the internal registry, the same way `buildContexts[]['image']` is. `{}` for every revision that forwarded nothing, which is most of them.", alias="forwardedImages")
     target_swarm: Optional[StrictStr] = Field(default=None, description="Resolved by the placement engine; null until placed.", alias="targetSwarm")
@@ -118,13 +117,6 @@ class DeploymentJsonMergePatch(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each value in canonical_spec (dict)
-        _field_dict = {}
-        if self.canonical_spec:
-            for _key_canonical_spec in self.canonical_spec:
-                if self.canonical_spec[_key_canonical_spec]:
-                    _field_dict[_key_canonical_spec] = self.canonical_spec[_key_canonical_spec].to_dict()
-            _dict['canonicalSpec'] = _field_dict
         # override the default output from pydantic by calling `to_dict()` of each value in build_contexts (dict)
         _field_dict = {}
         if self.build_contexts:
@@ -205,12 +197,7 @@ class DeploymentJsonMergePatch(BaseModel):
             "sequence": obj.get("sequence"),
             "name": obj.get("name"),
             "rawCompose": obj.get("rawCompose"),
-            "canonicalSpec": dict(
-                (_k, DeploymentJsonMergePatchCanonicalSpecValue.from_dict(_v))
-                for _k, _v in obj["canonicalSpec"].items()
-            )
-            if obj.get("canonicalSpec") is not None
-            else None,
+            "canonicalSpec": obj.get("canonicalSpec"),
             "buildContexts": dict(
                 (_k, dict(
                     (_ik, DeploymentJsonMergePatchBuildContextsValueValue.from_dict(_iv))
