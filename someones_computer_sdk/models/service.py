@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.service_cpu_limit import ServiceCpuLimit
 from someones_computer_sdk.models.service_cpu_reservation import ServiceCpuReservation
 from someones_computer_sdk.models.service_healthcheck_value import ServiceHealthcheckValue
@@ -28,12 +29,13 @@ from someones_computer_sdk.models.service_mem_reservation import ServiceMemReser
 from someones_computer_sdk.models.service_ports_inner_value import ServicePortsInnerValue
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class Service(BaseModel):
     """
     Service
     """ # noqa: E501
-    deployment: Optional[StrictStr] = None
+    deployment: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     name: Optional[StrictStr] = None
     image: Optional[StrictStr] = None
     replicas: Optional[StrictInt] = 1
@@ -48,7 +50,7 @@ class Service(BaseModel):
     healthcheck: Optional[Dict[str, Optional[ServiceHealthcheckValue]]] = Field(default=None, description="Compose `healthcheck:`, projected straight from {@see \\App\\Service\\Compose\\ComposeParser::healthcheck()} into the shape {@see \\App\\Service\\Deploy\\StackDeployer} sends as Swarm's `ContainerSpec.Healthcheck` — `test` is a `NONE`/`CMD`/`CMD-SHELL` argv, the rest are nanoseconds/a count. Null means nothing was declared, so an image's own baked-in `HEALTHCHECK` (or none) stands; `disable: true` in the compose file is not null, it is `test: [\"NONE\"]` — an explicit instruction rather than silence.")
     restart: Optional[StrictStr] = Field(default='always', description="What happens when a container exits; also decides service vs job.")
     forwarded_unscanned: Optional[StrictBool] = Field(default=False, description="Set while this service's image arrived by client-side forwarding (docs/registry.md's \"Client-side forwarding\" callout) and no scan verdict is yet on record for the digest it was pinned to — bytes from a user's machine, not a source tree we built or a registry we chose to trust. A forwarded image is scanned as it loads ({@see \\App\\MessageHandler\\BuildBundleHandler}), so this is normally cleared by the time the service is projected; one left set is a forwarded image that reached deploy unvetted, which {@see \\App\\MessageHandler\\DeployRevisionHandler} refuses to run (docs/image-scanning.md).", alias="forwardedUnscanned")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     __properties: ClassVar[List[str]] = ["deployment", "name", "image", "replicas", "cpuLimit", "memLimit", "cpuReservation", "memReservation", "ports", "httpPort", "command", "entrypoint", "healthcheck", "restart", "forwardedUnscanned", "id", "createdAt", "updatedAt"]
@@ -64,7 +66,8 @@ class Service(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -76,8 +79,7 @@ class Service(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -120,19 +122,19 @@ class Service(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of mem_reservation
         if self.mem_reservation:
             _dict['memReservation'] = self.mem_reservation.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in ports (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in ports (list of dict)
         _items = []
         if self.ports:
             for _item_ports in self.ports:
-                if _item_ports:
-                    _items.append(_item_ports.to_dict())
+                _items.append(
+                     {_inner_key: _inner_value.to_dict() if _inner_value is not None else None for _inner_key, _inner_value in _item_ports.items()} if _item_ports is not None else None
+                )
             _dict['ports'] = _items
         # override the default output from pydantic by calling `to_dict()` of each value in healthcheck (dict)
         _field_dict = {}
         if self.healthcheck:
             for _key_healthcheck in self.healthcheck:
-                if self.healthcheck[_key_healthcheck]:
-                    _field_dict[_key_healthcheck] = self.healthcheck[_key_healthcheck].to_dict()
+                _field_dict[_key_healthcheck] = self.healthcheck[_key_healthcheck].to_dict() if self.healthcheck[_key_healthcheck] is not None else None
             _dict['healthcheck'] = _field_dict
         # set to None if cpu_limit (nullable) is None
         # and model_fields_set contains the field
@@ -174,6 +176,11 @@ class Service(BaseModel):
         if self.entrypoint is None and "entrypoint" in self.model_fields_set:
             _dict['entrypoint'] = None
 
+        # set to None if healthcheck (nullable) is None
+        # and model_fields_set contains the field
+        if self.healthcheck is None and "healthcheck" in self.model_fields_set:
+            _dict['healthcheck'] = None
+
         # set to None if updated_at (nullable) is None
         # and model_fields_set contains the field
         if self.updated_at is None and "updated_at" in self.model_fields_set:
@@ -199,7 +206,10 @@ class Service(BaseModel):
             "memLimit": ServiceMemLimit.from_dict(obj["memLimit"]) if obj.get("memLimit") is not None else None,
             "cpuReservation": ServiceCpuReservation.from_dict(obj["cpuReservation"]) if obj.get("cpuReservation") is not None else None,
             "memReservation": ServiceMemReservation.from_dict(obj["memReservation"]) if obj.get("memReservation") is not None else None,
-            "ports": [Dict[str, ServicePortsInnerValue].from_dict(_item) for _item in obj["ports"]] if obj.get("ports") is not None else None,
+            "ports": [
+                    {_inner_key: ServicePortsInnerValue.from_dict(_inner_value) for _inner_key, _inner_value in _item.items()} if _item is not None else None
+                    for _item in obj["ports"]
+                ] if obj.get("ports") is not None else None,
             "httpPort": obj.get("httpPort"),
             "command": obj.get("command"),
             "entrypoint": obj.get("entrypoint"),

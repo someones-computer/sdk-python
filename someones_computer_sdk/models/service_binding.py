@@ -20,26 +20,29 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ServiceBinding(BaseModel):
     """
     List service bindings (application-to-managed-service links) the caller can see.
     """ # noqa: E501
-    application: Optional[StrictStr] = None
-    service: Optional[StrictStr] = None
+    application: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
+    service: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     injected_keys: Optional[List[StrictStr]] = Field(default=None, description="The environment variable names this binding contributes — one `DATABASE_URL` for a database, the four `S3_*` names for a bucket.", alias="injectedKeys")
     sidecar_service_name: Optional[StrictStr] = Field(default='db', description="What the sidecar is called inside the tenant's stack — `db` unless something else claimed the name first.", alias="sidecarServiceName")
     adopted_compose_service: Optional[StrictStr] = Field(default=None, description="The compose service this binding replaced, or null for a binding somebody asked for directly.", alias="adoptedComposeService")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     adopted: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["application", "service", "injectedKeys", "sidecarServiceName", "adoptedComposeService", "id", "createdAt", "updatedAt", "adopted"]
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -51,8 +54,7 @@ class ServiceBinding(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:

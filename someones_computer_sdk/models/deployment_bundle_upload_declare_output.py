@@ -23,6 +23,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from someones_computer_sdk.models.bundle_upload_target import BundleUploadTarget
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class DeploymentBundleUploadDeclareOutput(BaseModel):
     """
@@ -35,7 +36,8 @@ class DeploymentBundleUploadDeclareOutput(BaseModel):
     __properties: ClassVar[List[str]] = ["contexts", "additionalContexts", "images", "expiresAt"]
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -47,8 +49,7 @@ class DeploymentBundleUploadDeclareOutput(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -77,22 +78,19 @@ class DeploymentBundleUploadDeclareOutput(BaseModel):
         _items = []
         if self.contexts:
             for _item_contexts in self.contexts:
-                if _item_contexts:
-                    _items.append(_item_contexts.to_dict())
+                _items.append(_item_contexts.to_dict() if _item_contexts is not None else None)
             _dict['contexts'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in additional_contexts (list)
         _items = []
         if self.additional_contexts:
             for _item_additional_contexts in self.additional_contexts:
-                if _item_additional_contexts:
-                    _items.append(_item_additional_contexts.to_dict())
+                _items.append(_item_additional_contexts.to_dict() if _item_additional_contexts is not None else None)
             _dict['additionalContexts'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in images (list)
         _items = []
         if self.images:
             for _item_images in self.images:
-                if _item_images:
-                    _items.append(_item_images.to_dict())
+                _items.append(_item_images.to_dict() if _item_images is not None else None)
             _dict['images'] = _items
         return _dict
 

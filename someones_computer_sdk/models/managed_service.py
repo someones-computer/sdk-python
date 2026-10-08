@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.managed_service_engine import ManagedServiceEngine
 from someones_computer_sdk.models.managed_service_last_load_millis import ManagedServiceLastLoadMillis
 from someones_computer_sdk.models.managed_service_pending_load_millis import ManagedServicePendingLoadMillis
@@ -27,12 +28,13 @@ from someones_computer_sdk.models.managed_service_quota_bytes import ManagedServ
 from someones_computer_sdk.models.managed_service_usage_bytes import ManagedServiceUsageBytes
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ManagedService(BaseModel):
     """
     List retired managed services that a restore can still bring back. A service stays restorable for 7 days after deletedAt.
     """ # noqa: E501
-    organization: Optional[StrictStr] = None
+    organization: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     slug: Optional[StrictStr] = None
     kind: Optional[StrictStr] = Field(default=None, description="The catalogue entry the tenant picked, as `(kind, majorVersion)`.")
     major_version: Optional[StrictStr] = Field(default=None, alias="majorVersion")
@@ -50,12 +52,12 @@ class ManagedService(BaseModel):
     last_load_sampled_at: Optional[datetime] = Field(default=None, alias="lastLoadSampledAt")
     pending_load_millis: Optional[ManagedServicePendingLoadMillis] = Field(default=None, alias="pendingLoadMillis")
     bindings: Optional[List[StrictStr]] = None
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     catalogue_entry: Optional[StrictStr] = Field(default=None, description="`postgres 17`, `mysql 8.0` — the catalogue entry, as one string.", alias="catalogueEntry")
-    instance: Optional[ManagedServiceEngine] = None
+    instance: Optional[ManagedServiceEngine] = Field(default=None, description="The engine as a tenant reads it: its name and its state, and nothing else.")
     available: Optional[StrictBool] = None
     deleted: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["organization", "slug", "kind", "majorVersion", "backingName", "externalKeyId", "quotaBytes", "poolSizeOverride", "clientConnectionsOverride", "state", "failureReason", "suspensionReason", "usageBytes", "usageSampledAt", "lastLoadMillis", "lastLoadSampledAt", "pendingLoadMillis", "bindings", "id", "deletedAt", "createdAt", "updatedAt", "catalogueEntry", "instance", "available", "deleted"]
@@ -91,7 +93,8 @@ class ManagedService(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -103,8 +106,7 @@ class ManagedService(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -130,16 +132,20 @@ class ManagedService(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "failure_reason",
             "usage_sampled_at",
             "last_load_sampled_at",
+            "bindings",
             "id",
             "deleted_at",
             "created_at",
             "updated_at",
             "catalogue_entry",
+            "instance",
             "available",
             "deleted",
         ])

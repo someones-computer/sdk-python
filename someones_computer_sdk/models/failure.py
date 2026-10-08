@@ -20,17 +20,19 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.proxmox_instance import ProxmoxInstance
 from someones_computer_sdk.models.user import User
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class Failure(BaseModel):
     """
     Failure
     """ # noqa: E501
-    deployment: Optional[StrictStr] = Field(default=None, description="Deleting a revision deletes its failures with it. They are an account of what that revision did, and outliving the thing they describe would leave a page that can only render half of itself.")
-    proxmox_instance: Optional[ProxmoxInstance] = Field(default=None, alias="proxmoxInstance")
+    deployment: Optional[StrictStr] = Field(default=None, description="Deleting a revision deletes its failures with it. They are an account of what that revision did, and outliving the thing they describe would leave a page that can only render half of itself.", json_schema_extra={"examples": ["https://example.com/"]})
+    proxmox_instance: Optional[ProxmoxInstance] = Field(default=None, description="The platform-infrastructure counterpart to {@see $deployment}, set only for a failure that has no revision behind it at all, such as a template build. There's no tenant on the other end of this one: it's reachable only from `/admin`, never from a member's own pages.", alias="proxmoxInstance")
     phase: Optional[StrictStr] = None
     reason: Optional[StrictStr] = Field(default=None, description="Verbatim, as it was written to `Deployment::$statusReason` at the time.")
     reference: Optional[StrictStr] = Field(default=None, description="The short handle this failure is quoted by — see {@see FailureReference}.")
@@ -40,7 +42,7 @@ class Failure(BaseModel):
     shared_at: Optional[datetime] = Field(default=None, alias="sharedAt")
     share_expires_at: Optional[datetime] = Field(default=None, description="When the capability above stops working, 24 hours after it was minted.", alias="shareExpiresAt")
     shared_by: Optional[User] = Field(default=None, alias="sharedBy")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     display_label: Optional[StrictStr] = Field(default=None, description="The reference as it is written for a reader: `F-24GT1BQ7`.", alias="displayLabel")
@@ -58,7 +60,8 @@ class Failure(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -70,8 +73,7 @@ class Failure(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -95,11 +97,13 @@ class Failure(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "reference",
             "shared_at",
             "share_expires_at",
+            "shared_by",
             "id",
             "created_at",
             "updated_at",

@@ -20,16 +20,18 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.machine import Machine
 from someones_computer_sdk.models.swarm_node import SwarmNode
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class SwarmJsonMergePatch(BaseModel):
     """
     Update a swarm's mutable fields (platform administration).
     """ # noqa: E501
-    owner: Optional[StrictStr] = Field(default=None, description="Null for the platform pool; set for a customer BYO cluster.")
+    owner: Optional[StrictStr] = Field(default=None, description="Null for the platform pool; set for a customer BYO cluster.", json_schema_extra={"examples": ["https://example.com/"]})
     kind: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
     endpoint: Optional[StrictStr] = Field(default=None, description="Manager API endpoint (tcp+TLS) or SSH target.")
@@ -47,7 +49,7 @@ class SwarmJsonMergePatch(BaseModel):
     nodes: Optional[List[SwarmNode]] = None
     machines: Optional[List[Machine]] = Field(default=None, description="The machines that serve this context. Mapped only so a delete can let go of them. See {@see self::markDeleted()}.")
     deployments: Optional[List[StrictStr]] = Field(default=None, description="The revisions placed here. Mapped for the same single reason as {@see self::$machines} — so a delete can let go of them — rather than as a collection anything reads; {@see \\App\\Repository\\DeploymentRepository} is where a caller asks what is on a context.")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
@@ -78,7 +80,8 @@ class SwarmJsonMergePatch(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -90,8 +93,7 @@ class SwarmJsonMergePatch(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -122,6 +124,9 @@ class SwarmJsonMergePatch(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "kind",
@@ -131,6 +136,9 @@ class SwarmJsonMergePatch(BaseModel):
             "ingress_network",
             "ingress_verified_at",
             "ingress_verification_error",
+            "nodes",
+            "machines",
+            "deployments",
             "id",
             "deleted_at",
             "created_at",
@@ -150,15 +158,13 @@ class SwarmJsonMergePatch(BaseModel):
         _items = []
         if self.nodes:
             for _item_nodes in self.nodes:
-                if _item_nodes:
-                    _items.append(_item_nodes.to_dict())
+                _items.append(_item_nodes.to_dict() if _item_nodes is not None else None)
             _dict['nodes'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in machines (list)
         _items = []
         if self.machines:
             for _item_machines in self.machines:
-                if _item_machines:
-                    _items.append(_item_machines.to_dict())
+                _items.append(_item_machines.to_dict() if _item_machines is not None else None)
             _dict['machines'] = _items
         # set to None if owner (nullable) is None
         # and model_fields_set contains the field
@@ -174,6 +180,16 @@ class SwarmJsonMergePatch(BaseModel):
         # and model_fields_set contains the field
         if self.last_seen_at is None and "last_seen_at" in self.model_fields_set:
             _dict['lastSeenAt'] = None
+
+        # set to None if capacity (nullable) is None
+        # and model_fields_set contains the field
+        if self.capacity is None and "capacity" in self.model_fields_set:
+            _dict['capacity'] = None
+
+        # set to None if labels (nullable) is None
+        # and model_fields_set contains the field
+        if self.labels is None and "labels" in self.model_fields_set:
+            _dict['labels'] = None
 
         # set to None if ingress_installed_at (nullable) is None
         # and model_fields_set contains the field

@@ -12,7 +12,6 @@
     Do not edit the class manually.
 """  # noqa: E501
 
-
 # import models into model package
 from someones_computer_sdk.models.adoption_approval import AdoptionApproval
 from someones_computer_sdk.models.adoption_approval_adoption_approval_input import AdoptionApprovalAdoptionApprovalInput
@@ -66,3 +65,4 @@ from someones_computer_sdk.models.swarm import Swarm
 from someones_computer_sdk.models.swarm_json_merge_patch import SwarmJsonMergePatch
 from someones_computer_sdk.models.swarm_node import SwarmNode
 from someones_computer_sdk.models.user import User
+

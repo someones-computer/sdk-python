@@ -20,17 +20,19 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.credit_transaction_engine_millis import CreditTransactionEngineMillis
 from someones_computer_sdk.models.credit_transaction_usage_bytes import CreditTransactionUsageBytes
 from someones_computer_sdk.models.user import User
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class CreditTransaction(BaseModel):
     """
     List an organization's credit ledger rows.
     """ # noqa: E501
-    organization: Optional[StrictStr] = None
+    organization: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     type: Optional[StrictStr] = None
     status: Optional[StrictStr] = 'pending'
     amount_cents: Optional[StrictInt] = Field(default=None, description="Signed integer amount in the smallest currency unit (cents for USD).", alias="amountCents")
@@ -45,7 +47,7 @@ class CreditTransaction(BaseModel):
     usage_rows: Optional[StrictInt] = Field(default=None, description="The row count an API-access-log-volume debit was computed from — the evidence a per-row charge can be checked against, the same role {@see $usageBytes} plays for a storage debit. Null on anything but that kind of debit.", alias="usageRows")
     stripe_event_id: Optional[StrictStr] = Field(default=None, description="Stripe Event id that last transitioned this row; secondary idempotency guard for webhook delivery.", alias="stripeEventId")
     created_by: Optional[User] = Field(default=None, alias="createdBy")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     __properties: ClassVar[List[str]] = ["organization", "type", "status", "amountCents", "currency", "stripeCheckoutSessionId", "usageHour", "resourceKind", "usageSeconds", "unresolvedContainers", "usageBytes", "engineMillis", "usageRows", "stripeEventId", "createdBy", "id", "createdAt", "updatedAt"]
@@ -81,7 +83,8 @@ class CreditTransaction(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -93,8 +96,7 @@ class CreditTransaction(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:

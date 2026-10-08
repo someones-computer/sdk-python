@@ -20,21 +20,23 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.port_allocation import PortAllocation
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ApplicationJsonMergePatch(BaseModel):
     """
     Update an application's mutable fields.
     """ # noqa: E501
-    organization: Optional[StrictStr] = Field(default=None, description="Re-home this application. Callers own everything the uniqueness constraint and the trust invariant elsewhere in the platform expect of a move — the entity itself only holds the pointer.")
+    organization: Optional[StrictStr] = Field(default=None, description="Re-home this application. Callers own everything the uniqueness constraint and the trust invariant elsewhere in the platform expect of a move — the entity itself only holds the pointer.", json_schema_extra={"examples": ["https://example.com/"]})
     slug: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
     isolation_level: Optional[StrictStr] = Field(default='shared', alias="isolationLevel")
     service_adoption: Optional[StrictStr] = Field(default='off', description="Whether a deploy's compose file is watched for services a managed equivalent could replace.", alias="serviceAdoption")
     access_gate: Optional[StrictStr] = Field(default='none', description="How this application's routed HTTP services are gated at the edge — `None` by default, so an application behaves exactly as it always has until an org manager opts it in ({@see AccessGateMode}).", alias="accessGate")
-    current_deployment: Optional[StrictStr] = Field(default=None, description="Pointer to the currently active revision; null before the first deploy.", alias="currentDeployment")
+    current_deployment: Optional[StrictStr] = Field(default=None, description="Pointer to the currently active revision; null before the first deploy.", alias="currentDeployment", json_schema_extra={"examples": ["https://example.com/"]})
     first_running_at: Optional[datetime] = Field(default=None, description="The first moment any revision of this application ever reached `running` — null until it has. What {@see \\App\\Service\\Teardown\\TeardownGracePeriod} measures grace-period uptime from, in place of the current revision's own `createdAt` (#1307): a revision row is stamped at bundle ingest and a fresh one is created on every `sc deploy`, so measuring off it gave a six-month-old production application a ten-minute grace period the moment it was redeployed. This is set once and never moved — a redeploy, or reactivating an old revision, does not reset it, because the application's history is what earns the longer grace, not whichever revision happens to be current.", alias="firstRunningAt")
     primary_deployment_name: Optional[StrictStr] = Field(default=None, description="Which deployment *name* owns the application's apex identity — the stack, network and hostname that carry no revision component ({@see \\App\\Service\\Placement\\StackNaming}).", alias="primaryDeploymentName")
     legacy_stack_base: Optional[StrictStr] = Field(default=None, description="The `<prefix>-<org>-<app>` join this application's stacks were **already named from**, before the separator was made unambiguous — or null, meaning nothing of this application has ever been on a swarm under the old name and {@see \\App\\Service\\Placement\\StackNaming} is free to derive the current one.", alias="legacyStackBase")
@@ -49,7 +51,7 @@ class ApplicationJsonMergePatch(BaseModel):
     pool_short_name: Optional[StrictBool] = Field(default=False, description="Whether `{label}.{poolDomain}`, with no service or deployment level in front, answers for one deployment (#2030). See {@see poolShortHostname()}.", alias="poolShortName")
     pool_short_name_deployment: Optional[StrictStr] = Field(default=None, description="The deployment the short name answers for. Null is the unnamed deployment.", alias="poolShortNameDeployment")
     pool_short_name_service: Optional[StrictStr] = Field(default=None, description="The compose service it routes to. Null is the only HTTP service.", alias="poolShortNameService")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
@@ -100,7 +102,8 @@ class ApplicationJsonMergePatch(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -112,8 +115,7 @@ class ApplicationJsonMergePatch(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -142,11 +144,15 @@ class ApplicationJsonMergePatch(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "first_running_at",
             "icon_key",
             "icon_source",
+            "deployments",
+            "port_allocations",
             "pool_domain",
             "pool_short_name_deployment",
             "pool_short_name_service",
@@ -168,8 +174,7 @@ class ApplicationJsonMergePatch(BaseModel):
         _items = []
         if self.port_allocations:
             for _item_port_allocations in self.port_allocations:
-                if _item_port_allocations:
-                    _items.append(_item_port_allocations.to_dict())
+                _items.append(_item_port_allocations.to_dict() if _item_port_allocations is not None else None)
             _dict['portAllocations'] = _items
         # set to None if current_deployment (nullable) is None
         # and model_fields_set contains the field

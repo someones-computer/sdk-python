@@ -95,27 +95,7 @@ class TestDeploymentJsonMergePatch(unittest.TestCase):
                 failures = [
                     someones_computer_sdk.models.failure.Failure(
                         deployment = 'https://example.com/', 
-                        proxmox_instance = someones_computer_sdk.models.proxmox_instance.ProxmoxInstance(
-                            name = '', 
-                            endpoint = '', 
-                            token_id = '', 
-                            verify_tls = True, 
-                            public_key_pin = '', 
-                            status = 'unreachable', 
-                            last_seen_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            last_error = '', 
-                            version = {
-                                'key' : ''
-                                }, 
-                            template_vmid = 56, 
-                            template_alpine_version = '', 
-                            template_built_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            template_build_started_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            template_build_failures = 56, 
-                            id = '', 
-                            created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                            template = True, ), 
+                        proxmox_instance = null, 
                         phase = 'placement', 
                         reason = '', 
                         reference = '', 
@@ -124,10 +104,7 @@ class TestDeploymentJsonMergePatch(unittest.TestCase):
                         image_digest = '', 
                         shared_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         share_expires_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                        shared_by = someones_computer_sdk.models.user.User(
-                            id = '', 
-                            username = '', 
-                            display_name = '', ), 
+                        shared_by = null, 
                         id = '', 
                         created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
