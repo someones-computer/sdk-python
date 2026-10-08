@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **injected_keys** | **List[str]** | The environment variable names this binding contributes — one &#x60;DATABASE_URL&#x60; for a database, the four &#x60;S3_*&#x60; names for a bucket. | [optional] 
 **sidecar_service_name** | **str** | What the sidecar is called inside the tenant&#39;s stack — &#x60;db&#x60; unless something else claimed the name first. | [optional] [default to 'db']
 **adopted_compose_service** | **str** | The compose service this binding replaced, or null for a binding somebody asked for directly. | [optional] 
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 **adopted** | **bool** |  | [optional] [readonly] 

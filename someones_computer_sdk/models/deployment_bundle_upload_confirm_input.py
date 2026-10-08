@@ -24,13 +24,14 @@ from someones_computer_sdk.models.bundle_context_input import BundleContextInput
 from someones_computer_sdk.models.bundle_forwarded_image_input import BundleForwardedImageInput
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class DeploymentBundleUploadConfirmInput(BaseModel):
     """
     Confirm a completed bundle upload, creating the deployment revision.
     """ # noqa: E501
     secrets: Optional[Dict[str, Dict[str, StrictStr]]] = Field(default=None, description="Raw `build.secrets` values, keyed by service then by BuildKit secret id (Grey.ooo/someones.computer_agent#46) — matches `App\\Service\\Bundle\\BundleIngestor::commitFromStoredContent()`'s `$secrets` parameter.")
-    application: Optional[StrictStr]
+    application: Optional[StrictStr] = Field(json_schema_extra={"examples": ["https://example.com/"]})
     client: StrictStr = Field(description="Matches `App\\Service\\Bundle\\BundleManifest::$client` — which client produced this.")
     name: Optional[Annotated[str, Field(strict=True, max_length=63)]] = None
     force: Optional[StrictBool] = Field(default=False, description="Ask for a new revision even if this digest already matches one — {@see BundleManifest::$force}'s own meaning, unchanged.")
@@ -40,7 +41,8 @@ class DeploymentBundleUploadConfirmInput(BaseModel):
     __properties: ClassVar[List[str]] = ["secrets", "application", "client", "name", "force", "compose", "contexts", "images"]
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -52,8 +54,7 @@ class DeploymentBundleUploadConfirmInput(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -82,15 +83,13 @@ class DeploymentBundleUploadConfirmInput(BaseModel):
         _items = []
         if self.contexts:
             for _item_contexts in self.contexts:
-                if _item_contexts:
-                    _items.append(_item_contexts.to_dict())
+                _items.append(_item_contexts.to_dict() if _item_contexts is not None else None)
             _dict['contexts'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in images (list)
         _items = []
         if self.images:
             for _item_images in self.images:
-                if _item_images:
-                    _items.append(_item_images.to_dict())
+                _items.append(_item_images.to_dict() if _item_images is not None else None)
             _dict['images'] = _items
         # set to None if application (nullable) is None
         # and model_fields_set contains the field

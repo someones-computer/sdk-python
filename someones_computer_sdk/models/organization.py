@@ -20,24 +20,26 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.machine import Machine
 from someones_computer_sdk.models.membership import Membership
 from someones_computer_sdk.models.organization_signal import OrganizationSignal
 from someones_computer_sdk.models.user import User
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class Organization(BaseModel):
     """
     List organizations the caller is a member of.
     """ # noqa: E501
-    machine_account: Optional[User] = Field(default=None, alias="machineAccount")
+    machine_account: Optional[User] = Field(default=None, description="The principal an {@see OrganizationToken} authenticates as: a machine account this platform owns, not a person.", alias="machineAccount")
     name: Optional[StrictStr] = None
     slug: Optional[StrictStr] = Field(default=None, description="`unique: true` stops two organizations holding the same *string*; the constraint stops two holding strings that fold to the same **stack name**, which the database has no way to express (#860). Both are needed: the column guards the identifier, the constraint guards what is derived from it.")
     theme: Optional[StrictStr] = Field(default=None, description="The skin this organization's members see, or null to take the instance's.")
     tier_pin: Optional[StrictStr] = Field(default=None, description="An operator's grant of a tier this organization would not reach through any member — {@see \\App\\Enum\\AccountTier::Verified} in particular, which is granted rather than earned and belongs to a contractual relationship with the *organization*, not incidentally to whichever of its members happens to carry the highest personal tier ({@see \\App\\Service\\Trust\\TierResolver::forOrganization()}). A member individually pinned `Verified` still lifts the org the same way a `Trusted` member always has — this pin is for granting it to the org directly, without needing a person to hang it on.", alias="tierPin")
     tier_pinned_at: Optional[datetime] = Field(default=None, alias="tierPinnedAt")
-    tier_pinned_by: Optional[User] = Field(default=None, alias="tierPinnedBy")
+    tier_pinned_by: Optional[User] = Field(default=None, description="Nullable and SET NULL: somebody can delete an operator, and the pin outlives them.", alias="tierPinnedBy")
     tier_pin_reason: Optional[StrictStr] = Field(default=None, alias="tierPinReason")
     low_balance_warned_at: Optional[datetime] = Field(default=None, description="When {@see \\App\\MessageHandler\\CheckRunwayHandler} last warned this organization that its projected runway had dropped below the threshold; null once no warning is outstanding. Set once per crossing and cleared the moment the projection recovers — by a top-up or by the burn easing off — which is what makes \"warn once, re-arm on recovery\" a fact this column can answer rather than something re-derived from the notification table on every tick.", alias="lowBalanceWarnedAt")
     two_factor_required_at: Optional[datetime] = Field(default=None, description="When an Owner/Admin turned on the requirement that every member of this organization protects their account with a second factor; null means it is optional. A reversible policy toggle, stamped like {@see User::$disabledAt} rather than a verdict, so no \"who set it\" attribution.", alias="twoFactorRequiredAt")
@@ -48,7 +50,7 @@ class Organization(BaseModel):
     machines: Optional[List[Machine]] = Field(default=None, description="Machines self-service-provisioned for this organization.")
     credit_transactions: Optional[List[StrictStr]] = Field(default=None, description="The append-only credit ledger.", alias="creditTransactions")
     signals: Optional[List[OrganizationSignal]] = Field(default=None, description="What this organization's own compose files have told the platform about it (#818).")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
@@ -77,7 +79,8 @@ class Organization(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -89,8 +92,7 @@ class Organization(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -118,14 +120,28 @@ class Organization(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "tier_pin",
             "tier_pinned_at",
+            "tier_pinned_by",
             "tier_pin_reason",
             "low_balance_warned_at",
             "two_factor_required_at",
             "api_access_log_retention_days",
+            "memberships",
+            "applications",
+            "swarms",
+            "machines",
+            "credit_transactions",
+            "signals",
             "id",
             "deleted_at",
             "created_at",
@@ -149,22 +165,19 @@ class Organization(BaseModel):
         _items = []
         if self.memberships:
             for _item_memberships in self.memberships:
-                if _item_memberships:
-                    _items.append(_item_memberships.to_dict())
+                _items.append(_item_memberships.to_dict() if _item_memberships is not None else None)
             _dict['memberships'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in machines (list)
         _items = []
         if self.machines:
             for _item_machines in self.machines:
-                if _item_machines:
-                    _items.append(_item_machines.to_dict())
+                _items.append(_item_machines.to_dict() if _item_machines is not None else None)
             _dict['machines'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in signals (list)
         _items = []
         if self.signals:
             for _item_signals in self.signals:
-                if _item_signals:
-                    _items.append(_item_signals.to_dict())
+                _items.append(_item_signals.to_dict() if _item_signals is not None else None)
             _dict['signals'] = _items
         # set to None if machine_account (nullable) is None
         # and model_fields_set contains the field

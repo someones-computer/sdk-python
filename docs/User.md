@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **username** | **str** | Handle the user can sign in with instead of their email. | [optional] 
 **display_name** | **str** |  | [optional] 
 

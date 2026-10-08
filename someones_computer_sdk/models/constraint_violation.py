@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from someones_computer_sdk.models.constraint_violation_violations_inner import ConstraintViolationViolationsInner
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ConstraintViolation(BaseModel):
     """
@@ -36,7 +37,8 @@ class ConstraintViolation(BaseModel):
     __properties: ClassVar[List[str]] = ["status", "violations", "detail", "type", "title", "instance"]
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -48,8 +50,7 @@ class ConstraintViolation(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -86,8 +87,7 @@ class ConstraintViolation(BaseModel):
         _items = []
         if self.violations:
             for _item_violations in self.violations:
-                if _item_violations:
-                    _items.append(_item_violations.to_dict())
+                _items.append(_item_violations.to_dict() if _item_violations is not None else None)
             _dict['violations'] = _items
         # set to None if title (nullable) is None
         # and model_fields_set contains the field

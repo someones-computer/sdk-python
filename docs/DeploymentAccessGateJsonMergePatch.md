@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **application** | **str** |  | [optional] 
 **name** | **str** |  | [optional] 
 **access_gate** | **str** |  | [optional] 
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 

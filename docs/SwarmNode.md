@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **hostname** | **str** |  | [optional] 
 **state** | **str** |  | [optional] 
 **capacity** | **Dict[str, Optional[str]]** | This node&#39;s share of the cluster&#39;s capacity, as the reconciler read it. | [optional] 
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 

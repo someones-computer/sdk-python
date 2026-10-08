@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 **template_built_at** | **datetime** |  | [optional] [readonly] 
 **template_build_started_at** | **datetime** | When a background template build was dispatched for this endpoint, or null when none is in flight — the only trace a build leaves while it runs. | [optional] [readonly] 
 **template_build_failures** | **int** | How many builds in a row have failed since the last success, incremented by {@see \\App\\MessageHandler\\BuildProxmoxTemplateHandler}&#39;s catch block and cleared by {@see recordTemplateBuilt()}. This is what {@see templateBuildIsBackedOff()} backs the retry off against — without it, {@see \\App\\MessageHandler\\CheckProxmoxTemplatesHandler} redispatches a build every tick regardless of how many times it has already failed (#1059). | [optional] [readonly] [default to 0]
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 **template** | **bool** | Whether &#x60;app:proxmox:template&#x60; has ever recorded a build against this endpoint. | [optional] [readonly] 

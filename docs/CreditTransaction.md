@@ -21,7 +21,7 @@ Name | Type | Description | Notes
 **usage_rows** | **int** | The row count an API-access-log-volume debit was computed from — the evidence a per-row charge can be checked against, the same role {@see $usageBytes} plays for a storage debit. Null on anything but that kind of debit. | [optional] [readonly] 
 **stripe_event_id** | **str** | Stripe Event id that last transitioned this row; secondary idempotency guard for webhook delivery. | [optional] 
 **created_by** | [**User**](User.md) |  | [optional] 
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 
