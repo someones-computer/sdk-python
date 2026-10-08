@@ -45,7 +45,7 @@ class Swarm(BaseModel):
     ingress_verified_at: Optional[datetime] = Field(default=None, description="When the edge was last *observed* routing — the overlay present, the edge service on it, watching it, with a task running ({@see \\App\\Service\\Ingress\\IngressVerifier}).", alias="ingressVerifiedAt")
     ingress_verification_error: Optional[StrictStr] = Field(default=None, description="What the last verification found wrong, or null when the edge was routing.", alias="ingressVerificationError")
     nodes: Optional[List[SwarmNode]] = None
-    machines: Optional[List[Machine]] = None
+    machines: Optional[List[Machine]] = Field(default=None, description="The machines that serve this context. Mapped only so a delete can let go of them. See {@see self::markDeleted()}.")
     deployments: Optional[List[StrictStr]] = Field(default=None, description="The revisions placed here. Mapped for the same single reason as {@see self::$machines} — so a delete can let go of them — rather than as a collection anything reads; {@see \\App\\Repository\\DeploymentRepository} is where a caller asks what is on a context.")
     id: Optional[StrictStr] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")

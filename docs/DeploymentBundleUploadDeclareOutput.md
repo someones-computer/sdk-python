@@ -6,9 +6,9 @@ Declare a bundle upload and get a presigned URL to upload it to.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**contexts** | [**List[BundleUploadTarget]**](BundleUploadTarget.md) |  | [optional] 
-**additional_contexts** | [**List[BundleUploadTarget]**](BundleUploadTarget.md) |  | [optional] 
-**images** | [**List[BundleUploadTarget]**](BundleUploadTarget.md) |  | [optional] 
+**contexts** | [**List[BundleUploadTarget]**](BundleUploadTarget.md) | one per declared build context | [optional] 
+**additional_contexts** | [**List[BundleUploadTarget]**](BundleUploadTarget.md) | one per declared named additional context | [optional] 
+**images** | [**List[BundleUploadTarget]**](BundleUploadTarget.md) | one per declared forwarded image | [optional] 
 **expires_at** | **datetime** |  | [optional] 
 
 ## Example
