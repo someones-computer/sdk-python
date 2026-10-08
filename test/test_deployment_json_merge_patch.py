@@ -39,9 +39,7 @@ class TestDeploymentJsonMergePatch(unittest.TestCase):
                 sequence = 56,
                 name = '',
                 raw_compose = '',
-                canonical_spec = {
-                    'key' : null
-                    },
+                canonical_spec = { },
                 build_contexts = {
                     'key' : {
                         'key' : null
