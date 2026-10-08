@@ -38,6 +38,7 @@ docs/Failure.md
 docs/Machine.md
 docs/ManagedService.md
 docs/ManagedServiceApi.md
+docs/ManagedServiceEngine.md
 docs/ManagedServiceLastLoadMillis.md
 docs/ManagedServiceManagedServiceInput.md
 docs/ManagedServicePendingLoadMillis.md
@@ -57,9 +58,6 @@ docs/ServiceBindingServiceBindingInput.md
 docs/ServiceCpuLimit.md
 docs/ServiceCpuReservation.md
 docs/ServiceHealthcheckValue.md
-docs/ServiceInstance.md
-docs/ServiceInstanceCapacityBytes.md
-docs/ServiceInstanceObservedUsageBytes.md
 docs/ServiceMemLimit.md
 docs/ServiceMemReservation.md
 docs/ServicePortsInnerValue.md
@@ -117,6 +115,7 @@ someones_computer_sdk/models/error.py
 someones_computer_sdk/models/failure.py
 someones_computer_sdk/models/machine.py
 someones_computer_sdk/models/managed_service.py
+someones_computer_sdk/models/managed_service_engine.py
 someones_computer_sdk/models/managed_service_last_load_millis.py
 someones_computer_sdk/models/managed_service_managed_service_input.py
 someones_computer_sdk/models/managed_service_pending_load_millis.py
@@ -134,9 +133,6 @@ someones_computer_sdk/models/service_binding_service_binding_input.py
 someones_computer_sdk/models/service_cpu_limit.py
 someones_computer_sdk/models/service_cpu_reservation.py
 someones_computer_sdk/models/service_healthcheck_value.py
-someones_computer_sdk/models/service_instance.py
-someones_computer_sdk/models/service_instance_capacity_bytes.py
-someones_computer_sdk/models/service_instance_observed_usage_bytes.py
 someones_computer_sdk/models/service_mem_limit.py
 someones_computer_sdk/models/service_mem_reservation.py
 someones_computer_sdk/models/service_ports_inner_value.py
@@ -182,6 +178,7 @@ test/test_failure.py
 test/test_machine.py
 test/test_managed_service.py
 test/test_managed_service_api.py
+test/test_managed_service_engine.py
 test/test_managed_service_last_load_millis.py
 test/test_managed_service_managed_service_input.py
 test/test_managed_service_pending_load_millis.py
@@ -201,9 +198,6 @@ test/test_service_binding_service_binding_input.py
 test/test_service_cpu_limit.py
 test/test_service_cpu_reservation.py
 test/test_service_healthcheck_value.py
-test/test_service_instance.py
-test/test_service_instance_capacity_bytes.py
-test/test_service_instance_observed_usage_bytes.py
 test/test_service_mem_limit.py
 test/test_service_mem_reservation.py
 test/test_service_ports_inner_value.py

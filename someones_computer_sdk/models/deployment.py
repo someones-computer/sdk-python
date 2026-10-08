@@ -47,8 +47,8 @@ class Deployment(BaseModel):
     degraded: Optional[StrictBool] = Field(default=False, description="Set once a `Running` revision has gone a full grace period with zero tasks actually running on its swarm (#1279) — a {@see Failure} of {@see \\App\\Enum\\FailurePhase::Runtime} is recorded alongside it. Never flips `$status` itself: `running` still means \"this is what the application should be serving\", and a revision the platform cannot reach a running task for is a fact about the swarm, not a new desired state — the same desired/observed separation {@see \\App\\Service\\Reconcile\\DriftDetector} already keeps at read time, made durable here so it survives past one page view.")
     digest: Optional[StrictStr] = Field(default=None, description="Content digest of the canonical spec, for dedupe/audit.")
     created_by: Optional[User] = Field(default=None, alias="createdBy")
-    services: Optional[List[Service]] = None
-    failures: Optional[List[Failure]] = None
+    services: Optional[List[Service]] = Field(default=None, description="Projection of the compose services.")
+    failures: Optional[List[Failure]] = Field(default=None, description="Everything that has gone wrong with this revision, append-only. Distinct from {@see \\App\\Entity\\self::$statusReason}, which is only ever the latest. See {@see \\App\\Entity\\Failure} on why both exist.")
     id: Optional[StrictStr] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")

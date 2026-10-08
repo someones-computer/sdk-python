@@ -28,9 +28,9 @@ class DeploymentBundleUploadDeclareOutput(BaseModel):
     """
     Declare a bundle upload and get a presigned URL to upload it to.
     """ # noqa: E501
-    contexts: Optional[List[BundleUploadTarget]] = None
-    additional_contexts: Optional[List[BundleUploadTarget]] = Field(default=None, alias="additionalContexts")
-    images: Optional[List[BundleUploadTarget]] = None
+    contexts: Optional[List[BundleUploadTarget]] = Field(default=None, description="one per declared build context")
+    additional_contexts: Optional[List[BundleUploadTarget]] = Field(default=None, description="one per declared named additional context", alias="additionalContexts")
+    images: Optional[List[BundleUploadTarget]] = Field(default=None, description="one per declared forwarded image")
     expires_at: Optional[datetime] = Field(default=None, alias="expiresAt")
     __properties: ClassVar[List[str]] = ["contexts", "additionalContexts", "images", "expiresAt"]
 

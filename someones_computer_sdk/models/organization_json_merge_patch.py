@@ -45,9 +45,9 @@ class OrganizationJsonMergePatch(BaseModel):
     memberships: Optional[List[Membership]] = None
     applications: Optional[List[StrictStr]] = None
     swarms: Optional[List[StrictStr]] = Field(default=None, description="BYO swarms owned by this organization.")
-    machines: Optional[List[Machine]] = None
+    machines: Optional[List[Machine]] = Field(default=None, description="Machines self-service-provisioned for this organization.")
     credit_transactions: Optional[List[StrictStr]] = Field(default=None, description="The append-only credit ledger.", alias="creditTransactions")
-    signals: Optional[List[OrganizationSignal]] = None
+    signals: Optional[List[OrganizationSignal]] = Field(default=None, description="What this organization's own compose files have told the platform about it (#818).")
     id: Optional[StrictStr] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
