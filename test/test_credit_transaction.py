@@ -48,6 +48,7 @@ class TestCreditTransaction(unittest.TestCase):
                 usage_bytes = None,
                 engine_millis = None,
                 usage_rows = 56,
+                stripe_payment_intent_id = '',
                 stripe_event_id = '',
                 created_by = someones_computer_sdk.models.user.User(
                     id = '', 
