@@ -65,6 +65,9 @@ docs/SwarmApi.md
 docs/SwarmJsonMergePatch.md
 docs/SwarmNode.md
 docs/User.md
+docs/Volume.md
+docs/VolumeApi.md
+docs/VolumeVolumeInput.md
 git_push.sh
 pyproject.toml
 requirements.txt
@@ -81,6 +84,7 @@ someones_computer_sdk/api/managed_service_api.py
 someones_computer_sdk/api/organization_api.py
 someones_computer_sdk/api/service_binding_api.py
 someones_computer_sdk/api/swarm_api.py
+someones_computer_sdk/api/volume_api.py
 someones_computer_sdk/api_client.py
 someones_computer_sdk/api_response.py
 someones_computer_sdk/configuration.py
@@ -138,6 +142,8 @@ someones_computer_sdk/models/swarm.py
 someones_computer_sdk/models/swarm_json_merge_patch.py
 someones_computer_sdk/models/swarm_node.py
 someones_computer_sdk/models/user.py
+someones_computer_sdk/models/volume.py
+someones_computer_sdk/models/volume_volume_input.py
 someones_computer_sdk/py.typed
 someones_computer_sdk/rest.py
 test-requirements.txt
@@ -203,4 +209,7 @@ test/test_swarm_api.py
 test/test_swarm_json_merge_patch.py
 test/test_swarm_node.py
 test/test_user.py
+test/test_volume.py
+test/test_volume_api.py
+test/test_volume_volume_input.py
 tox.ini

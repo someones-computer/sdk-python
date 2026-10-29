@@ -65,4 +65,6 @@ from someones_computer_sdk.models.swarm import Swarm
 from someones_computer_sdk.models.swarm_json_merge_patch import SwarmJsonMergePatch
 from someones_computer_sdk.models.swarm_node import SwarmNode
 from someones_computer_sdk.models.user import User
+from someones_computer_sdk.models.volume import Volume
+from someones_computer_sdk.models.volume_volume_input import VolumeVolumeInput
 

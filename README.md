@@ -150,6 +150,10 @@ Class | Method | HTTP request | Description
 *SwarmApi* | [**swarms_get**](docs/SwarmApi.md#swarms_get) | **GET** /api/swarms/{id} | Retrieves a Swarm resource.
 *SwarmApi* | [**swarms_list**](docs/SwarmApi.md#swarms_list) | **GET** /api/swarms | Retrieves the collection of Swarm resources.
 *SwarmApi* | [**swarms_update**](docs/SwarmApi.md#swarms_update) | **PATCH** /api/swarms/{id} | Updates the Swarm resource.
+*VolumeApi* | [**volumes_create**](docs/VolumeApi.md#volumes_create) | **POST** /api/volumes | Creates a Volume resource.
+*VolumeApi* | [**volumes_delete**](docs/VolumeApi.md#volumes_delete) | **DELETE** /api/volumes/{id} | Removes the Volume resource.
+*VolumeApi* | [**volumes_get**](docs/VolumeApi.md#volumes_get) | **GET** /api/volumes/{id} | Retrieves a Volume resource.
+*VolumeApi* | [**volumes_list**](docs/VolumeApi.md#volumes_list) | **GET** /api/volumes | Retrieves the collection of Volume resources.
 
 
 ## Documentation For Models
@@ -206,6 +210,8 @@ Class | Method | HTTP request | Description
  - [SwarmJsonMergePatch](docs/SwarmJsonMergePatch.md)
  - [SwarmNode](docs/SwarmNode.md)
  - [User](docs/User.md)
+ - [Volume](docs/Volume.md)
+ - [VolumeVolumeInput](docs/VolumeVolumeInput.md)
 
 
 <a id="documentation-for-authorization"></a>
