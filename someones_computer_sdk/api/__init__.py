@@ -10,4 +10,5 @@ from someones_computer_sdk.api.managed_service_api import ManagedServiceApi
 from someones_computer_sdk.api.organization_api import OrganizationApi
 from someones_computer_sdk.api.service_binding_api import ServiceBindingApi
 from someones_computer_sdk.api.swarm_api import SwarmApi
+from someones_computer_sdk.api.volume_api import VolumeApi
 

@@ -27,6 +27,7 @@ __all__ = [
     "OrganizationApi",
     "ServiceBindingApi",
     "SwarmApi",
+    "VolumeApi",
     "ApiResponse",
     "ApiClient",
     "Configuration",
@@ -88,6 +89,8 @@ __all__ = [
     "SwarmJsonMergePatch",
     "SwarmNode",
     "User",
+    "Volume",
+    "VolumeVolumeInput",
 ]
 
 # import apis into sdk package
@@ -100,6 +103,7 @@ from someones_computer_sdk.api.managed_service_api import ManagedServiceApi as M
 from someones_computer_sdk.api.organization_api import OrganizationApi as OrganizationApi
 from someones_computer_sdk.api.service_binding_api import ServiceBindingApi as ServiceBindingApi
 from someones_computer_sdk.api.swarm_api import SwarmApi as SwarmApi
+from someones_computer_sdk.api.volume_api import VolumeApi as VolumeApi
 
 # import ApiClient
 from someones_computer_sdk.api_response import ApiResponse as ApiResponse
@@ -165,4 +169,6 @@ from someones_computer_sdk.models.swarm import Swarm as Swarm
 from someones_computer_sdk.models.swarm_json_merge_patch import SwarmJsonMergePatch as SwarmJsonMergePatch
 from someones_computer_sdk.models.swarm_node import SwarmNode as SwarmNode
 from someones_computer_sdk.models.user import User as User
+from someones_computer_sdk.models.volume import Volume as Volume
+from someones_computer_sdk.models.volume_volume_input import VolumeVolumeInput as VolumeVolumeInput
 
