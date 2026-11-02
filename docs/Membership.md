@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **organization** | **str** |  | [optional] 
 **user** | [**User**](User.md) |  | [optional] 
 **role** | **str** |  | [optional] 
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 

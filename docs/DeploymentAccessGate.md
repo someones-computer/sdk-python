@@ -8,11 +8,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **application** | **str** |  | [optional] 
 **name** | **str** |  | [optional] 
-**access_gate** | **str** |  | [optional] [default to 'none']
-**id** | **str** |  | [optional] [readonly] 
+**access_gate** | **str** |  | [optional] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
-**access_gate_credential** | [**SealedSecret**](SealedSecret.md) |  | [optional] 
 
 ## Example
 

@@ -18,26 +18,41 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
-class RecoveryCode(BaseModel):
+class Volume(BaseModel):
     """
-    RecoveryCode
+    List the volumes the caller can see.
     """ # noqa: E501
-    user: Optional[User] = None
-    code_hash: Optional[StrictStr] = Field(default=None, description="SHA-256 hex digest of the plaintext code; the only copy that is ever stored.", alias="codeHash")
-    used_at: Optional[datetime] = Field(default=None, description="When this code was spent; null means it is still usable.", alias="usedAt")
-    id: Optional[StrictStr] = None
+    organization: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
+    slug: Optional[StrictStr] = None
+    id: Optional[UUID] = None
+    deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
-    used: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["user", "codeHash", "usedAt", "id", "createdAt", "updatedAt", "used"]
+    state: Optional[StrictStr] = Field(default=None, description="The bucket's state, as the volume's own.")
+    usage_bytes: Optional[StrictInt] = Field(default=None, description="Bytes the bucket holds at the last measurement, or null before the first.", alias="usageBytes")
+    deleted: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["organization", "slug", "id", "deletedAt", "createdAt", "updatedAt", "state", "usageBytes", "deleted"]
+
+    @field_validator('state')
+    def state_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['requested', 'creating', 'available', 'suspended', 'dropping', 'dropped', 'failed']):
+            raise ValueError("must be one of enum values ('requested', 'creating', 'available', 'suspended', 'dropping', 'dropped', 'failed')")
+        return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -49,12 +64,11 @@ class RecoveryCode(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of RecoveryCode from a JSON string"""
+        """Create an instance of Volume from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,13 +85,17 @@ class RecoveryCode(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
-            "used_at",
             "id",
+            "deleted_at",
             "created_at",
             "updated_at",
-            "used",
+            "state",
+            "usage_bytes",
+            "deleted",
         ])
 
         _dict = self.model_dump(
@@ -85,24 +103,26 @@ class RecoveryCode(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of user
-        if self.user:
-            _dict['user'] = self.user.to_dict()
-        # set to None if used_at (nullable) is None
+        # set to None if deleted_at (nullable) is None
         # and model_fields_set contains the field
-        if self.used_at is None and "used_at" in self.model_fields_set:
-            _dict['usedAt'] = None
+        if self.deleted_at is None and "deleted_at" in self.model_fields_set:
+            _dict['deletedAt'] = None
 
         # set to None if updated_at (nullable) is None
         # and model_fields_set contains the field
         if self.updated_at is None and "updated_at" in self.model_fields_set:
             _dict['updatedAt'] = None
 
+        # set to None if usage_bytes (nullable) is None
+        # and model_fields_set contains the field
+        if self.usage_bytes is None and "usage_bytes" in self.model_fields_set:
+            _dict['usageBytes'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of RecoveryCode from a dict"""
+        """Create an instance of Volume from a dict"""
         if obj is None:
             return None
 
@@ -110,17 +130,16 @@ class RecoveryCode(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "user": User.from_dict(obj["user"]) if obj.get("user") is not None else None,
-            "codeHash": obj.get("codeHash"),
-            "usedAt": obj.get("usedAt"),
+            "organization": obj.get("organization"),
+            "slug": obj.get("slug"),
             "id": obj.get("id"),
+            "deletedAt": obj.get("deletedAt"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
-            "used": obj.get("used")
+            "state": obj.get("state"),
+            "usageBytes": obj.get("usageBytes"),
+            "deleted": obj.get("deleted")
         })
         return _obj
 
-from someones_computer_sdk.models.user import User
-# TODO: Rewrite to not use raise_errors
-RecoveryCode.model_rebuild(raise_errors=False)
 

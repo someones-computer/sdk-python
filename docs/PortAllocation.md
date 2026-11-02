@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **protocol** | **str** |  | [optional] 
 **published_port** | **int** | What the world connects to. Unique per protocol on this cluster. | [optional] 
 **assigned** | **bool** | Whether the platform chose this number or the compose file did. | [optional] 
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 

@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ManagedServiceManagedServiceInput(BaseModel):
     """
@@ -29,25 +30,26 @@ class ManagedServiceManagedServiceInput(BaseModel):
     """ # noqa: E501
     engine: Annotated[str, Field(strict=True)] = Field(description="The engine, as the catalogue names it — `postgres:17`, `mysql:8.0`.")
     slug: Annotated[str, Field(strict=True, max_length=63)] = Field(description="The tenant's own name for it — what appears in the UI and in `sc service ls`.")
-    organization: Optional[StrictStr]
+    organization: Optional[StrictStr] = Field(json_schema_extra={"examples": ["https://example.com/"]})
     __properties: ClassVar[List[str]] = ["engine", "slug", "organization"]
 
-    @field_validator('engine')
+    @field_validator('engine', mode="before")
     def engine_validate_regular_expression(cls, value):
         """Validates the regular expression"""
-        if not re.match(r"^([a-z]+:[0-9]+(\.[0-9]+)?)$", value):
+        if isinstance(value, str) and not re.match(r"^([a-z]+:[0-9]+(\.[0-9]+)?)$", value):
             raise ValueError(r"must validate the regular expression /^([a-z]+:[0-9]+(\.[0-9]+)?)$/")
         return value
 
-    @field_validator('slug')
+    @field_validator('slug', mode="before")
     def slug_validate_regular_expression(cls, value):
         """Validates the regular expression"""
-        if not re.match(r"^([a-z0-9][a-z0-9-]*)$", value):
+        if isinstance(value, str) and not re.match(r"^([a-z0-9][a-z0-9-]*)$", value):
             raise ValueError(r"must validate the regular expression /^([a-z0-9][a-z0-9-]*)$/")
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -59,8 +61,7 @@ class ManagedServiceManagedServiceInput(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:

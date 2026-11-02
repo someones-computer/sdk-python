@@ -17,22 +17,31 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
-class UserAvatarPhoto(BaseModel):
+class VolumeVolumeInput(BaseModel):
     """
-    UserAvatarPhoto
+    Create a volume: a named store for a game server, held in a Garage bucket.
     """ # noqa: E501
-    photo: Optional[StrictStr] = Field(default=None, description="Base64 of the raw image bytes — see {@see User::getAvatarPhoto()} for why text rather than a BLOB.")
-    type: Optional[StrictStr] = Field(default=None, description="The media type sniffed from the bytes ({@see \\App\\Service\\DirectoryPhoto}), nullable like the old `avatar_photo_type` column was: bytes can be stored without a type, and {@see \\App\\Controller\\AvatarController} falls back to `application/octet-stream`.")
-    id: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["photo", "type", "id"]
+    slug: Annotated[str, Field(strict=True, max_length=56)] = Field(description="The tenant's own name for it. It shows in the panel and in a game server's settings.")
+    organization: Optional[StrictStr] = Field(json_schema_extra={"examples": ["https://example.com/"]})
+    __properties: ClassVar[List[str]] = ["slug", "organization"]
+
+    @field_validator('slug', mode="before")
+    def slug_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if isinstance(value, str) and not re.match(r"^([a-z0-9][a-z0-9-]*)$", value):
+            raise ValueError(r"must validate the regular expression /^([a-z0-9][a-z0-9-]*)$/")
+        return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -44,12 +53,11 @@ class UserAvatarPhoto(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UserAvatarPhoto from a JSON string"""
+        """Create an instance of VolumeVolumeInput from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -61,12 +69,8 @@ class UserAvatarPhoto(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
-            "photo",
-            "id",
         ])
 
         _dict = self.model_dump(
@@ -74,16 +78,16 @@ class UserAvatarPhoto(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if type (nullable) is None
+        # set to None if organization (nullable) is None
         # and model_fields_set contains the field
-        if self.type is None and "type" in self.model_fields_set:
-            _dict['type'] = None
+        if self.organization is None and "organization" in self.model_fields_set:
+            _dict['organization'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UserAvatarPhoto from a dict"""
+        """Create an instance of VolumeVolumeInput from a dict"""
         if obj is None:
             return None
 
@@ -91,9 +95,8 @@ class UserAvatarPhoto(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "photo": obj.get("photo"),
-            "type": obj.get("type"),
-            "id": obj.get("id")
+            "slug": obj.get("slug") if obj.get("slug") is not None else '',
+            "organization": obj.get("organization")
         })
         return _obj
 
