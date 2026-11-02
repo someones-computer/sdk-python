@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 **provision_started_at** | **datetime** | When the current run through the flow began — set at construction and reset on every {@see self::reprovision()}, mirroring {@see ProxmoxInstance::$templateBuildStartedAt}. What {@see self::isProvisioningStale()} measures against: the real ceiling is the flow&#39;s own step deadlines ({@see \\App\\MessageHandler\\ProvisionMachineHandler}&#39;s &#x60;BOOT_DEADLINE&#x60;/&#x60;TASK_DEADLINE&#x60;), and a run still going past {@see self::PROVISION_PRESUMED_DEAD_AFTER} is a worker that died holding it — a crash, an OOM, a deploy restart — rather than one still working. | [optional] [readonly] 
 **swarm** | **str** | The context this machine serves, if any. Nullable on purpose — see the class docblock. | [optional] 
 **organization** | **str** | The organization this machine was self-service-provisioned for, or null for one an operator made through &#x60;/admin/machines&#x60;. Nullable for the same reason &#x60;$swarm&#x60; is: an admin-made machine belongs to nobody&#39;s tenancy, and this column must not invent an owner for it. Set once, at creation, to the same organization that owns the paired &#x60;$swarm&#x60; — {@see Organization::markDeleted()} detaches it rather than deleting the row, matching how a BYO context&#39;s owner is handled. | [optional] 
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 **disk_gigabytes** | **int** |  | [optional] [readonly] 

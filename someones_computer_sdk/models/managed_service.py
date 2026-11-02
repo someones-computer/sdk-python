@@ -20,24 +20,24 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
+from someones_computer_sdk.models.managed_service_engine import ManagedServiceEngine
 from someones_computer_sdk.models.managed_service_last_load_millis import ManagedServiceLastLoadMillis
 from someones_computer_sdk.models.managed_service_pending_load_millis import ManagedServicePendingLoadMillis
 from someones_computer_sdk.models.managed_service_quota_bytes import ManagedServiceQuotaBytes
 from someones_computer_sdk.models.managed_service_usage_bytes import ManagedServiceUsageBytes
-from someones_computer_sdk.models.sealed_secret import SealedSecret
-from someones_computer_sdk.models.service_instance import ServiceInstance
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ManagedService(BaseModel):
     """
-    List managed services (databases/buckets) the caller can see.
+    List retired managed services that a restore can still bring back. A service stays restorable for 7 days after deletedAt.
     """ # noqa: E501
-    organization: Optional[StrictStr] = None
+    organization: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     slug: Optional[StrictStr] = None
     kind: Optional[StrictStr] = Field(default=None, description="The catalogue entry the tenant picked, as `(kind, majorVersion)`.")
     major_version: Optional[StrictStr] = Field(default=None, alias="majorVersion")
-    instance: Optional[ServiceInstance] = None
     backing_name: Optional[StrictStr] = Field(default=None, description="What the object is actually called inside the engine — `acme_hearth_db` for a database, `acme-hearth-media` for a bucket.", alias="backingName")
     external_key_id: Optional[StrictStr] = Field(default=None, description="A bucket's access key id — the non-secret half of a Garage key, paired with {@see $credentialCiphertext}'s sealed secret access key. Null for every database kind, which has no such pair: its one credential is a password, sealed whole into the four columns above.", alias="externalKeyId")
     quota_bytes: Optional[ManagedServiceQuotaBytes] = Field(default=None, alias="quotaBytes")
@@ -52,15 +52,15 @@ class ManagedService(BaseModel):
     last_load_sampled_at: Optional[datetime] = Field(default=None, alias="lastLoadSampledAt")
     pending_load_millis: Optional[ManagedServicePendingLoadMillis] = Field(default=None, alias="pendingLoadMillis")
     bindings: Optional[List[StrictStr]] = None
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     catalogue_entry: Optional[StrictStr] = Field(default=None, description="`postgres 17`, `mysql 8.0` — the catalogue entry, as one string.", alias="catalogueEntry")
-    credential: Optional[SealedSecret] = None
+    instance: Optional[ManagedServiceEngine] = Field(default=None, description="The engine as a tenant reads it: its name and its state, and nothing else.")
     available: Optional[StrictBool] = None
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["organization", "slug", "kind", "majorVersion", "instance", "backingName", "externalKeyId", "quotaBytes", "poolSizeOverride", "clientConnectionsOverride", "state", "failureReason", "suspensionReason", "usageBytes", "usageSampledAt", "lastLoadMillis", "lastLoadSampledAt", "pendingLoadMillis", "bindings", "id", "deletedAt", "createdAt", "updatedAt", "catalogueEntry", "credential", "available", "deleted"]
+    __properties: ClassVar[List[str]] = ["organization", "slug", "kind", "majorVersion", "backingName", "externalKeyId", "quotaBytes", "poolSizeOverride", "clientConnectionsOverride", "state", "failureReason", "suspensionReason", "usageBytes", "usageSampledAt", "lastLoadMillis", "lastLoadSampledAt", "pendingLoadMillis", "bindings", "id", "deletedAt", "createdAt", "updatedAt", "catalogueEntry", "instance", "available", "deleted"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -88,12 +88,13 @@ class ManagedService(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['credit_exhausted', 'over_quota']):
-            raise ValueError("must be one of enum values ('credit_exhausted', 'over_quota')")
+        if value not in set(['credit_exhausted', 'over_quota', 'retired']):
+            raise ValueError("must be one of enum values ('credit_exhausted', 'over_quota', 'retired')")
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -105,8 +106,7 @@ class ManagedService(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -132,16 +132,20 @@ class ManagedService(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "failure_reason",
             "usage_sampled_at",
             "last_load_sampled_at",
+            "bindings",
             "id",
             "deleted_at",
             "created_at",
             "updated_at",
             "catalogue_entry",
+            "instance",
             "available",
             "deleted",
         ])
@@ -151,9 +155,6 @@ class ManagedService(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of instance
-        if self.instance:
-            _dict['instance'] = self.instance.to_dict()
         # override the default output from pydantic by calling `to_dict()` of quota_bytes
         if self.quota_bytes:
             _dict['quotaBytes'] = self.quota_bytes.to_dict()
@@ -166,14 +167,9 @@ class ManagedService(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of pending_load_millis
         if self.pending_load_millis:
             _dict['pendingLoadMillis'] = self.pending_load_millis.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of credential
-        if self.credential:
-            _dict['credential'] = self.credential.to_dict()
-        # set to None if instance (nullable) is None
-        # and model_fields_set contains the field
-        if self.instance is None and "instance" in self.model_fields_set:
-            _dict['instance'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of instance
+        if self.instance:
+            _dict['instance'] = self.instance.to_dict()
         # set to None if external_key_id (nullable) is None
         # and model_fields_set contains the field
         if self.external_key_id is None and "external_key_id" in self.model_fields_set:
@@ -234,6 +230,11 @@ class ManagedService(BaseModel):
         if self.updated_at is None and "updated_at" in self.model_fields_set:
             _dict['updatedAt'] = None
 
+        # set to None if instance (nullable) is None
+        # and model_fields_set contains the field
+        if self.instance is None and "instance" in self.model_fields_set:
+            _dict['instance'] = None
+
         return _dict
 
     @classmethod
@@ -250,7 +251,6 @@ class ManagedService(BaseModel):
             "slug": obj.get("slug"),
             "kind": obj.get("kind"),
             "majorVersion": obj.get("majorVersion"),
-            "instance": ServiceInstance.from_dict(obj["instance"]) if obj.get("instance") is not None else None,
             "backingName": obj.get("backingName"),
             "externalKeyId": obj.get("externalKeyId"),
             "quotaBytes": ManagedServiceQuotaBytes.from_dict(obj["quotaBytes"]) if obj.get("quotaBytes") is not None else None,
@@ -270,7 +270,7 @@ class ManagedService(BaseModel):
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
             "catalogueEntry": obj.get("catalogueEntry"),
-            "credential": SealedSecret.from_dict(obj["credential"]) if obj.get("credential") is not None else None,
+            "instance": ManagedServiceEngine.from_dict(obj["instance"]) if obj.get("instance") is not None else None,
             "available": obj.get("available"),
             "deleted": obj.get("deleted")
         })

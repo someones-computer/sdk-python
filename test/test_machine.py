@@ -39,7 +39,6 @@ class TestMachine(unittest.TestCase):
                     name = '', 
                     endpoint = '', 
                     token_id = '', 
-                    token_secret = '', 
                     verify_tls = True, 
                     public_key_pin = '', 
                     status = 'unreachable', 

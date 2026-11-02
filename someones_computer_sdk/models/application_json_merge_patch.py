@@ -20,23 +20,23 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.port_allocation import PortAllocation
-from someones_computer_sdk.models.sealed_secret import SealedSecret
-from someones_computer_sdk.models.variable import Variable
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ApplicationJsonMergePatch(BaseModel):
     """
     Update an application's mutable fields.
     """ # noqa: E501
-    organization: Optional[StrictStr] = Field(default=None, description="Re-home this application. Callers own everything the uniqueness constraint and the trust invariant elsewhere in the platform expect of a move — the entity itself only holds the pointer.")
+    organization: Optional[StrictStr] = Field(default=None, description="Re-home this application. Callers own everything the uniqueness constraint and the trust invariant elsewhere in the platform expect of a move — the entity itself only holds the pointer.", json_schema_extra={"examples": ["https://example.com/"]})
     slug: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
     isolation_level: Optional[StrictStr] = Field(default='shared', alias="isolationLevel")
     service_adoption: Optional[StrictStr] = Field(default='off', description="Whether a deploy's compose file is watched for services a managed equivalent could replace.", alias="serviceAdoption")
     access_gate: Optional[StrictStr] = Field(default='none', description="How this application's routed HTTP services are gated at the edge — `None` by default, so an application behaves exactly as it always has until an org manager opts it in ({@see AccessGateMode}).", alias="accessGate")
-    current_deployment: Optional[StrictStr] = Field(default=None, description="Pointer to the currently active revision; null before the first deploy.", alias="currentDeployment")
+    current_deployment: Optional[StrictStr] = Field(default=None, description="Pointer to the currently active revision; null before the first deploy.", alias="currentDeployment", json_schema_extra={"examples": ["https://example.com/"]})
     first_running_at: Optional[datetime] = Field(default=None, description="The first moment any revision of this application ever reached `running` — null until it has. What {@see \\App\\Service\\Teardown\\TeardownGracePeriod} measures grace-period uptime from, in place of the current revision's own `createdAt` (#1307): a revision row is stamped at bundle ingest and a fresh one is created on every `sc deploy`, so measuring off it gave a six-month-old production application a ten-minute grace period the moment it was redeployed. This is set once and never moved — a redeploy, or reactivating an old revision, does not reset it, because the application's history is what earns the longer grace, not whichever revision happens to be current.", alias="firstRunningAt")
     primary_deployment_name: Optional[StrictStr] = Field(default=None, description="Which deployment *name* owns the application's apex identity — the stack, network and hostname that carry no revision component ({@see \\App\\Service\\Placement\\StackNaming}).", alias="primaryDeploymentName")
     legacy_stack_base: Optional[StrictStr] = Field(default=None, description="The `<prefix>-<org>-<app>` join this application's stacks were **already named from**, before the separator was made unambiguous — or null, meaning nothing of this application has ever been on a swarm under the old name and {@see \\App\\Service\\Placement\\StackNaming} is free to derive the current one.", alias="legacyStackBase")
@@ -45,21 +45,21 @@ class ApplicationJsonMergePatch(BaseModel):
     build_bucket: Optional[StrictStr] = Field(default=None, description="This application's own Garage build-context bucket — where `sc deploy`'s uploaded contexts and forwarded images are parked, and the only bucket the build key below can read. Null until the first upload provisions it ({@see \\App\\Service\\Bundle\\ApplicationBuildBucketProvisioner}); every application predating #996 looks like that too, and provisions on its next deploy.", alias="buildBucket")
     build_key_id: Optional[StrictStr] = Field(default=None, description="The access-key id of the read-only Garage key scoped to {@see $buildBucket}, handed to build tasks. Doubles as Garage's own identifier for the key (the same way {@see ManagedService::$externalKeyId} does), so nothing separate is persisted for it.", alias="buildKeyId")
     deployments: Optional[List[StrictStr]] = None
-    variables: Optional[List[Variable]] = None
-    port_allocations: Optional[List[PortAllocation]] = Field(default=None, alias="portAllocations")
+    port_allocations: Optional[List[PortAllocation]] = Field(default=None, description="the published ports this application holds cluster-wide, for as long as it exists ({@see \\App\\Entity\\PortAllocation})", alias="portAllocations")
     pool_domain: Optional[StrictStr] = Field(default=None, description="Which of the app-hosting pool domains (`snarl.dev`, `starshp.dev` — {@see \\App\\Service\\Ingress\\DomainPoolAssigner}) this application's deployments answer under, in addition to `someones.computer`. Null until its first successful deploy assigns one, and never moved after — a redeploy must resolve to the same pool hostnames it already handed out, the same reason {@see $firstRunningAt} is a latch rather than a rolling value.", alias="poolDomain")
     pool_label: Optional[StrictStr] = Field(default=None, description="Overrides the auto-slugified application name in the pool-domain hostname's `{service}.{deployment}.{label}.{poolDomain}` shape ({@see \\App\\Service\\Ingress\\PoolHostname}) — null for every application that has not opted into a custom one, which is what {@see poolLabelOrSlug()} falls back to. Unique platform-wide, the same reasoning as {@see \\App\\Entity\\Domain::$name}: two applications sharing a label would collide on the exact same DNS name the moment they also shared a deployment and service name.", alias="poolLabel")
-    id: Optional[StrictStr] = None
+    pool_short_name: Optional[StrictBool] = Field(default=False, description="Whether `{label}.{poolDomain}`, with no service or deployment level in front, answers for one deployment (#2030). See {@see poolShortHostname()}.", alias="poolShortName")
+    pool_short_name_deployment: Optional[StrictStr] = Field(default=None, description="The deployment the short name answers for. Null is the unnamed deployment.", alias="poolShortNameDeployment")
+    pool_short_name_service: Optional[StrictStr] = Field(default=None, description="The compose service it routes to. Null is the only HTTP service.", alias="poolShortNameService")
+    id: Optional[UUID] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
-    build_credential: Optional[SealedSecret] = Field(default=None, alias="buildCredential")
-    access_gate_credential: Optional[SealedSecret] = Field(default=None, alias="accessGateCredential")
     icon: Optional[StrictStr] = Field(default=None, description="Point the application at a stored icon, or at none.")
     operator_chosen_icon: Optional[StrictBool] = Field(default=None, description="Whether the stored icon was chosen by a person, and so must survive the next deploy's favicon extraction.", alias="operatorChosenIcon")
     icon_version: Optional[StrictStr] = Field(default=None, description="A short, stable token for the icon a caller is looking at — the cache-busting half of the icon URL, and null when there is nothing stored to bust.", alias="iconVersion")
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["organization", "slug", "name", "isolationLevel", "serviceAdoption", "accessGate", "currentDeployment", "firstRunningAt", "primaryDeploymentName", "legacyStackBase", "iconKey", "iconSource", "buildBucket", "buildKeyId", "deployments", "variables", "portAllocations", "poolDomain", "poolLabel", "id", "deletedAt", "createdAt", "updatedAt", "buildCredential", "accessGateCredential", "icon", "operatorChosenIcon", "iconVersion", "deleted"]
+    __properties: ClassVar[List[str]] = ["organization", "slug", "name", "isolationLevel", "serviceAdoption", "accessGate", "currentDeployment", "firstRunningAt", "primaryDeploymentName", "legacyStackBase", "iconKey", "iconSource", "buildBucket", "buildKeyId", "deployments", "portAllocations", "poolDomain", "poolLabel", "poolShortName", "poolShortNameDeployment", "poolShortNameService", "id", "deletedAt", "createdAt", "updatedAt", "icon", "operatorChosenIcon", "iconVersion", "deleted"]
 
     @field_validator('isolation_level')
     def isolation_level_validate_enum(cls, value):
@@ -102,7 +102,8 @@ class ApplicationJsonMergePatch(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -114,8 +115,7 @@ class ApplicationJsonMergePatch(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -142,12 +142,20 @@ class ApplicationJsonMergePatch(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "first_running_at",
             "icon_key",
             "icon_source",
+            "deployments",
+            "port_allocations",
             "pool_domain",
+            "pool_short_name_deployment",
+            "pool_short_name_service",
             "id",
             "deleted_at",
             "created_at",
@@ -162,26 +170,12 @@ class ApplicationJsonMergePatch(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in variables (list)
-        _items = []
-        if self.variables:
-            for _item_variables in self.variables:
-                if _item_variables:
-                    _items.append(_item_variables.to_dict())
-            _dict['variables'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in port_allocations (list)
         _items = []
         if self.port_allocations:
             for _item_port_allocations in self.port_allocations:
-                if _item_port_allocations:
-                    _items.append(_item_port_allocations.to_dict())
+                _items.append(_item_port_allocations.to_dict() if _item_port_allocations is not None else None)
             _dict['portAllocations'] = _items
-        # override the default output from pydantic by calling `to_dict()` of build_credential
-        if self.build_credential:
-            _dict['buildCredential'] = self.build_credential.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of access_gate_credential
-        if self.access_gate_credential:
-            _dict['accessGateCredential'] = self.access_gate_credential.to_dict()
         # set to None if current_deployment (nullable) is None
         # and model_fields_set contains the field
         if self.current_deployment is None and "current_deployment" in self.model_fields_set:
@@ -232,6 +226,16 @@ class ApplicationJsonMergePatch(BaseModel):
         if self.pool_label is None and "pool_label" in self.model_fields_set:
             _dict['poolLabel'] = None
 
+        # set to None if pool_short_name_deployment (nullable) is None
+        # and model_fields_set contains the field
+        if self.pool_short_name_deployment is None and "pool_short_name_deployment" in self.model_fields_set:
+            _dict['poolShortNameDeployment'] = None
+
+        # set to None if pool_short_name_service (nullable) is None
+        # and model_fields_set contains the field
+        if self.pool_short_name_service is None and "pool_short_name_service" in self.model_fields_set:
+            _dict['poolShortNameService'] = None
+
         # set to None if deleted_at (nullable) is None
         # and model_fields_set contains the field
         if self.deleted_at is None and "deleted_at" in self.model_fields_set:
@@ -241,11 +245,6 @@ class ApplicationJsonMergePatch(BaseModel):
         # and model_fields_set contains the field
         if self.updated_at is None and "updated_at" in self.model_fields_set:
             _dict['updatedAt'] = None
-
-        # set to None if access_gate_credential (nullable) is None
-        # and model_fields_set contains the field
-        if self.access_gate_credential is None and "access_gate_credential" in self.model_fields_set:
-            _dict['accessGateCredential'] = None
 
         # set to None if icon (nullable) is None
         # and model_fields_set contains the field
@@ -284,16 +283,16 @@ class ApplicationJsonMergePatch(BaseModel):
             "buildBucket": obj.get("buildBucket"),
             "buildKeyId": obj.get("buildKeyId"),
             "deployments": obj.get("deployments"),
-            "variables": [Variable.from_dict(_item) for _item in obj["variables"]] if obj.get("variables") is not None else None,
             "portAllocations": [PortAllocation.from_dict(_item) for _item in obj["portAllocations"]] if obj.get("portAllocations") is not None else None,
             "poolDomain": obj.get("poolDomain"),
             "poolLabel": obj.get("poolLabel"),
+            "poolShortName": obj.get("poolShortName") if obj.get("poolShortName") is not None else False,
+            "poolShortNameDeployment": obj.get("poolShortNameDeployment"),
+            "poolShortNameService": obj.get("poolShortNameService"),
             "id": obj.get("id"),
             "deletedAt": obj.get("deletedAt"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
-            "buildCredential": SealedSecret.from_dict(obj["buildCredential"]) if obj.get("buildCredential") is not None else None,
-            "accessGateCredential": SealedSecret.from_dict(obj["accessGateCredential"]) if obj.get("accessGateCredential") is not None else None,
             "icon": obj.get("icon"),
             "operatorChosenIcon": obj.get("operatorChosenIcon"),
             "iconVersion": obj.get("iconVersion"),

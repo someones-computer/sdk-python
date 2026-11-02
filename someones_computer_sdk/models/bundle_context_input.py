@@ -23,6 +23,7 @@ from typing_extensions import Annotated
 from someones_computer_sdk.models.bundle_additional_context_input import BundleAdditionalContextInput
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class BundleContextInput(BaseModel):
     """
@@ -34,15 +35,16 @@ class BundleContextInput(BaseModel):
     additional_contexts: Optional[List[BundleAdditionalContextInput]] = Field(default=None, alias="additionalContexts")
     __properties: ClassVar[List[str]] = ["service", "contextSha256", "dockerfile", "additionalContexts"]
 
-    @field_validator('context_sha256')
+    @field_validator('context_sha256', mode="before")
     def context_sha256_validate_regular_expression(cls, value):
         """Validates the regular expression"""
-        if not re.match(r"^([a-f0-9]{64})$", value):
+        if isinstance(value, str) and not re.match(r"^([a-f0-9]{64})$", value):
             raise ValueError(r"must validate the regular expression /^([a-f0-9]{64})$/")
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -54,8 +56,7 @@ class BundleContextInput(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -84,8 +85,7 @@ class BundleContextInput(BaseModel):
         _items = []
         if self.additional_contexts:
             for _item_additional_contexts in self.additional_contexts:
-                if _item_additional_contexts:
-                    _items.append(_item_additional_contexts.to_dict())
+                _items.append(_item_additional_contexts.to_dict() if _item_additional_contexts is not None else None)
             _dict['additionalContexts'] = _items
         return _dict
 

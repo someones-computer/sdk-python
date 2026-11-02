@@ -20,28 +20,27 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.deployment_json_merge_patch_build_contexts_value_value import DeploymentJsonMergePatchBuildContextsValueValue
-from someones_computer_sdk.models.deployment_json_merge_patch_canonical_spec_value import DeploymentJsonMergePatchCanonicalSpecValue
-from someones_computer_sdk.models.deployment_variable import DeploymentVariable
 from someones_computer_sdk.models.failure import Failure
 from someones_computer_sdk.models.service import Service
 from someones_computer_sdk.models.user import User
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class Deployment(BaseModel):
     """
-    List an application's deployment revisions.
+    List deployment revisions. Filter by application (IRI), sequence or name. Any other query parameter answers 400.
     """ # noqa: E501
-    application: Optional[StrictStr] = None
+    application: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     sequence: Optional[StrictInt] = Field(default=None, description="Monotonic per-application revision number.")
     name: Optional[StrictStr] = Field(default=None, description="What this revision is called — `sc` defaults it to the slugified branch, so the normal shape is a deployment per branch. Null for revisions created before the field existed, or by a client that doesn't send one.")
     raw_compose: Optional[StrictStr] = Field(default=None, description="Exactly what the user submitted.", alias="rawCompose")
-    canonical_spec: Optional[Dict[str, DeploymentJsonMergePatchCanonicalSpecValue]] = Field(default=None, description="Parsed, supported-subset-only canonical representation — what {@see \\App\\Service\\Compose\\ComposeParser::parse()} produced. Both keys are optional here and not there: a row is whatever was written when it was written, so a revision that predates a key still has to load.", alias="canonicalSpec")
+    canonical_spec: Optional[Dict[str, Any]] = Field(default=None, description="Parsed, supported-subset-only canonical representation of the compose file, as the parser produced it. Keys are `services` and `warnings`. A revision that predates a key omits it.", alias="canonicalSpec")
     build_contexts: Optional[Dict[str, Dict[str, Optional[DeploymentJsonMergePatchBuildContextsValueValue]]]] = Field(default=None, description="Build contexts uploaded with this revision, keyed by compose service name: `{ contextSha256, dockerfile, dockerfileContent?, additionalContexts?, image?, log? }`. The tarballs themselves live in the content-addressed bundle cache ({@see \\App\\Service\\Bundle\\BundleStorage}); this is the pointer the build worker will walk. `dockerfileContent` is a best-effort text preview extracted at ingest ({@see \\App\\Service\\Bundle\\ContextDockerfileReader}) — null when the context was too large to preview or predates this field.", alias="buildContexts")
     forwarded_images: Optional[Dict[str, Dict[str, Optional[StrictStr]]]] = Field(default=None, description="Client-forwarded images uploaded with this revision, keyed by compose service name: `{ contextSha256, originalImage, image?, log? }`. See docs/registry.md's \"Client-side forwarding\" callout: `sc` detects a private, unbuildable `image:` reference it can already reach locally and offers to upload it, for a platform that has no other way to pull it. A sibling to {@see self::$buildContexts} rather than folded into it — that array means \"run this through BuildKit\", and this one never does. The tarballs live in the object store ({@see \\App\\Service\\Bundle\\ImageStorage}), not the database; `image` is filled in once the loader has pushed it to the internal registry, the same way `buildContexts[]['image']` is. `{}` for every revision that forwarded nothing, which is most of them.", alias="forwardedImages")
-    build_secrets: Optional[Dict[str, Dict[str, Dict[str, StrictStr]]]] = Field(default=None, description="`build.secrets` values declared for this revision's build services (Grey.ooo/someones.computer_agent#46), sealed the moment they arrive ({@see \\App\\Service\\Secret\\SecretBox}) and never written to the object store the way a build context is: unlike a context tarball, a build secret is live tenant credential material, not something worth caching by content — closer to how {@see \\App\\Service\\Registry\\RegistryTokenSigner} mints a push token than to how {@see \\App\\Entity\\Variable} keeps one.", alias="buildSecrets")
-    target_swarm: Optional[StrictStr] = Field(default=None, description="Resolved by the placement engine; null until placed.", alias="targetSwarm")
+    target_swarm: Optional[StrictStr] = Field(default=None, description="Resolved by the placement engine; null until placed.", alias="targetSwarm", json_schema_extra={"examples": ["https://example.com/"]})
     status: Optional[StrictStr] = 'pending'
     status_reason: Optional[StrictStr] = Field(default=None, description="Why the revision is in its current status — the build worker's failure message, typically. Null whenever there is nothing to explain.", alias="statusReason")
     failed_on_swarm: Optional[StrictBool] = Field(default=False, description="Set on a `Failed` revision that had already created or updated at least one service on `$targetSwarm` before the failure — a live half-stack, not \"nothing happened\" (#1270). {@see self::isOnASwarm()} reads this for exactly the revisions the ordinary `Deploying`/`Running` check cannot see: whatever partially landed still has to be reachable to a manual Teardown and countable by the stray-container sweep, which is why every other status leaves this false rather than tracking it.", alias="failedOnSwarm")
@@ -49,16 +48,15 @@ class Deployment(BaseModel):
     degraded: Optional[StrictBool] = Field(default=False, description="Set once a `Running` revision has gone a full grace period with zero tasks actually running on its swarm (#1279) — a {@see Failure} of {@see \\App\\Enum\\FailurePhase::Runtime} is recorded alongside it. Never flips `$status` itself: `running` still means \"this is what the application should be serving\", and a revision the platform cannot reach a running task for is a fact about the swarm, not a new desired state — the same desired/observed separation {@see \\App\\Service\\Reconcile\\DriftDetector} already keeps at read time, made durable here so it survives past one page view.")
     digest: Optional[StrictStr] = Field(default=None, description="Content digest of the canonical spec, for dedupe/audit.")
     created_by: Optional[User] = Field(default=None, alias="createdBy")
-    services: Optional[List[Service]] = None
-    variables: Optional[List[DeploymentVariable]] = None
-    failures: Optional[List[Failure]] = None
-    id: Optional[StrictStr] = None
+    services: Optional[List[Service]] = Field(default=None, description="Projection of the compose services.")
+    failures: Optional[List[Failure]] = Field(default=None, description="Everything that has gone wrong with this revision, append-only. Distinct from {@see \\App\\Entity\\self::$statusReason}, which is only ever the latest. See {@see \\App\\Entity\\Failure} on why both exist.")
+    id: Optional[UUID] = None
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     on_a_swarm: Optional[StrictBool] = Field(default=None, description="Whether this revision has a stack of its own on a swarm right now.", alias="onASwarm")
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["application", "sequence", "name", "rawCompose", "canonicalSpec", "buildContexts", "forwardedImages", "buildSecrets", "targetSwarm", "status", "statusReason", "failedOnSwarm", "zeroTaskObservedAt", "degraded", "digest", "createdBy", "services", "variables", "failures", "id", "deletedAt", "createdAt", "updatedAt", "onASwarm", "deleted"]
+    __properties: ClassVar[List[str]] = ["application", "sequence", "name", "rawCompose", "canonicalSpec", "buildContexts", "forwardedImages", "targetSwarm", "status", "statusReason", "failedOnSwarm", "zeroTaskObservedAt", "degraded", "digest", "createdBy", "services", "failures", "id", "deletedAt", "createdAt", "updatedAt", "onASwarm", "deleted"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -71,7 +69,8 @@ class Deployment(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -83,8 +82,7 @@ class Deployment(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -106,8 +104,10 @@ class Deployment(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "failures",
             "id",
             "deleted_at",
             "created_at",
@@ -121,20 +121,14 @@ class Deployment(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each value in canonical_spec (dict)
-        _field_dict = {}
-        if self.canonical_spec:
-            for _key_canonical_spec in self.canonical_spec:
-                if self.canonical_spec[_key_canonical_spec]:
-                    _field_dict[_key_canonical_spec] = self.canonical_spec[_key_canonical_spec].to_dict()
-            _dict['canonicalSpec'] = _field_dict
-        # override the default output from pydantic by calling `to_dict()` of each value in build_contexts (dict)
-        _field_dict = {}
+        # override the default output from pydantic by calling `to_dict()` of each value in build_contexts (dict of dict)
+        _field_dict_of_dict = {}
         if self.build_contexts:
-            for _key_build_contexts in self.build_contexts:
-                if self.build_contexts[_key_build_contexts]:
-                    _field_dict[_key_build_contexts] = self.build_contexts[_key_build_contexts].to_dict()
-            _dict['buildContexts'] = _field_dict
+            for _key_build_contexts, _value_build_contexts in self.build_contexts.items():
+                _field_dict_of_dict[_key_build_contexts] = {
+                    _key: _value.to_dict() if _value is not None else None for _key, _value in _value_build_contexts.items()
+                } if _value_build_contexts is not None else None
+            _dict['buildContexts'] = _field_dict_of_dict
         # override the default output from pydantic by calling `to_dict()` of created_by
         if self.created_by:
             _dict['createdBy'] = self.created_by.to_dict()
@@ -142,22 +136,13 @@ class Deployment(BaseModel):
         _items = []
         if self.services:
             for _item_services in self.services:
-                if _item_services:
-                    _items.append(_item_services.to_dict())
+                _items.append(_item_services.to_dict() if _item_services is not None else None)
             _dict['services'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in variables (list)
-        _items = []
-        if self.variables:
-            for _item_variables in self.variables:
-                if _item_variables:
-                    _items.append(_item_variables.to_dict())
-            _dict['variables'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in failures (list)
         _items = []
         if self.failures:
             for _item_failures in self.failures:
-                if _item_failures:
-                    _items.append(_item_failures.to_dict())
+                _items.append(_item_failures.to_dict() if _item_failures is not None else None)
             _dict['failures'] = _items
         # set to None if name (nullable) is None
         # and model_fields_set contains the field
@@ -215,12 +200,7 @@ class Deployment(BaseModel):
             "sequence": obj.get("sequence"),
             "name": obj.get("name"),
             "rawCompose": obj.get("rawCompose"),
-            "canonicalSpec": dict(
-                (_k, DeploymentJsonMergePatchCanonicalSpecValue.from_dict(_v))
-                for _k, _v in obj["canonicalSpec"].items()
-            )
-            if obj.get("canonicalSpec") is not None
-            else None,
+            "canonicalSpec": obj.get("canonicalSpec"),
             "buildContexts": dict(
                 (_k, dict(
                     (_ik, DeploymentJsonMergePatchBuildContextsValueValue.from_dict(_iv))
@@ -229,12 +209,11 @@ class Deployment(BaseModel):
                     if _v is not None
                     else None
                 )
-                for _k, _v in obj.get("buildContexts").items()
+                for _k, _v in obj["buildContexts"].items()
             )
             if obj.get("buildContexts") is not None
             else None,
             "forwardedImages": obj.get("forwardedImages"),
-            "buildSecrets": obj.get("buildSecrets"),
             "targetSwarm": obj.get("targetSwarm"),
             "status": obj.get("status") if obj.get("status") is not None else 'pending',
             "statusReason": obj.get("statusReason"),
@@ -244,7 +223,6 @@ class Deployment(BaseModel):
             "digest": obj.get("digest"),
             "createdBy": User.from_dict(obj["createdBy"]) if obj.get("createdBy") is not None else None,
             "services": [Service.from_dict(_item) for _item in obj["services"]] if obj.get("services") is not None else None,
-            "variables": [DeploymentVariable.from_dict(_item) for _item in obj["variables"]] if obj.get("variables") is not None else None,
             "failures": [Failure.from_dict(_item) for _item in obj["failures"]] if obj.get("failures") is not None else None,
             "id": obj.get("id"),
             "deletedAt": obj.get("deletedAt"),

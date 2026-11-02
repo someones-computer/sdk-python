@@ -20,8 +20,10 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ProxmoxInstance(BaseModel):
     """
@@ -30,7 +32,6 @@ class ProxmoxInstance(BaseModel):
     name: Optional[StrictStr] = None
     endpoint: Optional[StrictStr] = Field(default=None, description="Base URL of the API, scheme and authority only — `https://10.0.0.68:8006`.")
     token_id: Optional[StrictStr] = Field(default=None, description="Full token identifier, `user@realm!tokenid` — e.g. `root@pam!someones-computer`.", alias="tokenId")
-    token_secret: Optional[StrictStr] = Field(default=None, description="The token's secret (a UUID as Proxmox issues it), encrypted at rest and never serialized. Proxmox shows it exactly once, at creation.", alias="tokenSecret")
     verify_tls: Optional[StrictBool] = Field(default=True, description="Whether the certificate must validate against a CA chain.", alias="verifyTls")
     public_key_pin: Optional[StrictStr] = Field(default=None, description="base64 SHA-256 of the endpoint's SubjectPublicKeyInfo — curl's `pin-sha256`. The right answer for a self-signed Proxmox: it authenticates *this specific host* without any CA, so the connection is still protected against interception, which `verifyTls = false` alone is not.", alias="publicKeyPin")
     status: Optional[StrictStr] = 'unreachable'
@@ -42,11 +43,11 @@ class ProxmoxInstance(BaseModel):
     template_built_at: Optional[datetime] = Field(default=None, alias="templateBuiltAt")
     template_build_started_at: Optional[datetime] = Field(default=None, description="When a background template build was dispatched for this endpoint, or null when none is in flight — the only trace a build leaves while it runs.", alias="templateBuildStartedAt")
     template_build_failures: Optional[StrictInt] = Field(default=0, description="How many builds in a row have failed since the last success, incremented by {@see \\App\\MessageHandler\\BuildProxmoxTemplateHandler}'s catch block and cleared by {@see recordTemplateBuilt()}. This is what {@see templateBuildIsBackedOff()} backs the retry off against — without it, {@see \\App\\MessageHandler\\CheckProxmoxTemplatesHandler} redispatches a build every tick regardless of how many times it has already failed (#1059).", alias="templateBuildFailures")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     template: Optional[StrictBool] = Field(default=None, description="Whether `app:proxmox:template` has ever recorded a build against this endpoint.")
-    __properties: ClassVar[List[str]] = ["name", "endpoint", "tokenId", "tokenSecret", "verifyTls", "publicKeyPin", "status", "lastSeenAt", "lastError", "version", "templateVmid", "templateAlpineVersion", "templateBuiltAt", "templateBuildStartedAt", "templateBuildFailures", "id", "createdAt", "updatedAt", "template"]
+    __properties: ClassVar[List[str]] = ["name", "endpoint", "tokenId", "verifyTls", "publicKeyPin", "status", "lastSeenAt", "lastError", "version", "templateVmid", "templateAlpineVersion", "templateBuiltAt", "templateBuildStartedAt", "templateBuildFailures", "id", "createdAt", "updatedAt", "template"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -59,7 +60,8 @@ class ProxmoxInstance(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -71,8 +73,7 @@ class ProxmoxInstance(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -130,6 +131,11 @@ class ProxmoxInstance(BaseModel):
         if self.last_error is None and "last_error" in self.model_fields_set:
             _dict['lastError'] = None
 
+        # set to None if version (nullable) is None
+        # and model_fields_set contains the field
+        if self.version is None and "version" in self.model_fields_set:
+            _dict['version'] = None
+
         # set to None if template_vmid (nullable) is None
         # and model_fields_set contains the field
         if self.template_vmid is None and "template_vmid" in self.model_fields_set:
@@ -170,7 +176,6 @@ class ProxmoxInstance(BaseModel):
             "name": obj.get("name"),
             "endpoint": obj.get("endpoint"),
             "tokenId": obj.get("tokenId"),
-            "tokenSecret": obj.get("tokenSecret"),
             "verifyTls": obj.get("verifyTls") if obj.get("verifyTls") is not None else True,
             "publicKeyPin": obj.get("publicKeyPin"),
             "status": obj.get("status") if obj.get("status") is not None else 'unreachable',

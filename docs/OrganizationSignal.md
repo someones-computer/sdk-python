@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **organization** | **str** |  | [optional] 
 **application** | **str** | Which application&#39;s compose file produced it — deleting the application does not un-say what it asked for. | [optional] 
 **reason** | **str** | Verbatim, as {@see \\App\\Service\\Compose\\ComposeParser::parse()} produced it. | [optional] 
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
 

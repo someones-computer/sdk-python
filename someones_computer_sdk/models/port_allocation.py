@@ -20,22 +20,24 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class PortAllocation(BaseModel):
     """
     PortAllocation
     """ # noqa: E501
-    swarm: Optional[StrictStr] = Field(default=None, description="The cluster this port is claimed on. Deleting the cluster takes its allocations with it — a reservation on a swarm that no longer exists is not holding anything back.")
-    application: Optional[StrictStr] = None
+    swarm: Optional[StrictStr] = Field(default=None, description="The cluster this port is claimed on. Deleting the cluster takes its allocations with it — a reservation on a swarm that no longer exists is not holding anything back.", json_schema_extra={"examples": ["https://example.com/"]})
+    application: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     deployment_name: Optional[StrictStr] = Field(default=None, description="The deployment name this reservation belongs to — {@see Deployment::$name}, or `''` for a revision that carries no name (before the field existed, or a client that never sent one), which is its own stable scope rather than a wildcard: every unnamed revision of an application shares it, exactly the single continuous scope every application had before this column existed.", alias="deploymentName")
     service_name: Optional[StrictStr] = Field(default=None, description="The compose service name, as the customer's file spells it.", alias="serviceName")
     target_port: Optional[StrictInt] = Field(default=None, description="The container port traffic is forwarded to.", alias="targetPort")
     protocol: Optional[StrictStr] = None
     published_port: Optional[StrictInt] = Field(default=None, description="What the world connects to. Unique per protocol on this cluster.", alias="publishedPort")
     assigned: Optional[StrictBool] = Field(default=None, description="Whether the platform chose this number or the compose file did.")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     __properties: ClassVar[List[str]] = ["swarm", "application", "deploymentName", "serviceName", "targetPort", "protocol", "publishedPort", "assigned", "id", "createdAt", "updatedAt"]
@@ -51,7 +53,8 @@ class PortAllocation(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -63,8 +66,7 @@ class PortAllocation(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:

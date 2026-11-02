@@ -20,22 +20,22 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from someones_computer_sdk.models.sealed_secret import SealedSecret
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class DeploymentAccessGateJsonMergePatch(BaseModel):
     """
     Update a per-deployment access-gate override's mode.
     """ # noqa: E501
-    application: Optional[StrictStr] = None
+    application: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     name: Optional[StrictStr] = None
     access_gate: Optional[StrictStr] = Field(default=None, alias="accessGate")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
-    access_gate_credential: Optional[SealedSecret] = Field(default=None, alias="accessGateCredential")
-    __properties: ClassVar[List[str]] = ["application", "name", "accessGate", "id", "createdAt", "updatedAt", "accessGateCredential"]
+    __properties: ClassVar[List[str]] = ["application", "name", "accessGate", "id", "createdAt", "updatedAt"]
 
     @field_validator('access_gate')
     def access_gate_validate_enum(cls, value):
@@ -48,7 +48,8 @@ class DeploymentAccessGateJsonMergePatch(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -60,8 +61,7 @@ class DeploymentAccessGateJsonMergePatch(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,18 +92,10 @@ class DeploymentAccessGateJsonMergePatch(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of access_gate_credential
-        if self.access_gate_credential:
-            _dict['accessGateCredential'] = self.access_gate_credential.to_dict()
         # set to None if updated_at (nullable) is None
         # and model_fields_set contains the field
         if self.updated_at is None and "updated_at" in self.model_fields_set:
             _dict['updatedAt'] = None
-
-        # set to None if access_gate_credential (nullable) is None
-        # and model_fields_set contains the field
-        if self.access_gate_credential is None and "access_gate_credential" in self.model_fields_set:
-            _dict['accessGateCredential'] = None
 
         return _dict
 
@@ -122,8 +114,7 @@ class DeploymentAccessGateJsonMergePatch(BaseModel):
             "accessGate": obj.get("accessGate"),
             "id": obj.get("id"),
             "createdAt": obj.get("createdAt"),
-            "updatedAt": obj.get("updatedAt"),
-            "accessGateCredential": SealedSecret.from_dict(obj["accessGateCredential"]) if obj.get("accessGateCredential") is not None else None
+            "updatedAt": obj.get("updatedAt")
         })
         return _obj
 

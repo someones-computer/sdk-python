@@ -20,28 +20,29 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from someones_computer_sdk.models.sealed_secret import SealedSecret
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ServiceBinding(BaseModel):
     """
     List service bindings (application-to-managed-service links) the caller can see.
     """ # noqa: E501
-    application: Optional[StrictStr] = None
-    service: Optional[StrictStr] = None
+    application: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
+    service: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     injected_keys: Optional[List[StrictStr]] = Field(default=None, description="The environment variable names this binding contributes — one `DATABASE_URL` for a database, the four `S3_*` names for a bucket.", alias="injectedKeys")
     sidecar_service_name: Optional[StrictStr] = Field(default='db', description="What the sidecar is called inside the tenant's stack — `db` unless something else claimed the name first.", alias="sidecarServiceName")
     adopted_compose_service: Optional[StrictStr] = Field(default=None, description="The compose service this binding replaced, or null for a binding somebody asked for directly.", alias="adoptedComposeService")
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     adopted: Optional[StrictBool] = None
-    sidecar_credential: Optional[SealedSecret] = Field(default=None, alias="sidecarCredential")
-    __properties: ClassVar[List[str]] = ["application", "service", "injectedKeys", "sidecarServiceName", "adoptedComposeService", "id", "createdAt", "updatedAt", "adopted", "sidecarCredential"]
+    __properties: ClassVar[List[str]] = ["application", "service", "injectedKeys", "sidecarServiceName", "adoptedComposeService", "id", "createdAt", "updatedAt", "adopted"]
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -53,8 +54,7 @@ class ServiceBinding(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -87,9 +87,6 @@ class ServiceBinding(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of sidecar_credential
-        if self.sidecar_credential:
-            _dict['sidecarCredential'] = self.sidecar_credential.to_dict()
         # set to None if adopted_compose_service (nullable) is None
         # and model_fields_set contains the field
         if self.adopted_compose_service is None and "adopted_compose_service" in self.model_fields_set:
@@ -120,8 +117,7 @@ class ServiceBinding(BaseModel):
             "id": obj.get("id"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
-            "adopted": obj.get("adopted"),
-            "sidecarCredential": SealedSecret.from_dict(obj["sidecarCredential"]) if obj.get("sidecarCredential") is not None else None
+            "adopted": obj.get("adopted")
         })
         return _obj
 

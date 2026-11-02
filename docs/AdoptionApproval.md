@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **compose_service_name** | **str** | The compose service name this decision is about — joined against a live plan by name. | [optional] 
 **approved** | **bool** |  | [optional] 
 **decided_at** | **datetime** |  | [optional] 
-**id** | **str** |  | [optional] [readonly] 
+**id** | **UUID** |  | [optional] [readonly] 
 
 ## Example
 

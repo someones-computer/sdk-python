@@ -14,10 +14,10 @@
 
 import unittest
 
-from someones_computer_sdk.models.user_avatar_photo import UserAvatarPhoto
+from someones_computer_sdk.models.volume_volume_input import VolumeVolumeInput
 
-class TestUserAvatarPhoto(unittest.TestCase):
-    """UserAvatarPhoto unit test stubs"""
+class TestVolumeVolumeInput(unittest.TestCase):
+    """VolumeVolumeInput unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,28 @@ class TestUserAvatarPhoto(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> UserAvatarPhoto:
-        """Test UserAvatarPhoto
+    def make_instance(self, include_optional) -> VolumeVolumeInput:
+        """Test VolumeVolumeInput
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `UserAvatarPhoto`
+        # uncomment below to create an instance of `VolumeVolumeInput`
         """
-        model = UserAvatarPhoto()
+        model = VolumeVolumeInput()
         if include_optional:
-            return UserAvatarPhoto(
-                photo = '',
-                type = '',
-                id = ''
+            return VolumeVolumeInput(
+                slug = 'wr1c2v7s6djuy1zmetozkhdomha1b',
+                organization = 'https://example.com/'
             )
         else:
-            return UserAvatarPhoto(
+            return VolumeVolumeInput(
+                slug = 'wr1c2v7s6djuy1zmetozkhdomha1b',
+                organization = 'https://example.com/',
         )
         """
 
-    def testUserAvatarPhoto(self):
-        """Test UserAvatarPhoto"""
+    def testVolumeVolumeInput(self):
+        """Test VolumeVolumeInput"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

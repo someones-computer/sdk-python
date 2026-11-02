@@ -20,9 +20,11 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from someones_computer_sdk.models.proxmox_instance import ProxmoxInstance
 from typing import Optional, Set
 from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class Machine(BaseModel):
     """
@@ -40,9 +42,9 @@ class Machine(BaseModel):
     failure: Optional[StrictStr] = Field(default=None, description="Why `Failed`, when it is. Carries the task's own words, never a paraphrase.")
     provision_attempt: Optional[StrictInt] = Field(default=1, description="Which run through the flow this is, starting at 1 and incremented on every {@see self::reprovision()}. {@see \\App\\Entity\\ProvisioningLogLine} tags each captured line with the value that was current when it was written, so a retry's transcript starts fresh rather than appending to the failed attempt before it.", alias="provisionAttempt")
     provision_started_at: Optional[datetime] = Field(default=None, description="When the current run through the flow began — set at construction and reset on every {@see self::reprovision()}, mirroring {@see ProxmoxInstance::$templateBuildStartedAt}. What {@see self::isProvisioningStale()} measures against: the real ceiling is the flow's own step deadlines ({@see \\App\\MessageHandler\\ProvisionMachineHandler}'s `BOOT_DEADLINE`/`TASK_DEADLINE`), and a run still going past {@see self::PROVISION_PRESUMED_DEAD_AFTER} is a worker that died holding it — a crash, an OOM, a deploy restart — rather than one still working.", alias="provisionStartedAt")
-    swarm: Optional[StrictStr] = Field(default=None, description="The context this machine serves, if any. Nullable on purpose — see the class docblock.")
-    organization: Optional[StrictStr] = Field(default=None, description="The organization this machine was self-service-provisioned for, or null for one an operator made through `/admin/machines`. Nullable for the same reason `$swarm` is: an admin-made machine belongs to nobody's tenancy, and this column must not invent an owner for it. Set once, at creation, to the same organization that owns the paired `$swarm` — {@see Organization::markDeleted()} detaches it rather than deleting the row, matching how a BYO context's owner is handled.")
-    id: Optional[StrictStr] = None
+    swarm: Optional[StrictStr] = Field(default=None, description="The context this machine serves, if any. Nullable on purpose — see the class docblock.", json_schema_extra={"examples": ["https://example.com/"]})
+    organization: Optional[StrictStr] = Field(default=None, description="The organization this machine was self-service-provisioned for, or null for one an operator made through `/admin/machines`. Nullable for the same reason `$swarm` is: an admin-made machine belongs to nobody's tenancy, and this column must not invent an owner for it. Set once, at creation, to the same organization that owns the paired `$swarm` — {@see Organization::markDeleted()} detaches it rather than deleting the row, matching how a BYO context's owner is handled.", json_schema_extra={"examples": ["https://example.com/"]})
+    id: Optional[UUID] = None
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
     disk_gigabytes: Optional[StrictInt] = Field(default=None, alias="diskGigabytes")
@@ -70,7 +72,8 @@ class Machine(BaseModel):
         return value
 
     model_config = ConfigDict(
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
@@ -82,8 +85,7 @@ class Machine(BaseModel):
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
