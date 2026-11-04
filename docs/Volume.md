@@ -1,6 +1,6 @@
 # Volume
 
-List the volumes the caller can see.
+List retired volumes that a restore can still bring back. A volume stays restorable for 7 days after deletedAt.
 
 ## Properties
 
@@ -12,8 +12,9 @@ Name | Type | Description | Notes
 **deleted_at** | **datetime** |  | [optional] [readonly] 
 **created_at** | **datetime** |  | [optional] [readonly] 
 **updated_at** | **datetime** |  | [optional] [readonly] 
-**state** | **str** | The bucket&#39;s state, as the volume&#39;s own. | [optional] [readonly] 
-**usage_bytes** | **int** | Bytes the bucket holds at the last measurement, or null before the first. | [optional] [readonly] 
+**state** | **str** | The bucket&#39;s state, which is the volume&#39;s. | [optional] [readonly] 
+**usage_bytes** | **int** |  | [optional] [readonly] 
+**failure_reason** | **str** |  | [optional] [readonly] 
 **deleted** | **bool** |  | [optional] [readonly] 
 
 ## Example
