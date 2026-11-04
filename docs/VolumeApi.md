@@ -8,6 +8,8 @@ Method | HTTP request | Description
 [**volumes_delete**](VolumeApi.md#volumes_delete) | **DELETE** /api/volumes/{id} | Removes the Volume resource.
 [**volumes_get**](VolumeApi.md#volumes_get) | **GET** /api/volumes/{id} | Retrieves a Volume resource.
 [**volumes_list**](VolumeApi.md#volumes_list) | **GET** /api/volumes | Retrieves the collection of Volume resources.
+[**volumes_list_retired**](VolumeApi.md#volumes_list_retired) | **GET** /api/volumes/retired | Retrieves the collection of Volume resources.
+[**volumes_restore**](VolumeApi.md#volumes_restore) | **POST** /api/volumes/{id}/restore | Creates a Volume resource.
 
 
 # **volumes_create**
@@ -321,6 +323,160 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Volume collection |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **volumes_list_retired**
+> List[Volume] volumes_list_retired()
+
+Retrieves the collection of Volume resources.
+
+Retrieves the collection of Volume resources.
+
+### Example
+
+* Bearer Authentication (bearerAuth):
+
+```python
+import someones_computer_sdk
+from someones_computer_sdk.models.volume import Volume
+from someones_computer_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = someones_computer_sdk.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: bearerAuth
+configuration = someones_computer_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with someones_computer_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = someones_computer_sdk.VolumeApi(api_client)
+
+    try:
+        # Retrieves the collection of Volume resources.
+        api_response = api_instance.volumes_list_retired()
+        print("The response of VolumeApi->volumes_list_retired:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling VolumeApi->volumes_list_retired: %s\n" % e)
+```
+
+
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**List[Volume]**](Volume.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Volume collection |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **volumes_restore**
+> Volume volumes_restore(id)
+
+Creates a Volume resource.
+
+Creates a Volume resource.
+
+### Example
+
+* Bearer Authentication (bearerAuth):
+
+```python
+import someones_computer_sdk
+from someones_computer_sdk.models.volume import Volume
+from someones_computer_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = someones_computer_sdk.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: bearerAuth
+configuration = someones_computer_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with someones_computer_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = someones_computer_sdk.VolumeApi(api_client)
+    id = 'id_example' # str | Volume identifier
+
+    try:
+        # Creates a Volume resource.
+        api_response = api_instance.volumes_restore(id)
+        print("The response of VolumeApi->volumes_restore:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling VolumeApi->volumes_restore: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **str**| Volume identifier | 
+
+### Return type
+
+[**Volume**](Volume.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json, application/problem+json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Volume resource created |  -  |
+**400** | Invalid input |  -  |
+**422** | An error occurred |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
