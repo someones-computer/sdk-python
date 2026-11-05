@@ -34,6 +34,11 @@ docs/DeploymentJsonMergePatch.md
 docs/DeploymentJsonMergePatchBuildContextsValueValue.md
 docs/Error.md
 docs/Failure.md
+docs/GameServerApi.md
+docs/GameServerGameServerInput.md
+docs/GameServerGameServerRead.md
+docs/GameServerGameServerReadSettingsValue.md
+docs/GameServerGameServerSettingsInputJsonMergePatch.md
 docs/Machine.md
 docs/ManagedService.md
 docs/ManagedServiceApi.md
@@ -80,6 +85,7 @@ someones_computer_sdk/api/application_api.py
 someones_computer_sdk/api/credit_transaction_api.py
 someones_computer_sdk/api/deployment_access_gate_api.py
 someones_computer_sdk/api/deployment_api.py
+someones_computer_sdk/api/game_server_api.py
 someones_computer_sdk/api/managed_service_api.py
 someones_computer_sdk/api/organization_api.py
 someones_computer_sdk/api/service_binding_api.py
@@ -115,6 +121,10 @@ someones_computer_sdk/models/deployment_json_merge_patch.py
 someones_computer_sdk/models/deployment_json_merge_patch_build_contexts_value_value.py
 someones_computer_sdk/models/error.py
 someones_computer_sdk/models/failure.py
+someones_computer_sdk/models/game_server_game_server_input.py
+someones_computer_sdk/models/game_server_game_server_read.py
+someones_computer_sdk/models/game_server_game_server_read_settings_value.py
+someones_computer_sdk/models/game_server_game_server_settings_input_json_merge_patch.py
 someones_computer_sdk/models/machine.py
 someones_computer_sdk/models/managed_service.py
 someones_computer_sdk/models/managed_service_engine.py
@@ -178,6 +188,11 @@ test/test_deployment_json_merge_patch.py
 test/test_deployment_json_merge_patch_build_contexts_value_value.py
 test/test_error.py
 test/test_failure.py
+test/test_game_server_api.py
+test/test_game_server_game_server_input.py
+test/test_game_server_game_server_read.py
+test/test_game_server_game_server_read_settings_value.py
+test/test_game_server_game_server_settings_input_json_merge_patch.py
 test/test_machine.py
 test/test_managed_service.py
 test/test_managed_service_api.py

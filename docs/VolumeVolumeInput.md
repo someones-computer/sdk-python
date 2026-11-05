@@ -1,12 +1,12 @@
 # VolumeVolumeInput
 
-Create a volume: a named store for a game server, held in a Garage bucket.
+Create a volume: a named store of files that S3 holds.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**slug** | **str** | The tenant&#39;s own name for it. It shows in the panel and in a game server&#39;s settings. | [default to '']
+**slug** | **str** | The tenant&#39;s own name for it. The bucket under it takes this name after a prefix ({@see VolumeProvisioner::BUCKET_PREFIX}), so the limit is shorter than a service slug&#39;s. | [default to '']
 **organization** | **str** |  | 
 
 ## Example

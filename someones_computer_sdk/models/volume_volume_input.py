@@ -26,9 +26,9 @@ from pydantic_core import to_jsonable_python
 
 class VolumeVolumeInput(BaseModel):
     """
-    Create a volume: a named store for a game server, held in a Garage bucket.
+    Create a volume: a named store of files that S3 holds.
     """ # noqa: E501
-    slug: Annotated[str, Field(strict=True, max_length=56)] = Field(description="The tenant's own name for it. It shows in the panel and in a game server's settings.")
+    slug: Annotated[str, Field(strict=True, max_length=56)] = Field(description="The tenant's own name for it. The bucket under it takes this name after a prefix ({@see VolumeProvisioner::BUCKET_PREFIX}), so the limit is shorter than a service slug's.")
     organization: Optional[StrictStr] = Field(json_schema_extra={"examples": ["https://example.com/"]})
     __properties: ClassVar[List[str]] = ["slug", "organization"]
 
