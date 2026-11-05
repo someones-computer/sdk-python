@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class Volume(BaseModel):
     """
-    List the volumes the caller can see.
+    List retired volumes that a restore can still bring back. A volume stays restorable for 7 days after deletedAt.
     """ # noqa: E501
     organization: Optional[StrictStr] = Field(default=None, json_schema_extra={"examples": ["https://example.com/"]})
     slug: Optional[StrictStr] = None
@@ -35,10 +35,11 @@ class Volume(BaseModel):
     deleted_at: Optional[datetime] = Field(default=None, alias="deletedAt")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     updated_at: Optional[datetime] = Field(default=None, alias="updatedAt")
-    state: Optional[StrictStr] = Field(default=None, description="The bucket's state, as the volume's own.")
-    usage_bytes: Optional[StrictInt] = Field(default=None, description="Bytes the bucket holds at the last measurement, or null before the first.", alias="usageBytes")
+    state: Optional[StrictStr] = Field(default=None, description="The bucket's state, which is the volume's.")
+    usage_bytes: Optional[StrictInt] = Field(default=None, alias="usageBytes")
+    failure_reason: Optional[StrictStr] = Field(default=None, alias="failureReason")
     deleted: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["organization", "slug", "id", "deletedAt", "createdAt", "updatedAt", "state", "usageBytes", "deleted"]
+    __properties: ClassVar[List[str]] = ["organization", "slug", "id", "deletedAt", "createdAt", "updatedAt", "state", "usageBytes", "failureReason", "deleted"]
 
     @field_validator('state')
     def state_validate_enum(cls, value):
@@ -87,6 +88,7 @@ class Volume(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "id",
@@ -95,6 +97,7 @@ class Volume(BaseModel):
             "updated_at",
             "state",
             "usage_bytes",
+            "failure_reason",
             "deleted",
         ])
 
@@ -118,6 +121,11 @@ class Volume(BaseModel):
         if self.usage_bytes is None and "usage_bytes" in self.model_fields_set:
             _dict['usageBytes'] = None
 
+        # set to None if failure_reason (nullable) is None
+        # and model_fields_set contains the field
+        if self.failure_reason is None and "failure_reason" in self.model_fields_set:
+            _dict['failureReason'] = None
+
         return _dict
 
     @classmethod
@@ -138,6 +146,7 @@ class Volume(BaseModel):
             "updatedAt": obj.get("updatedAt"),
             "state": obj.get("state"),
             "usageBytes": obj.get("usageBytes"),
+            "failureReason": obj.get("failureReason"),
             "deleted": obj.get("deleted")
         })
         return _obj

@@ -54,6 +54,20 @@ class TestVolumeApi(unittest.TestCase):
         """
         pass
 
+    def test_volumes_list_retired(self) -> None:
+        """Test case for volumes_list_retired
+
+        Retrieves the collection of Volume resources.
+        """
+        pass
+
+    def test_volumes_restore(self) -> None:
+        """Test case for volumes_restore
+
+        Creates a Volume resource.
+        """
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

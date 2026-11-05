@@ -154,6 +154,8 @@ Class | Method | HTTP request | Description
 *VolumeApi* | [**volumes_delete**](docs/VolumeApi.md#volumes_delete) | **DELETE** /api/volumes/{id} | Removes the Volume resource.
 *VolumeApi* | [**volumes_get**](docs/VolumeApi.md#volumes_get) | **GET** /api/volumes/{id} | Retrieves a Volume resource.
 *VolumeApi* | [**volumes_list**](docs/VolumeApi.md#volumes_list) | **GET** /api/volumes | Retrieves the collection of Volume resources.
+*VolumeApi* | [**volumes_list_retired**](docs/VolumeApi.md#volumes_list_retired) | **GET** /api/volumes/retired | Retrieves the collection of Volume resources.
+*VolumeApi* | [**volumes_restore**](docs/VolumeApi.md#volumes_restore) | **POST** /api/volumes/{id}/restore | Creates a Volume resource.
 
 
 ## Documentation For Models
