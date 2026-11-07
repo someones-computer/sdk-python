@@ -50,8 +50,8 @@ class GameServerGameServerInput(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['minecraft', 'factorio']):
-            raise ValueError("must be one of enum values ('minecraft', 'factorio')")
+        if value not in set(['minecraft', 'factorio', 'terraria', 'minecraft-bedrock', 'valheim']):
+            raise ValueError("must be one of enum values ('minecraft', 'factorio', 'terraria', 'minecraft-bedrock', 'valheim')")
         return value
 
     model_config = ConfigDict(
