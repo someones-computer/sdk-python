@@ -20,10 +20,12 @@ __version__ = "1.0.0"
 __all__ = [
     "AdoptionApprovalApi",
     "ApplicationApi",
+    "ApplicationVolumeApi",
     "CreditTransactionApi",
     "DeploymentApi",
     "DeploymentAccessGateApi",
     "GameServerApi",
+    "GateRouteExemptionApi",
     "ManagedServiceApi",
     "OrganizationApi",
     "ServiceBindingApi",
@@ -42,6 +44,7 @@ __all__ = [
     "AdoptionApprovalAdoptionApprovalInput",
     "Application",
     "ApplicationJsonMergePatch",
+    "ApplicationVolume",
     "BundleAdditionalContextInput",
     "BundleContextInput",
     "BundleForwardedImageInput",
@@ -67,6 +70,8 @@ __all__ = [
     "GameServerGameServerRead",
     "GameServerGameServerReadSettingsValue",
     "GameServerGameServerSettingsInputJsonMergePatch",
+    "GateRouteExemption",
+    "GateRouteExemptionGateRouteExemptionInput",
     "Machine",
     "ManagedService",
     "ManagedServiceEngine",
@@ -101,10 +106,12 @@ __all__ = [
 # import apis into sdk package
 from someones_computer_sdk.api.adoption_approval_api import AdoptionApprovalApi as AdoptionApprovalApi
 from someones_computer_sdk.api.application_api import ApplicationApi as ApplicationApi
+from someones_computer_sdk.api.application_volume_api import ApplicationVolumeApi as ApplicationVolumeApi
 from someones_computer_sdk.api.credit_transaction_api import CreditTransactionApi as CreditTransactionApi
 from someones_computer_sdk.api.deployment_api import DeploymentApi as DeploymentApi
 from someones_computer_sdk.api.deployment_access_gate_api import DeploymentAccessGateApi as DeploymentAccessGateApi
 from someones_computer_sdk.api.game_server_api import GameServerApi as GameServerApi
+from someones_computer_sdk.api.gate_route_exemption_api import GateRouteExemptionApi as GateRouteExemptionApi
 from someones_computer_sdk.api.managed_service_api import ManagedServiceApi as ManagedServiceApi
 from someones_computer_sdk.api.organization_api import OrganizationApi as OrganizationApi
 from someones_computer_sdk.api.service_binding_api import ServiceBindingApi as ServiceBindingApi
@@ -127,6 +134,7 @@ from someones_computer_sdk.models.adoption_approval import AdoptionApproval as A
 from someones_computer_sdk.models.adoption_approval_adoption_approval_input import AdoptionApprovalAdoptionApprovalInput as AdoptionApprovalAdoptionApprovalInput
 from someones_computer_sdk.models.application import Application as Application
 from someones_computer_sdk.models.application_json_merge_patch import ApplicationJsonMergePatch as ApplicationJsonMergePatch
+from someones_computer_sdk.models.application_volume import ApplicationVolume as ApplicationVolume
 from someones_computer_sdk.models.bundle_additional_context_input import BundleAdditionalContextInput as BundleAdditionalContextInput
 from someones_computer_sdk.models.bundle_context_input import BundleContextInput as BundleContextInput
 from someones_computer_sdk.models.bundle_forwarded_image_input import BundleForwardedImageInput as BundleForwardedImageInput
@@ -152,6 +160,8 @@ from someones_computer_sdk.models.game_server_game_server_input import GameServe
 from someones_computer_sdk.models.game_server_game_server_read import GameServerGameServerRead as GameServerGameServerRead
 from someones_computer_sdk.models.game_server_game_server_read_settings_value import GameServerGameServerReadSettingsValue as GameServerGameServerReadSettingsValue
 from someones_computer_sdk.models.game_server_game_server_settings_input_json_merge_patch import GameServerGameServerSettingsInputJsonMergePatch as GameServerGameServerSettingsInputJsonMergePatch
+from someones_computer_sdk.models.gate_route_exemption import GateRouteExemption as GateRouteExemption
+from someones_computer_sdk.models.gate_route_exemption_gate_route_exemption_input import GateRouteExemptionGateRouteExemptionInput as GateRouteExemptionGateRouteExemptionInput
 from someones_computer_sdk.models.machine import Machine as Machine
 from someones_computer_sdk.models.managed_service import ManagedService as ManagedService
 from someones_computer_sdk.models.managed_service_engine import ManagedServiceEngine as ManagedServiceEngine
