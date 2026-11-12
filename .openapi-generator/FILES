@@ -10,6 +10,8 @@ docs/AdoptionApprovalApi.md
 docs/Application.md
 docs/ApplicationApi.md
 docs/ApplicationJsonMergePatch.md
+docs/ApplicationVolume.md
+docs/ApplicationVolumeApi.md
 docs/BundleAdditionalContextInput.md
 docs/BundleContextInput.md
 docs/BundleForwardedImageInput.md
@@ -39,6 +41,9 @@ docs/GameServerGameServerInput.md
 docs/GameServerGameServerRead.md
 docs/GameServerGameServerReadSettingsValue.md
 docs/GameServerGameServerSettingsInputJsonMergePatch.md
+docs/GateRouteExemption.md
+docs/GateRouteExemptionApi.md
+docs/GateRouteExemptionGateRouteExemptionInput.md
 docs/Machine.md
 docs/ManagedService.md
 docs/ManagedServiceApi.md
@@ -82,10 +87,12 @@ someones_computer_sdk/__init__.py
 someones_computer_sdk/api/__init__.py
 someones_computer_sdk/api/adoption_approval_api.py
 someones_computer_sdk/api/application_api.py
+someones_computer_sdk/api/application_volume_api.py
 someones_computer_sdk/api/credit_transaction_api.py
 someones_computer_sdk/api/deployment_access_gate_api.py
 someones_computer_sdk/api/deployment_api.py
 someones_computer_sdk/api/game_server_api.py
+someones_computer_sdk/api/gate_route_exemption_api.py
 someones_computer_sdk/api/managed_service_api.py
 someones_computer_sdk/api/organization_api.py
 someones_computer_sdk/api/service_binding_api.py
@@ -100,6 +107,7 @@ someones_computer_sdk/models/adoption_approval.py
 someones_computer_sdk/models/adoption_approval_adoption_approval_input.py
 someones_computer_sdk/models/application.py
 someones_computer_sdk/models/application_json_merge_patch.py
+someones_computer_sdk/models/application_volume.py
 someones_computer_sdk/models/bundle_additional_context_input.py
 someones_computer_sdk/models/bundle_context_input.py
 someones_computer_sdk/models/bundle_forwarded_image_input.py
@@ -125,6 +133,8 @@ someones_computer_sdk/models/game_server_game_server_input.py
 someones_computer_sdk/models/game_server_game_server_read.py
 someones_computer_sdk/models/game_server_game_server_read_settings_value.py
 someones_computer_sdk/models/game_server_game_server_settings_input_json_merge_patch.py
+someones_computer_sdk/models/gate_route_exemption.py
+someones_computer_sdk/models/gate_route_exemption_gate_route_exemption_input.py
 someones_computer_sdk/models/machine.py
 someones_computer_sdk/models/managed_service.py
 someones_computer_sdk/models/managed_service_engine.py
@@ -164,6 +174,8 @@ test/test_adoption_approval_api.py
 test/test_application.py
 test/test_application_api.py
 test/test_application_json_merge_patch.py
+test/test_application_volume.py
+test/test_application_volume_api.py
 test/test_bundle_additional_context_input.py
 test/test_bundle_context_input.py
 test/test_bundle_forwarded_image_input.py
@@ -193,6 +205,9 @@ test/test_game_server_game_server_input.py
 test/test_game_server_game_server_read.py
 test/test_game_server_game_server_read_settings_value.py
 test/test_game_server_game_server_settings_input_json_merge_patch.py
+test/test_gate_route_exemption.py
+test/test_gate_route_exemption_api.py
+test/test_gate_route_exemption_gate_route_exemption_input.py
 test/test_machine.py
 test/test_managed_service.py
 test/test_managed_service_api.py
