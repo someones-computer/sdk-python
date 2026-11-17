@@ -1,0 +1,1 @@
+../agent-standards/commands/status-of-the-room.md

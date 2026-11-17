@@ -1,0 +1,33 @@
+// Git hooks for this repo. See .claude/agent-standards/docs/Topics/Git-Hooks-hk.md.
+//
+//   pre-commit  lints the staged files. It never changes a file.
+//   pre-push    runs the wiring check.
+//
+// Install once, with `mise run hooks`.
+amends "package://github.com/jdx/hk/releases/download/v2.10.0/hk@2.10.0#/Config.pkl"
+
+local lint = new Mapping<String, Step> {
+    ["shellcheck"] {
+        glob = "*.sh"
+        check = "shellcheck {{files}}"
+    }
+    ["markdownlint"] {
+        glob = "*.md"
+        // --no-globs keeps the config's globs from widening the run past the staged files.
+        check = "markdownlint-cli2 --no-globs {{files}}"
+    }
+}
+
+hooks {
+    ["pre-commit"] {
+        steps = lint
+    }
+    ["pre-push"] {
+        steps {
+            ["wiring"] {
+                // A git hook exports GIT_DIR. The wiring check then reads the wrong submodule commit.
+                check = "env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE .claude/check-wiring.sh --ci"
+            }
+        }
+    }
+}

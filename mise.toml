@@ -1,0 +1,17 @@
+# Tools for the git hooks in hk.pkl. `mise install` installs them.
+[tools]
+hk = "2.10.0"
+pkl = "0.32.2"
+shellcheck = "latest"
+markdownlint-cli2 = "latest"
+
+[tasks.hooks]
+description = "Install the git hooks that hk.pkl defines. Run once. The hooks cover every worktree."
+run = '''
+hp=$(git config --get core.hooksPath || true)
+if [ -n "$hp" ]; then
+  echo "core.hooksPath is '$hp', so hk's hooks would never run. Unset it first." >&2
+  exit 1
+fi
+hk install
+'''
